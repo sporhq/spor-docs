@@ -1,18 +1,55 @@
 ---
 title: Hosted Spor
-description: Teams on hosted Spor — organizations, sign-in, tokens, agents, and your data.
+description: One shared graph per organization, on the same CLI, API, and MCP surface as local mode.
 sidebar:
   order: 1
 ---
 
-:::note
-This section is under construction. It will cover the hosted product: one
-shared graph per organization, sign-in and invitations, token and agent
-management, exporting your data, and what leaves your machine (and what
-never does).
-:::
+Hosted Spor is the team version of the graph you run locally. Your
+organization gets one shared graph on the Spor server, running isolated from
+every other organization's, and everyone on the team reads and writes the same
+nodes through the surfaces you already use: the `spor` CLI, the REST API, and
+the MCP connector. Nothing about the node format or the tools changes between
+local mode and hosted — what changes is that the graph is multiplayer, every
+write is attributed to the person or agent token that made it, and your data
+stays exportable in full (history included) at any time.
 
-Hosted Spor gives a team one shared graph: everyone reads and writes the
-same nodes, every write is attributed to the person or agent that made it,
-and your data stays exportable — the full graph, history included — at any
-time.
+## The hostnames
+
+You will touch four hostnames:
+
+| Host | What it is |
+|---|---|
+| `app.sporhq.io` | The web app |
+| `api.sporhq.io` | The REST API — what the CLI and the web app talk to |
+| `mcp.sporhq.io` | The MCP connector, for claude.ai and other MCP hosts |
+| `auth.sporhq.io` | Sign-in and OAuth |
+
+A team-scoped token routes each request to your organization's graph, so the
+same hostnames serve every organization without any of them seeing another's
+data.
+
+## Where to start
+
+Joining is by invitation: an admin on your team invites you, you sign in at
+the hosted front door with your email, and your account becomes a member of
+the organization. From there:
+
+1. **Sign in** — see [Organizations and sign-in](/hosted/organizations-and-sign-in/).
+2. **Connect your tools** — point the CLI at `api.sporhq.io` and add the
+   claude.ai connector; see [Connecting your tools](/hosted/connecting-your-tools/).
+3. **Work normally.** Queries, captures, the queue, and lenses behave exactly
+   as in local mode, except your teammates' writes show up too.
+
+One operational note worth reading before your first morning:
+[wake-on-request](/hosted/wake-on-request/) explains why the first request
+after an idle period can take longer than the rest.
+
+## The rest of this section
+
+- [Organizations and sign-in](/hosted/organizations-and-sign-in/) — invitations, multi-org accounts, switching.
+- [Connecting your tools](/hosted/connecting-your-tools/) — CLI configuration and the MCP connector.
+- [Wake-on-request](/hosted/wake-on-request/) — what latency to expect and when.
+- [Tokens and access](/hosted/tokens-and-access/) — personal access tokens, OAuth grants, admin management.
+- [Agents and attribution](/hosted/agents-and-attribution/) — agent identities and the audit trail.
+- [Your data](/hosted/your-data/) — export, what the server's model sees, and the sandbox.

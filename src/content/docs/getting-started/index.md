@@ -1,17 +1,49 @@
 ---
 title: Getting started
-description: Install Spor, wire it into your coding agent, and record your first node.
+description: Install Spor, wire it into your coding agent, and record your first node — locally or against a team server.
 sidebar:
   order: 1
 ---
 
-:::note
-This section is under construction. It will cover installation (Node 20+,
-`npm install -g @sporhq/spor`), wiring Spor into your coding agent with
-`spor install`, a local quickstart, a hosted quickstart, and what the plugin
-does automatically in each session.
-:::
+Spor runs in two modes, with the same CLI for both:
 
-Spor runs in two modes with the same CLI: **local**, where your graph is a
-plain git repository of markdown files on your machine, and **remote**, where
-your team shares one graph on a server. Both quickstarts will live here.
+- **Local** — your graph is a plain git repository of markdown files on your
+  machine (`~/.spor` by default). No server, no database. Good for trying
+  Spor out, or for personal memory across projects.
+- **Remote** — your team shares one live graph on a Spor server. Writes are
+  attributed to the person or agent that made them, captures are typed and
+  linked by the server, and open questions can route to the person most
+  likely to know.
+
+Every command works in both modes and resolves the mode from your
+configuration: with `SPOR_SERVER` set (or a stored credential from
+`spor join`), commands talk to the server; otherwise they read and write the
+local graph directly. `spor status` always shows which mode is active, which
+graph you are on, and who you are.
+
+## Where to start
+
+1. [Install the CLI and wire your coding agent](/getting-started/install/).
+   This step is the same for both modes.
+2. Pick a quickstart:
+   - [Local quickstart](/getting-started/local-quickstart/) — create a graph
+     on your machine and record your first node. Start here if you are on
+     your own or evaluating Spor.
+   - [Hosted quickstart](/getting-started/hosted-quickstart/) — join a team
+     graph with an invite token or a browser sign-in. Start here if someone
+     on your team already runs Spor.
+
+You can move from local to remote later; the graph format and the CLI do not
+change.
+
+## The rest of this section
+
+- [What happens automatically](/getting-started/what-happens-automatically/)
+  — what the plugin does in each coding session once a repo is enabled:
+  briefings, digests, commit linking, and the end-of-session distiller.
+- [Costs and controls](/getting-started/costs-and-controls/) — where Spor
+  makes model calls, how to see what they cost, and how to turn them off or
+  point them at your own backend.
+- [Diagnostics](/getting-started/diagnostics/) — `spor status`,
+  `spor-hook doctor`, and what happens to captures when the server is
+  unreachable.

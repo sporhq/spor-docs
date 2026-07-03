@@ -29,6 +29,12 @@ design tokens and is never edited here — site styling belongs in
 `src/styles/theme.css`, which maps the tokens onto Starlight's variables.
 Maintainers re-sync tokens with `scripts/sync-tokens.sh`.
 
+## Contributing
+
+Contributions are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) covers local
+setup, page conventions, and what to do when either CI check fails; prose
+follows the [style guide](https://docs.sporhq.io/style-guide/).
+
 ## License
 
 [Apache-2.0](LICENSE).
