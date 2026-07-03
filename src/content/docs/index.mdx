@@ -1,0 +1,35 @@
+---
+title: Spor documentation
+description: Documentation for Spor — a typed, versioned knowledge graph of the durable outcomes of work.
+template: splash
+hero:
+  tagline: A typed, versioned knowledge graph of the durable outcomes of work — decisions, tasks, issues, norms, questions — one fact per node, joined by typed edges.
+  actions:
+    - text: Get started
+      link: /getting-started/
+      icon: right-arrow
+    - text: View on GitHub
+      link: https://github.com/sporhq/spor
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+	<Card title="Getting started" icon="rocket">
+		Install the CLI, wire your coding agent, and record your first node —
+		locally or against a team server. [Start here](/getting-started/).
+	</Card>
+	<Card title="Concepts" icon="open-book">
+		Nodes, edges, the queue, briefings, and how the graph carries context
+		between sessions. [Read the concepts](/concepts/).
+	</Card>
+	<Card title="CLI reference" icon="seti:shell">
+		Every `spor` verb, with flags and examples. [Browse the CLI](/cli/).
+	</Card>
+	<Card title="REST API & MCP" icon="setting">
+		The full HTTP contract and the MCP tools for connector hosts.
+		[API](/api/) · [MCP](/mcp/).
+	</Card>
+</CardGrid>

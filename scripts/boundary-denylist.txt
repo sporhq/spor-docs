@@ -1,0 +1,34 @@
+# Terms that must never appear in the public Spor docs.
+#
+# Two standing rules feed this list:
+#  - the public-docs boundary: docs describe "the Spor server" abstractly and
+#    never name private repositories, their paths, deployment internals, or
+#    server-side configuration;
+#  - the copy rule: examples are fictional and anonymized — never real graph
+#    node ids, person handles, or internal team decisions.
+#
+# One extended-regex pattern per line; blank lines and # comments are ignored.
+# Matching is case-insensitive. scripts/check-boundary.sh greps every tracked
+# file except this list and itself.
+
+# private repositories and their internals
+spor-server
+control-plane
+lib-engine
+serverctl
+spor-infra
+
+# server-side configuration and deployment internals
+# (client-side vars like SPOR_HOME / SPOR_SERVER / SPOR_TOKEN are public
+# surface and are documented — only server-internal knobs are banned)
+SPOR_INGEST
+SPOR_SANDBOX
+SPOR_OPS_CHECK
+fly\.io machines
+tenantMachineConfig
+
+# real graph data / team-internal identifiers
+bcdr-substrate
+person-anthony
+losthammer
+exedev

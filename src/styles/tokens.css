@@ -1,0 +1,102 @@
+/* Spor design tokens — see ../DESIGN.md for rules and rationale.
+ * OKLCH only. Light is :root, dark mirrors 1:1 under html.dark.
+ * Every fg/bg pair here is contrast-verified (WCAG 2.2 AA). */
+
+:root {
+  /* neutrals — cool family (hue 220-240, chroma ≤ 0.015), never warm */
+  --bg: oklch(0.975 0.003 220);
+  --card: oklch(1 0 0);
+  --fg: oklch(0.21 0.012 240);          /* 16.5:1 on --bg */
+  --mut: oklch(0.46 0.015 240);         /* 6.6:1 on --bg */
+  --line: oklch(0.90 0.006 220);
+  --line-soft: oklch(0.94 0.004 220);
+
+  /* the one voice — glacial teal; action, selection, focus, trail-current */
+  --accent: oklch(0.48 0.105 205);      /* 5.6:1 on --bg, 6.0:1 on --card */
+  --accent-deep: oklch(0.30 0.06 215);  /* marine: wordmark, active nav */
+  --accent-soft: oklch(0.94 0.03 200);  /* selection / hover wash */
+  --on-accent: oklch(1 0 0);            /* text on accent fills (6.0:1) */
+
+  /* status triples — travel together, no ad-hoc fourth status */
+  --cat-queued-bg: oklch(0.95 0.008 240);  --cat-queued-fg: oklch(0.43 0.02 240);  --cat-queued-bd: oklch(0.86 0.015 240);
+  --cat-active-bg: oklch(0.93 0.04 250);   --cat-active-fg: oklch(0.42 0.13 255);  --cat-active-bd: oklch(0.83 0.07 252);
+  --cat-warning-bg: oklch(0.95 0.05 90);   --cat-warning-fg: oklch(0.45 0.10 75);  --cat-warning-bd: oklch(0.86 0.08 85);
+  --cat-positive-bg: oklch(0.95 0.05 155); --cat-positive-fg: oklch(0.42 0.11 152); --cat-positive-bd: oklch(0.86 0.08 152);
+  --cat-negative-bg: oklch(0.94 0.04 25);  --cat-negative-fg: oklch(0.45 0.14 27);  --cat-negative-bd: oklch(0.86 0.06 25);
+  --cat-neutral-bg: oklch(0.94 0.005 240); --cat-neutral-fg: oklch(0.45 0.01 240); --cat-neutral-bd: oklch(0.86 0.01 240);
+
+  /* node-type identity marks: oklch(var(--type-mark-l) 0.09 var(--h)) */
+  --type-mark-l: 0.62;
+
+  /* type — system faces; treatments must survive without webfonts */
+  --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+  --text-xs: 0.69rem;
+  --text-sm: 0.78rem;
+  --text-base: 0.906rem;  /* 14.5px body */
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.31rem;
+  --text-2xl: 1.56rem;
+
+  /* spacing — 4px base */
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+  --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
+
+  /* radii */
+  --r-1: 2px; --r-2: 6px; --r-3: 10px;
+
+  /* z-scale — semantic only */
+  --z-dropdown: 100; --z-sticky: 200; --z-backdrop: 300;
+  --z-modal: 310; --z-toast: 400; --z-tooltip: 500;
+
+  /* motion — state, not decoration */
+  --dur-fast: 120ms; --dur: 180ms; --dur-slow: 240ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.dark {
+  --bg: oklch(0.18 0.010 235);
+  --card: oklch(0.22 0.012 235);
+  --fg: oklch(0.92 0.008 220);          /* 14.9:1 on --bg */
+  --mut: oklch(0.68 0.015 230);         /* 6.6:1 on --bg */
+  --line: oklch(0.31 0.012 235);
+  --line-soft: oklch(0.26 0.010 235);
+
+  --accent: oklch(0.75 0.10 200);       /* 8.8:1 on --bg */
+  --accent-deep: oklch(0.85 0.06 205);
+  --accent-soft: oklch(0.28 0.05 210);
+  --on-accent: oklch(0.15 0.01 235);    /* dark text on the light dark-accent */
+
+  --cat-queued-bg: oklch(0.26 0.012 240);  --cat-queued-fg: oklch(0.75 0.02 240);  --cat-queued-bd: oklch(0.36 0.015 240);
+  --cat-active-bg: oklch(0.27 0.05 252);   --cat-active-fg: oklch(0.78 0.10 250);  --cat-active-bd: oklch(0.40 0.07 252);
+  --cat-warning-bg: oklch(0.28 0.05 80);   --cat-warning-fg: oklch(0.80 0.11 85);  --cat-warning-bd: oklch(0.42 0.07 82);
+  --cat-positive-bg: oklch(0.26 0.05 155); --cat-positive-fg: oklch(0.78 0.11 155); --cat-positive-bd: oklch(0.40 0.07 155);
+  --cat-negative-bg: oklch(0.27 0.05 25);  --cat-negative-fg: oklch(0.78 0.10 25);  --cat-negative-bd: oklch(0.42 0.07 25);
+  --cat-neutral-bg: oklch(0.25 0.008 240); --cat-neutral-fg: oklch(0.72 0.01 240); --cat-neutral-bd: oklch(0.36 0.012 240);
+
+  --type-mark-l: 0.72;
+}
+
+/* global treatments the tokens assume */
+:where(body) {
+  font: var(--text-base) / 1.5 var(--sans);
+  color: var(--fg);
+  background: var(--bg);
+  font-variant-numeric: tabular-nums; /* The Tabular-Figures Rule */
+}
+
+:where(a) { color: var(--accent); }
+
+:where(:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

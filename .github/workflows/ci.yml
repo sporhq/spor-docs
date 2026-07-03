@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Boundary lint (no private internals, no real graph data)
+        run: scripts/check-boundary.sh
+
+      - name: Design-token parity (vendored copy matches recorded fingerprint)
+        run: scripts/check-token-parity.sh
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build

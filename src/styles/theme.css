@@ -1,0 +1,56 @@
+/* Map the canonical Spor design tokens (src/styles/tokens.css — a verbatim
+ * vendored copy, never edited here) onto Starlight's theme variables.
+ *
+ * The tokens key dark mode on `html.dark`; Starlight toggles
+ * `data-theme="dark"`. A small head script in astro.config.mjs mirrors the
+ * attribute onto the class, so the token variables flip by themselves and
+ * this mapping stays theme-agnostic: every Starlight variable points at a
+ * token, and the token carries the light/dark split.
+ *
+ * Identity rules this file exists to uphold: cool neutrals, ONE accent
+ * (glacial teal, hue 205) for action/selection/focus — no indigo or violet
+ * anywhere, flat at rest. */
+
+:root,
+:root[data-theme='light'],
+:root[data-theme='dark'] {
+  /* accent — the one voice */
+  --sl-color-accent-low: var(--accent-soft);
+  --sl-color-accent: var(--accent);
+  --sl-color-accent-high: var(--accent-deep);
+
+  /* text and surfaces */
+  --sl-color-white: var(--fg);
+  --sl-color-black: var(--bg);
+  --sl-color-text: var(--fg);
+  --sl-color-text-accent: var(--accent);
+  --sl-color-text-invert: var(--on-accent);
+  --sl-color-bg: var(--bg);
+  --sl-color-bg-nav: var(--bg);
+  --sl-color-bg-sidebar: var(--bg);
+  --sl-color-bg-inline-code: var(--line-soft);
+
+  /* gray ramp → token neutrals (fg → mut → lines → card) */
+  --sl-color-gray-1: var(--fg);
+  --sl-color-gray-2: var(--fg);
+  --sl-color-gray-3: var(--mut);
+  --sl-color-gray-4: var(--mut);
+  --sl-color-gray-5: var(--line);
+  --sl-color-gray-6: var(--line-soft);
+  --sl-color-gray-7: var(--card);
+
+  /* hairlines: borders, not shadows (flat at rest) */
+  --sl-color-hairline: var(--line);
+  --sl-color-hairline-light: var(--line-soft);
+  --sl-color-hairline-shade: var(--line);
+
+  /* type */
+  --sl-font: var(--sans);
+  --sl-font-mono: var(--mono);
+}
+
+/* Flat at rest: resting cards carry borders, not shadows. */
+:root {
+  --sl-shadow-sm: none;
+  --sl-shadow-md: none;
+}
