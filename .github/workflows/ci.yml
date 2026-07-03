@@ -1,9 +1,19 @@
 name: CI
 
+# The deploy TARGET — the Pages project, the docs.sporhq.io custom domain, and
+# its DNS — is owned as infrastructure-as-code elsewhere; this workflow only
+# builds and uploads. Deploys use wrangler direct upload on merge to main
+# (the same pattern as the marketing site); PRs run the gates and build only.
+
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch: # manual re-deploy / drift reconcile
+
+permissions:
+  contents: read
+  deployments: write
 
 jobs:
   checks:
@@ -27,3 +37,37 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Upload built site for deploy
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  deploy:
+    needs: checks # never deploy a build that failed the gates
+    if: github.event_name != 'pull_request' # PRs run the gates only
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Deploy dist/ to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: dc52d55485e513fa4cc5ed558c09d3ec
+        run: |
+          BRANCH="${GITHUB_REF##*/}"
+          # branch == productionBranch (main) => production deployment;
+          # any other branch => preview at <branch>.spor-docs.pages.dev
+          npx wrangler@3 pages deploy ./dist \
+            --project-name=spor-docs \
+            --branch="$BRANCH"
