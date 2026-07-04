@@ -23,10 +23,20 @@ pattern="$(grep -Ev '^\s*(#|$)' "$denylist" | paste -sd'|' - || true)"
 
 cd "$root"
 # The style guide legitimately names the banned words as examples.
+set +e
 hits="$(git grep -I -i -n -E "$pattern" -- \
   'src/content/docs' \
-  ':(exclude)src/content/docs/contributing/style-guide.md' \
-  || true)"
+  ':(exclude)src/content/docs/contributing/style-guide.md')"
+grep_status=$?
+set -e
+
+# git grep exits 0 (match), 1 (no match), or >1 (real error, e.g. a malformed
+# pattern from style-denylist.txt) — don't let a real error masquerade as a
+# clean pass.
+if [ "$grep_status" -gt 1 ]; then
+  echo "::error::git grep failed (status $grep_status) — check scripts/style-denylist.txt for a malformed pattern" >&2
+  exit 2
+fi
 
 if [ -n "$hits" ]; then
   {

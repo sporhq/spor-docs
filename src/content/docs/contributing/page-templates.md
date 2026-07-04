@@ -102,8 +102,9 @@ patterns. `scripts/check-style.sh` catches the known phrases in
 `scripts/style-denylist.txt`; the [style guide's voice section](/contributing/style-guide/#voice)
 is the full rule.
 
-Examples must be fictional and drawn from the canonical tidefall walkthrough,
-with no identifiers copied from a real graph. Nothing crosses the public-docs
+Examples must be fictional — invent a team and stay with it within a page, as
+the [style guide's example data section](/contributing/style-guide/#example-data)
+sets out — with no identifiers copied from a real graph. Nothing crosses the public-docs
 boundary; `scripts/check-boundary.sh` is the backstop. If a page restates
 mechanics owned by another page, such as a hosted page restating token or
 attribution behavior, reviewers confirm the owning page was checked, and

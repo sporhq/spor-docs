@@ -12,6 +12,6 @@
 - [ ] The page is written for its section's reader
 - [ ] Setup and how-to pages include a "Check it worked" step the reader can run
 - [ ] Voice and terminology match the [style guide](https://docs.sporhq.io/contributing/style-guide/) — no persuasion patterns or marketing phrasing (the style lint catches only the known phrases)
-- [ ] Examples are fictional and drawn from the canonical tidefall walkthrough — no identifiers copied from a real graph
+- [ ] Examples are fictional, with a consistent invented team per page — no identifiers copied from a real graph
 - [ ] No private internals — the server is described abstractly (see [CONTRIBUTING.md](https://github.com/sporhq/spor-docs/blob/main/CONTRIBUTING.md))
 - [ ] If the change touches a page that restates mechanics owned by another page, the owning page was checked and updated in the same PR
