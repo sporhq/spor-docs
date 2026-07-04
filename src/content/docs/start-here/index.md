@@ -45,6 +45,9 @@ change.
 - [What happens automatically](/start-here/what-happens-automatically/)
   — what the plugin does in each coding session once a repo is enabled:
   briefings, digests, commit linking, and the end-of-session distiller.
+- [What Spor is not](/start-here/what-spor-is-not/) — the product's
+  boundaries: six things Spor does not try to be, and where to go if you
+  wanted one of them.
 - [Costs and controls](/reference/costs-and-controls/) — where Spor
   makes model calls, how to see what they cost, and how to turn them off or
   point them at your own backend.
