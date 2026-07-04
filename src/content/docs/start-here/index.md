@@ -2,8 +2,12 @@
 title: Start here
 description: Install Spor, wire it into your coding agent, and record your first node — locally or against a team server.
 sidebar:
-  order: 1
+  order: 2
 ---
+
+New to Spor? [What is Spor?](/start-here/what-is-spor/) is the
+plain-language introduction; this page routes you to installation and a
+quickstart.
 
 Spor runs in two modes, with the same CLI for both:
 

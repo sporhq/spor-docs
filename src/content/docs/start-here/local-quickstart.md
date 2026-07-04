@@ -2,7 +2,7 @@
 title: Local quickstart
 description: Create a graph on your machine, record your first node, and read the queue — no server required.
 sidebar:
-  order: 3
+  order: 4
 ---
 
 In local mode the graph lives entirely on your machine, as a plain git

@@ -2,7 +2,7 @@
 title: Core ideas
 description: The graph model — typed nodes, typed edges, and the loop that keeps context alive.
 sidebar:
-  order: 6
+  order: 7
 ---
 
 Spor is a typed, versioned knowledge graph of the durable outcomes of work.

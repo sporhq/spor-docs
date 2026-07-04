@@ -2,7 +2,7 @@
 title: Install
 description: Install the Spor CLI with npm, wire it into your coding agent, and opt a repository in.
 sidebar:
-  order: 2
+  order: 3
 ---
 
 ## Requirements

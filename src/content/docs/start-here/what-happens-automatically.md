@@ -2,7 +2,7 @@
 title: What happens automatically
 description: The session hooks the plugin runs — briefing injection, per-prompt digests, commit linking, and the end-of-session distiller.
 sidebar:
-  order: 7
+  order: 8
 ---
 
 Once a host is [wired](/start-here/install/) and a repository is enabled

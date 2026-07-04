@@ -2,7 +2,7 @@
 title: Connect an AI assistant
 description: Add the Spor connector in claude.ai or Claude Code, complete the OAuth flow, and revoke access safely.
 sidebar:
-  order: 5
+  order: 6
 ---
 
 The Spor server speaks MCP over Streamable HTTP at `/mcp`, with the standard

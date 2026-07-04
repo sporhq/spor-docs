@@ -5,6 +5,7 @@
 This is the documentation for docs.sporhq.io. It covers two audiences from day one: the open-source local mode (a personal graph on your machine) and the hosted team product (one shared graph per org). The graph is plain markdown files with YAML frontmatter; the schema registry — node types, edge types, and their rules — is itself data in the graph, so it is extensible without code changes.
 
 ## Start here
+- [What is Spor?](https://docs.sporhq.io/start-here/what-is-spor/): the plain-language introduction — what Spor keeps for a team and the few terms the rest of the docs use
 - [Start here](https://docs.sporhq.io/start-here/): install, connect your agent, and run your first briefing
 - [Install](https://docs.sporhq.io/start-here/install/): Node ≥20, `npm i -g @sporhq/spor`, and `spor install` per host (Claude Code, Codex, Gemini, Cursor, Copilot, opencode)
 - [Local quickstart](https://docs.sporhq.io/start-here/local-quickstart/): init a personal graph, create your person, capture a first node, and compile a briefing

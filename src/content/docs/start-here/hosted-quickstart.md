@@ -2,7 +2,7 @@
 title: Hosted quickstart
 description: Join a team graph with an invite token or a device-code sign-in, and make your first capture against it.
 sidebar:
-  order: 4
+  order: 5
 ---
 
 In remote mode your team shares one live graph on a Spor server. Writes are
