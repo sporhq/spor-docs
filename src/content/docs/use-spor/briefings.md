@@ -11,14 +11,14 @@ compiler walks the graph from a starting point, ranks what it finds, and
 renders a short working summary — the decisions still in force, the
 approaches already rejected, the open blockers, the conventions that apply.
 
-Before touching the webhook ingester, an agent on our fictional parcel team
-might be told:
+Before touching tidefall's dunning emails, an agent might be told:
 
 ```text
-Use signed webhooks per dec-carrier-webhooks; polling was superseded.
-Do not revive per-carrier polling loops (dec-carrier-polling, rejected).
-Open blocker: issue-webhook-retries (redelivery storms double-count scans).
-Conventions: norm-migrations-reversible applies to the events table.
+Use the three-attempt schedule per dec-tidefall-billing-retries.
+Do not revive the immediate single retry (dec-tidefall-retry-once, superseded).
+Open blocker: issue-tidefall-double-charge (a retry racing the provider
+webhook can double-charge).
+Conventions: norm-tidefall-reversible-migrations applies to the billing tables.
 ```
 
 ## How a compile works
@@ -80,17 +80,17 @@ node, not a better prompt:
 
 ```markdown
 ---
-id: corr-task-carrier-rollout-1
+id: corr-task-tidefall-retry-emails-1
 type: correction
-title: Pin the tracking-events spec when briefing the carrier rollout
-target: task-carrier-rollout
-pin: [spec-tracking-events]
-exclude: [art-webhook-notes-2025]
-date: 2026-06-02
+title: Pin the dunning-flow spec when briefing the retry emails
+target: task-tidefall-retry-emails
+pin: [spec-tidefall-dunning-flow]
+exclude: [dec-tidefall-legacy-invoicing]
+date: 2026-06-20
 ---
 
-The 2025 webhook notes predate the signed-webhook decision; the spec is
-authoritative.
+The legacy invoicing decision predates the three-attempt retry window; the
+dunning-flow spec is authoritative.
 ```
 
 A correction carries three instruments: **pin** (always include these

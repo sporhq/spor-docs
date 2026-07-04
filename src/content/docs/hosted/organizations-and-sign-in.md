@@ -26,9 +26,9 @@ The CLI manages this for you:
 
 ```bash
 spor auth list            # your organizations, which is active, token health
-spor auth switch acme     # make a different organization the active one
+spor auth switch tidefall # make a different organization the active one
 spor auth whoami          # who the active credential says you are
-spor auth logout acme     # drop one organization's credential (or --all)
+spor auth logout tidefall # drop one organization's credential (or --all)
 ```
 
 `spor auth list` does a live membership check against the server

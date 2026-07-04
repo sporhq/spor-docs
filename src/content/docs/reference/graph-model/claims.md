@@ -28,10 +28,10 @@ mechanisms that expire on different clocks:
 ## The lifecycle
 
 ```bash
-spor claim task-api-rate-limits     # take the lease; writes the assigned edge once
-spor renew task-api-rate-limits     # heartbeat — bump the lease expiry
-spor extend task-api-rate-limits 2h # stretch the lease for a known idle gap
-spor release task-api-rate-limits   # drop the lease AND retire the assigned edge
+spor claim task-tidefall-retry-emails     # take the lease; writes the assigned edge once
+spor renew task-tidefall-retry-emails     # heartbeat — bump the lease expiry
+spor extend task-tidefall-retry-emails 2h # stretch the lease for a known idle gap
+spor release task-tidefall-retry-emails   # drop the lease AND retire the assigned edge
 ```
 
 The same verbs exist as MCP tools (`claim`, `renew`, `extend`, `release`)
@@ -58,10 +58,10 @@ refused.
 
 ## Why two mechanisms
 
-A single durable "assigned" flag can't tell "Jo owns this" from "Jo's agent
+A single durable "assigned" flag can't tell "Ines owns this" from "Ines's agent
 is mid-flight on this right now", and a single ephemeral lock forgets
 ownership every time a session ends. Keeping them separate gives each
 consumer the right signal: the queue's carrying view reads the durable edge,
 while dispatch-time collision detection reads the live lease. When a lease
-lapses but the edge remains, the work still reads as Jo's — it is just no
+lapses but the edge remains, the work still reads as Ines's — it is just no
 longer defended against a deliberate takeover.

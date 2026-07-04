@@ -102,7 +102,7 @@ the token. For interactive sign-in without a pasted token, use
 
 ```bash
 spor join spor_pat_abc123
-spor join https://graph.example.com spor_pat_abc123 --org acme
+spor join https://graph.example.com spor_pat_abc123 --org tidefall
 ```
 
 ### auth
@@ -130,7 +130,7 @@ The non-interactive and CI path stays `SPOR_TOKEN`.
 
 ```bash
 spor auth login --server https://graph.example.com
-spor auth switch acme
+spor auth switch tidefall
 ```
 
 ### login
@@ -161,7 +161,7 @@ private GitHub repository. The URL is remembered as `origin`, so later
 pushes need no argument. Pure git plumbing — no server route is involved.
 
 ```bash
-spor migrate git@github.com:acme/team-graph.git
+spor migrate git@github.com:tidefall/team-graph.git
 ```
 
 ### whoami
@@ -198,7 +198,7 @@ bound to your git identity reports it and exits 0. In remote mode your
 person node is server-managed (`spor whoami`).
 
 ```bash
-spor person create 'Jo Diaz' --email jo@example.com
+spor person create 'Ines Duarte' --email ines@tidefall.example.com
 ```
 
 ### token

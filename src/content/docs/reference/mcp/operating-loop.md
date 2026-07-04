@@ -44,9 +44,9 @@ From a starting node, deepen until the picture is complete:
   exists and what it depends on, which is often the fastest way to deepen on
   one node. Called with no `lens_id`, it lists the lenses that exist.
 
-A typical chain: `show_queue` surfaces `issue-checkout-double-charge`;
-`query_graph root_id=issue-checkout-double-charge` compiles its neighborhood
-and surfaces `dec-payments-idempotency-keys`; `get_node` on that decision
+A typical chain: `show_queue` surfaces `issue-tidefall-double-charge`;
+`query_graph root_id=issue-tidefall-double-charge` compiles its neighborhood
+and surfaces `dec-tidefall-idempotency-keys`; `get_node` on that decision
 shows the constraint the fix must respect. Three calls, and the session
 starts pre-briefed instead of rediscovering the design.
 

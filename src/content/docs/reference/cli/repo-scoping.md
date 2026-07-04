@@ -101,7 +101,7 @@ project-level corrections, `--out` writes to a file, `--quiet` suppresses
 the stderr stats.
 
 ```bash
-spor compile --query "auth token rotation" --digest
+spor compile --query "billing retry flow" --digest
 ```
 
 ### brief
@@ -115,7 +115,7 @@ spor brief <id>
 Compile a briefing for one node — sugar for `compile --root <id>`.
 
 ```bash
-spor brief dec-payments-stripe
+spor brief task-tidefall-retry-emails
 ```
 
 ### validate

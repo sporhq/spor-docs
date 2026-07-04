@@ -19,7 +19,7 @@ The claimer is always the authenticated identity — never a request argument.
 Take the lease. Body: `{"session"?: "..."}`.
 
 ```bash
-curl -s https://api.sporhq.io/v1/nodes/task-api-rate-limits/claim \
+curl -s https://api.sporhq.io/v1/nodes/task-tidefall-retry-emails/claim \
   -H "Authorization: Bearer $SPOR_TOKEN" \
   -H "Content-Type: application/json" -d '{}'
 ```

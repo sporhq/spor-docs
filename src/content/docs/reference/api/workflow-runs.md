@@ -15,7 +15,7 @@ Start a run of an **active** workflow (a proposed workflow must first be
 activated by a different identity than its author — the self-approval ban):
 
 ```bash
-curl -s https://api.sporhq.io/v1/workflows/wf-release-checklist/run \
+curl -s https://api.sporhq.io/v1/workflows/wf-tidefall-release-checklist/run \
   -H "Authorization: Bearer $SPOR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"inputs": {"version": "2-4-0"}}'

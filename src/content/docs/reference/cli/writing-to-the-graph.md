@@ -31,8 +31,8 @@ the serving project (who must do the work) and it surfaces in their queue,
 ramping urgency as the date nears.
 
 ```bash
-spor add "Rate limits on the public API need per-org overrides" --type task
-spor add "Platform must expose a token-rotation hook" --project platform --blocks task-api-rate-limits --needed-by 2026-08-01
+spor add "The dunning emails still cite the single-retry policy; update them for the three-attempt window" --type task
+spor add "Platform must expose a webhook-replay endpoint for retry testing" --project platform --blocks task-tidefall-retry-rollout --needed-by 2026-08-01
 ```
 
 ### ask
@@ -57,7 +57,7 @@ neighborhood is empty. Answer a question by writing a node with an `answers`
 edge to it, then `spor set-status <id> answered`.
 
 ```bash
-spor ask "Did the token-rotation hook ship?" --mention dec-payments-stripe
+spor ask "Did the dunning email copy get updated for the three-attempt retry window?" --mention dec-tidefall-billing-retries
 ```
 
 ### drain
@@ -102,8 +102,8 @@ validation; local mode validates the candidate before it lands on disk, so a
 malformed node never does.
 
 ```bash
-spor get dec-payments-stripe --json     # note the revision
-spor put-node ./dec-payments-stripe.md --if-exists update --revision <blob-sha>
+spor get dec-tidefall-billing-retries --json     # note the revision
+spor put-node ./dec-tidefall-billing-retries.md --if-exists update --revision <blob-sha>
 ```
 
 ### edge
@@ -123,7 +123,7 @@ Re-adding an existing edge is an idempotent no-op. `--attr key=value`
 (repeatable) carries flat edge attributes.
 
 ```bash
-spor edge dec-payments-stripe resolves task-api-rate-limits
+spor edge dec-tidefall-idempotency-keys resolves issue-tidefall-double-charge
 ```
 
 ### set-status
@@ -145,7 +145,7 @@ still needs a resolving decision or artifact. Local mode rewrites the status
 in place; there is no claim pool locally.
 
 ```bash
-spor set-status task-api-rate-limits active
+spor set-status task-tidefall-retry-emails active
 ```
 
 ### priority
@@ -163,7 +163,7 @@ with your identity and the door it came through, so an agent-set priority is
 distinguishable from human triage.
 
 ```bash
-spor priority issue-checkout-timeout p1
+spor priority issue-tidefall-double-charge p1
 ```
 
 ### correct
@@ -181,7 +181,7 @@ that was missed (`--pin`), exclude a stale one (`--exclude`) — both
 repeatable, both must name existing nodes — and/or pass free-text guidance.
 
 ```bash
-spor correct dec-payments-stripe "lead with the rollback plan, it is the binding constraint"
+spor correct task-tidefall-retry-emails --exclude dec-tidefall-legacy-invoicing "The legacy invoicing decision predates the three-attempt retry window; the dunning-flow spec is authoritative."
 ```
 
 ### claim
@@ -201,7 +201,7 @@ by someone else is refused, naming the holder and expiry. Local mode has no
 claim pool, so it no-ops with a note.
 
 ```bash
-spor claim task-api-rate-limits
+spor claim task-tidefall-retry-emails
 ```
 
 ### renew
@@ -218,7 +218,7 @@ A lapsed or stolen lease is refused, naming the current holder — renew never
 re-creates a lapsed lease; that is a fresh `spor claim`.
 
 ```bash
-spor renew task-api-rate-limits
+spor renew task-tidefall-retry-emails
 ```
 
 ### extend
@@ -236,7 +236,7 @@ is bounded by the org's maximum claim TTL: it never shortens a lease, and a
 request past the ceiling is capped to it (reported on the result).
 
 ```bash
-spor extend task-api-rate-limits 2h
+spor extend task-tidefall-retry-emails 2h
 ```
 
 ### release
@@ -253,7 +253,7 @@ you hold no lease on still cleans up any lingering `assigned` edge of yours.
 Releasing a claim someone else holds is refused, naming the holder.
 
 ```bash
-spor release task-api-rate-limits
+spor release task-tidefall-retry-emails
 ```
 
 ### run
@@ -275,6 +275,6 @@ self-approval ban), else the start is refused with the reason.
 `run status <run-id>` shows a run's state and per-step status.
 
 ```bash
-spor run wf-release-pipeline --inputs '{"ref":"v1.2.0"}'
-spor run status run-release-pipeline-20260701
+spor run wf-tidefall-release-checklist --inputs '{"ref":"v1.2.0"}'
+spor run status run-tidefall-release-checklist-20260701
 ```

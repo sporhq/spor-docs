@@ -45,8 +45,9 @@ When a session starts (or resumes) in an enabled repo, Spor compiles a
 briefing from the graph — the decisions that still apply, rejected
 approaches, open tasks and blockers, project conventions, and standing
 corrections — and injects it as context. The agent starts already knowing,
-for example, that `dec-retry-backoff` settled the backoff policy and that the
-open blocker is `issue-export-429-header`, instead of rediscovering both.
+for example, that `dec-tidefall-billing-retries` settled the retry schedule
+and that the open blocker is `issue-tidefall-double-charge`, instead of
+rediscovering both.
 
 ## On each prompt: a relevance digest
 

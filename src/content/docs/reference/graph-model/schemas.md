@@ -26,16 +26,17 @@ assuming the documentation matches your graph.
 ## Anatomy of a schema node
 
 A schema node carries a declarative JSON payload and, optionally, attached
-code. Suppose the parcel team wants a `carrier-escalation` type:
+code. Suppose the tidefall team wants a `provider-escalation` type for
+escalations to its payment provider:
 
 ````markdown
 ---
-id: schema-carrier-escalation
+id: schema-provider-escalation
 type: schema
 kind: node-schema
 schema_version: 2026.06.16.1
-title: Schema for carrier-escalation nodes
-summary: A carrier-facing escalation with a required severity field and an
+title: Schema for provider-escalation nodes
+summary: A provider-facing escalation with a required severity field and an
   open/mitigated/closed status machine; closing one requires a resolver.
 status: active
 date: 2026-06-16
@@ -43,7 +44,7 @@ date: 2026-06-16
 
 ```json
 {
-  "node_type": "carrier-escalation",
+  "node_type": "provider-escalation",
   "prefix": ["esc-"],
   "queueable": true
 }
@@ -54,7 +55,7 @@ const VALID = ["open", "mitigated", "closed"];
 
 export function validate(node) {
   const errors = [];
-  if (!node.severity) errors.push("carrier-escalation requires severity");
+  if (!node.severity) errors.push("provider-escalation requires severity");
   const s = (node.status || "").toLowerCase();
   if (s && VALID.indexOf(s) === -1) errors.push("invalid status '" + s + "'");
   return errors;

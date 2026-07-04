@@ -25,11 +25,11 @@ else:
 
 ````markdown
 ---
-id: lens-release-radar
+id: lens-tidefall-retry-radar
 type: lens
-project: parcel
-title: Release radar
-summary: Open work gating the carrier rollout, grouped by status.
+project: billing
+title: Retry rollout radar
+summary: Open work gating the billing retry rollout, grouped by status.
 status: active
 date: 2026-06-05
 ---
@@ -39,7 +39,7 @@ What still gates the rollout, at a glance.
 ## query
 
 ```json
-{ "traverse": { "from": "task-carrier-rollout", "follow": ["blocks"],
+{ "traverse": { "from": "task-tidefall-retry-rollout", "follow": ["blocks"],
   "direction": "in", "depth": 2 } }
 ```
 

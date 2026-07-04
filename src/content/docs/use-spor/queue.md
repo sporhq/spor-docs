@@ -79,8 +79,8 @@ spor next                      # the ranked queue for this project
 spor next --all-projects       # the cross-project firehose
 ```
 
-Over the API, `GET /v1/queue?assignee=person-jo` answers a manager's "what
-is Jo carrying?", and `assignee=me` binds to the caller. The carrying view
+Over the API, `GET /v1/queue?assignee=person-ines` answers a manager's "what
+is Ines carrying?", and `assignee=me` binds to the caller. The carrying view
 is deliberately narrower than the queue: for the ordinary "what's next"
 answer, don't filter by assignee at all.
 

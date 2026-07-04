@@ -16,8 +16,8 @@ node exists, what it depends on, and what replaced it.
 
 A ticket or a note is a container: its prose is frozen at the moment of
 writing, and it rots as the project moves. A Spor node is a pointer into a
-living structure. When a team supersedes `dec-export-json-only` with
-`dec-export-csv-format`, every briefing that touches the old decision sees
+living structure. When the tidefall team supersedes `dec-tidefall-retry-once`
+with `dec-tidefall-billing-retries`, every briefing that touches the old decision sees
 the supersession, because it is an edge rather than a sentence someone has to
 remember to update.
 

@@ -36,8 +36,8 @@ or install, reused across dispatches.
 | `agent token <agent-id>` | mint a long-lived standing PAT for the agent — the `SPOR_TOKEN` a headless agent runs under; shown once. `--expires` shortens the lifetime (default and max 1 year), `--label` tags it. `list` and `revoke <prefix>` manage them. Remote-only, owner-gated. |
 
 ```bash
-spor agent create jo-laptop
-spor agent use agent-jo-laptop
+spor agent create ines-laptop
+spor agent use agent-ines-laptop
 ```
 
 ### dispatch
@@ -91,7 +91,7 @@ passthrough that picks the harness agent definition the session runs.
 | `--print` (alias `--dry-run`) | print the prompt, launch nothing |
 
 ```bash
-spor dispatch task-api-rate-limits --worktree
+spor dispatch task-tidefall-retry-emails --worktree
 spor dispatch --from-queue --print
 ```
 
@@ -119,8 +119,8 @@ auto-suggestions from disk; `repos untag <slug> [tag...]` removes tags (no
 tags clears all).
 
 ```bash
-spor repos add api ~/code/api
-spor repos tag api python backend
+spor repos add billing ~/code/billing
+spor repos tag billing python backend
 ```
 
 ### capabilities

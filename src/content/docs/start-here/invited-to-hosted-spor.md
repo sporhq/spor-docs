@@ -70,7 +70,7 @@ queue.
 ## 4. Make your first capture
 
 ```bash
-spor add "Retry-After is missing from 429 responses on the export API. Agreed with Priya we fix it before the beta."
+spor add "The dunning email templates still cite the single-retry policy. Agreed with Ines we sweep them before the rollout."
 ```
 
 In remote mode you send prose and the server types the entry and links it

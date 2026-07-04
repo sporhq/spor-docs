@@ -33,7 +33,7 @@ environment variables, which you can also set directly (CI does):
 ```bash
 SPOR_SERVER=https://api.sporhq.io      # where the graph lives
 SPOR_TOKEN=spor_pat_...                # your credential
-SPOR_ORG=acme                          # which stored credential is active
+SPOR_ORG=tidefall                      # which stored credential is active
 ```
 
 Verify with `spor whoami` (or `GET /v1/me`): it echoes the person your token

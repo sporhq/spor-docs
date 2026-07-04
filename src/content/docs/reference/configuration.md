@@ -44,7 +44,7 @@ Two committable files at a repo root scope Spor to that repo.
 ```
 repo: billing
 graph: ../team-graph    # local mode: bind this repo to a shared graph home
-org: acme               # remote mode: select a stored tenant
+org: tidefall           # remote mode: select a stored tenant
 ```
 
 `repo:` fixes the project slug ([`spor link`](/reference/cli/repo-scoping/#link)

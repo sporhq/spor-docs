@@ -33,7 +33,7 @@ if the branch never merges.
 
 A team can share a local-mode graph over plain git with no server: commit a
 `.spor` marker in the code repo pointing at a sibling graph repository
-(`graph: ../parcel-graph`), and everyone clones both side by side. Distilled
+(`graph: ../tidefall-graph`), and everyone clones both side by side. Distilled
 nodes go through your normal pull-request flow. This is simpler than remote
 mode but gives up live concurrent writes, question routing, and hosted
 isolation.

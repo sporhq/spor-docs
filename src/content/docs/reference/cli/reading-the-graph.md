@@ -67,7 +67,7 @@ Inbound edges are gathered by scanning the whole graph, so `--json` is
 heavier than the plain read.
 
 ```bash
-spor get dec-payments-stripe --json
+spor get dec-tidefall-billing-retries --json
 ```
 
 ### query
@@ -112,7 +112,7 @@ is 7–40 hex characters, abbreviated or full, matched prefix-aware. An empty
 result is normal (a commit linked to no node) and exits 0.
 
 ```bash
-spor blame b384469 --repo api
+spor blame b384469 --repo billing
 ```
 
 ### history
@@ -131,7 +131,7 @@ editors. With a `<sha>`, show that revision's diff and change type;
 (default 50, max 200). Output matches across modes.
 
 ```bash
-spor history dec-payments-stripe --limit 10
+spor history dec-tidefall-billing-retries --limit 10
 ```
 
 ### changes
@@ -208,7 +208,7 @@ catalog. Any extra `--PARAM VALUE` flags beyond `--format`/`--json` are
 forwarded to the lens as render parameters.
 
 ```bash
-spor lens lens-roadmap --project billing
+spor lens lens-tidefall-retry-radar --project billing
 ```
 
 ### share
@@ -227,7 +227,7 @@ write-capable credential. `--expires` is `<N>d` or an ISO date (server
 default 7d, max 30d). Your token must be bound to a person node.
 
 ```bash
-spor share lens-roadmap --expires 14d
+spor share lens-tidefall-retry-radar --expires 14d
 ```
 
 ### export

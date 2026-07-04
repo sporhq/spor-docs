@@ -24,7 +24,7 @@ the node first (`--id` names it explicitly). `--expires` sets the token
 lifetime.
 
 ```bash
-spor invite --name 'Jo Diaz' --email jo@example.com --expires 30d
+spor invite --name 'Marek Ilves' --email marek@tidefall.example.com --expires 30d
 ```
 
 ### admin

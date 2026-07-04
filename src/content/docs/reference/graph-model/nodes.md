@@ -15,26 +15,28 @@ ideas](/start-here/core-ideas/).
 
 A Spor node is one markdown file in the graph home's `nodes/` directory:
 YAML frontmatter for the structured fields, a short prose body underneath.
-Here is a decision from a fictional team building a parcel-tracking product:
+Here is a decision from the fictional tidefall team's billing retry work:
 
 ```markdown
 ---
-id: dec-carrier-webhooks
+id: dec-tidefall-billing-retries
 type: decision
-project: parcel
-title: Carrier status updates arrive as signed webhooks, not polling
-summary: We ingest carrier status via signed webhooks with a replay window,
-  because polling every carrier API burned rate limits and lagged by minutes.
+project: billing
+title: Failed card charges retry three times over two days before the update-billing email
+summary: Failed card charges retry three times over two days, then a dunning
+  email asks the customer to update billing details, because a single
+  immediate retry recovered too few charges.
 status: active
-date: 2026-05-14
+date: 2026-06-12
 edges:
-  - {type: derived-from, to: spec-tracking-events}
-  - {type: supersedes, to: dec-carrier-polling}
+  - {type: derived-from, to: spec-tidefall-dunning-flow}
+  - {type: supersedes, to: dec-tidefall-retry-once}
 ---
 
-Polling was the first design and it worked until the third carrier. Webhooks
-give us push latency and one verification path; the replay window covers
-carriers that redeliver. Polling remains only as the reconciliation sweep.
+Retry-once was the launch design and recovered too few charges; customers
+churned after one transient card failure. The three-attempt window over two
+days recovers most of them. A longer window was rejected because it delays
+the update-billing email past the next billing cycle.
 ```
 
 ## One fact per node
@@ -61,9 +63,10 @@ compiles a briefing, most nodes appear at summary resolution; only the nodes
 that score highest are shown with their full body. Write the summary as one
 or two sentences that carry the fact and the why on their own:
 
-- Weak: "Decision about webhooks."
-- Strong: "We ingest carrier status via signed webhooks with a replay
-  window, because polling burned rate limits and lagged by minutes."
+- Weak: "Decision about billing retries."
+- Strong: "Failed card charges retry three times over two days, then a
+  dunning email asks the customer to update billing details, because a single
+  immediate retry recovered too few charges."
 
 If the summary only makes sense next to the body, the briefing that shows it
 without the body will mislead.
@@ -88,11 +91,11 @@ An edge may point at an id that does not exist yet; the compiler skips it,
 and the dangling reference marks a node worth creating — don't delete it.
 An edge may also carry extra flat attributes after `to:`, such as the
 per-assignment profile override on an `assigned` edge
-(`- {type: assigned, to: agent-jo-laptop, profile: profile-reviewer}`).
+(`- {type: assigned, to: agent-ines-laptop, profile: profile-reviewer}`).
 
 Two optional scalar fields connect nodes to work outside the graph:
 
-- `commits: [parcel-api@1a2b3c4, ...]` links a node to the code commits that
+- `commits: [billing@1a2b3c4, ...]` links a node to the code commits that
   implement it. Commits are deliberately not nodes — a node per commit would
   mirror `git log` and drown the curated graph.
 - `wake: YYYY-MM-DD` parks a queueable node as dormant until the date

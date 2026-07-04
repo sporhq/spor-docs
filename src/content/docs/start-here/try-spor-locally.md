@@ -57,7 +57,7 @@ know which items are yours.
 Override the seeded values if they are wrong:
 
 ```bash
-spor person create 'Priya Nair' --email priya@example.com
+spor person create 'Ines Duarte' --email ines@tidefall.example.com
 ```
 
 This command is idempotent too.
@@ -65,7 +65,7 @@ This command is idempotent too.
 ## 4. Record your first node
 
 ```bash
-spor add "The export API returns 429 without a Retry-After header, so clients cannot back off correctly. Fix before the beta." --type issue
+spor add "A retry that succeeds while the payment provider's webhook is delayed can charge the card twice. Fix before the rollout." --type issue
 ```
 
 In local mode this writes a well-formed, validated node file. You never
@@ -85,7 +85,7 @@ as what each item blocks. Your new issue appears here.
 ## 6. Compile a briefing
 
 ```bash
-spor compile --query "export api rate limiting"
+spor compile --query "billing retry flow"
 ```
 
 This compiles the neighborhood of entries relevant to a free-text query. It

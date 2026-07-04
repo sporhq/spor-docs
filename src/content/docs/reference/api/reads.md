@@ -108,7 +108,7 @@ active schema attaches — ignore keys you don't know:
   stale.
 
 ```bash
-curl -s https://api.sporhq.io/v1/nodes/task-api-rate-limits \
+curl -s https://api.sporhq.io/v1/nodes/dec-tidefall-billing-retries \
   -H "Authorization: Bearer $SPOR_TOKEN"
 ```
 

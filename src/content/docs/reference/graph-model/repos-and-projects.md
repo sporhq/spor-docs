@@ -26,15 +26,15 @@ makes the identity data instead:
 
 ```markdown
 ---
-id: repo-parcel-api
+id: repo-billing
 type: repo
-title: parcel-api
-summary: The parcel-tracking API service.
-slugs: [shipping-api, parcel-api]
-fingerprints: [remote:github.com/example/parcel-api, root:47520dcafe1b]
+title: billing
+summary: The tidefall billing service.
+slugs: [payments, billing]
+fingerprints: [remote:github.com/tidefall/billing, root:47520dcafe1b]
 date: 2026-05-01
 edges:
-  - {type: grouped-under, to: proj-parcel}
+  - {type: grouped-under, to: proj-tidefall}
 ---
 ```
 
@@ -64,9 +64,9 @@ token through one shared up-resolution:
 
 | Scope token | What it reads |
 | --- | --- |
-| `parcel-api` (bare slug) | The whole home-project union — every repo grouped under `proj-parcel` |
-| `repo-parcel-api` (repo node id) | Just that one repo |
-| `proj-parcel` (grouping id) | The grouping, directly |
+| `billing` (bare slug) | The whole home-project union — every repo grouped under `proj-tidefall` |
+| `repo-billing` (repo node id) | Just that one repo |
+| `proj-tidefall` (grouping id) | The grouping, directly |
 | nothing | The cross-project firehose |
 
 The intuitive token returns the whole product, and the node ids are the

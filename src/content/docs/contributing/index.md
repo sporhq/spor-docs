@@ -37,7 +37,8 @@ Each sidebar section has one directory under `src/content/docs/`:
 - `reference/` — the CLI in `reference/cli/`, MCP in `reference/mcp/`, REST API
   in `reference/api/`, the schema and graph model in
   `reference/graph-model/`, plus configuration, costs, and diagnostics pages.
-- `contributing/` — this guide and the style guide.
+- `contributing/` — this guide, the style guide, the page templates, and
+  the canonical example scenario.
 
 Filenames are kebab-case and become the URL slug. Most sidebars are generated
 from their directory, so a new page appears once its frontmatter is in place.

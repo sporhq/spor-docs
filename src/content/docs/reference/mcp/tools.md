@@ -223,8 +223,8 @@ review edge to that person in place, so submitting a review verdict is a
 single `add_edge`. Every other edge type keeps plain append-or-skip
 behavior.
 
-This is the closing move of the loop: `add_edge {id: "art-fix-4127",
-type: "resolves", to: "issue-checkout-double-charge"}` retires the issue.
+This is the closing move of the loop: `add_edge {id: "dec-tidefall-idempotency-keys",
+type: "resolves", to: "issue-tidefall-double-charge"}` retires the issue.
 
 ### `remove_edge`
 

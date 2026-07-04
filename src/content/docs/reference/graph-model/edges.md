@@ -6,7 +6,7 @@ sidebar:
 ---
 
 Edges are typed, directional, and weighted. Every edge is written from the
-**source node's perspective**: `- {type: resolves, to: issue-webhook-retries}`
+**source node's perspective**: `- {type: resolves, to: issue-tidefall-double-charge}`
 on a decision means "this decision resolves that issue". Weights control how
 far the briefing compiler follows a relationship — high-weight edges decay
 slowly across hops, which is what makes structural traversal beat plain
@@ -72,9 +72,9 @@ Write edges in the canonical direction above, but the write path accepts two
 normalized forms:
 
 - **Inverse labels** — the same edge read from the target's side. Writing
-  `{type: blocked-by, to: issue-webhook-retries}` on
-  `task-carrier-rollout` is flipped and stored on the issue as
-  `{type: blocks, to: task-carrier-rollout}`. Registered inverses:
+  `{type: blocked-by, to: issue-tidefall-double-charge}` on
+  `task-tidefall-retry-rollout` is flipped and stored on the issue as
+  `{type: blocks, to: task-tidefall-retry-rollout}`. Registered inverses:
   `blocked-by` → `blocks`, `answered-by` → `answers`,
   `superseded-by` → `supersedes`, `groups` → `grouped-under`,
   `owns` → `owned-by`, `has-org-member` → `member-of-org`.

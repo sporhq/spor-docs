@@ -61,11 +61,16 @@ not a node id, not a person handle, not an organization name, not a token.
 The boundary lint catches known real identifiers, but it can only list what
 it knows about; the rule is the contract, the lint is a backstop.
 
-- Invent a fictional team and stay with it within a page, so examples read as
-  one coherent scenario rather than disconnected fragments. For instance, an
-  organization `tidefall` with people `person-ines` and `person-marek`.
+The docs share one canonical fictional scenario: the tidefall billing-retry
+story documented on [The tidefall scenario](/contributing/example-scenario/).
+Pages draw scenes from it rather than inventing a new team per page.
+
+- Stay inside the canonical scenario so examples read as one coherent story
+  across pages. The organization is `tidefall`, with people `person-ines` and
+  `person-marek`; extend the scenario page when you need an object it lacks.
 - Give fictional node ids the real shape: a type prefix and a kebab-case
-  slug, like `dec-tidefall-search-backend` or `task-tidefall-rate-limits`.
+  slug, like `dec-tidefall-billing-retries` or
+  `task-tidefall-retry-emails`.
 - Secrets and tokens are placeholders that cannot be mistaken for live
   values: `<your-token>`, or an obviously truncated form. Never paste a real
   token, even a revoked one.

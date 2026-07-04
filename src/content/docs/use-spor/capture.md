@@ -11,19 +11,19 @@ or three sentences, and the server does the structuring.
 
 ```json
 {
-  "text": "While wiring the carrier webhooks I noticed the signature check
-           is duplicated across three handlers. Out of scope now — the
-           rollout is Friday — but it should be extracted.",
-  "during": "task-carrier-rollout"
+  "text": "While updating the dunning emails I noticed the receipt templates
+           still cite the old single-retry policy in several places. Out of
+           scope now — the rollout is Friday — but they should be swept.",
+  "during": "task-tidefall-retry-emails"
 }
 ```
 
 The caller keeps working. The server drafts a typed node (here, probably an
-open `task` with `derived-from → task-carrier-rollout` as provenance),
-validates it against the live schema registry, stamps attribution, and
-commits. If the deferral rationale is itself load-bearing ("because the
-rollout is Friday"), the ingester can emit a decision node alongside, edged
-to the task.
+open `task` with `derived-from → task-tidefall-retry-emails` as
+provenance), validates it against the live schema registry, stamps
+attribution, and commits. If the deferral rationale is itself load-bearing
+("because the rollout is Friday"), the ingester can emit a decision node
+alongside, edged to the task.
 
 In an agent session the door is the `capture` MCP tool or `/spor:defer`;
 from the shell it is `spor add "<text>"`; over REST it is `POST /v1/capture`.

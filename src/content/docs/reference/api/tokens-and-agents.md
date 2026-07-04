@@ -56,7 +56,7 @@ created, expires, expired}], count}`. Never plaintext, never full hashes.
 ### POST /v1/admin/tokens
 
 Mint a token bound to an existing person node — someone *else*, for
-onboarding: `{"person": "person-jo", "expires": "30d"}` returns 201 `{token,
+onboarding: `{"person": "person-marek", "expires": "30d"}` returns 201 `{token,
 hash_prefix, person, name, email, expires}`, plaintext returned once.
 
 ### DELETE /v1/admin/tokens/{hash-prefix}
@@ -89,7 +89,7 @@ need a subject to own one).
 ### POST /v1/admin/agents
 
 Create an agent on behalf of **another** person: `{"label": "ci-runner",
-"owner"?: "person-jo", "id"?, "pubkey"?}` (`owner` defaults to the caller's
+"owner"?: "person-marek", "id"?, "pubkey"?}` (`owner` defaults to the caller's
 person). Same response and errors as the self-serve door, plus `403` for
 non-admins.
 
@@ -187,7 +187,7 @@ a malformed agent id.
 Match a `type: profile` node against every agent's published capabilities:
 
 ```
-GET /v1/profiles/{id}/hosts?owner=me|person-jo&max_age=<dur>
+GET /v1/profiles/{id}/hosts?owner=me|person-ines&max_age=<dur>
 ```
 
 Returns `{profile, satisfiable: [{agent, owner, published_at, last_seen,

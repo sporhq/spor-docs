@@ -41,7 +41,7 @@ still read (see [Errors and compatibility](/reference/api/errors-and-compatibili
 ```
 SPOR_SERVER=https://api.sporhq.io   # REST base (the hosted default)
 SPOR_TOKEN=spor_pat_...             # per-user token
-SPOR_ORG=acme                       # select a stored tenant by org
+SPOR_ORG=tidefall                   # select a stored tenant by org
 ```
 
 `spor join <token>` writes the first two for you, defaulting `SPOR_SERVER`

@@ -76,10 +76,10 @@ before any Spor-specific vocabulary.>
 
 - Opening explanation: use plain language before canonical terms. Introduce a
   term such as `node` or `edge` only after the plain-language meaning it names.
-- `Small example`: use a concrete fictional scenario. Draw from the tidefall
-  billing-retry team, where `person-ines` and `person-marek` decide how many
-  times to retry a failed card charge before asking the customer to update
-  billing details.
+- `Small example`: use a concrete fictional scenario. Draw from
+  [the tidefall scenario](/contributing/example-scenario/), where `person-ines`
+  and `person-marek` decide how many times to retry a failed card charge
+  before asking the customer to update billing details.
 - `How Spor represents this`: introduce the canonical vocabulary and the graph
   model here.
 - `Commands/tools you might use`: point at the CLI verbs or MCP tools that touch
@@ -102,8 +102,9 @@ patterns. `scripts/check-style.sh` catches the known phrases in
 `scripts/style-denylist.txt`; the [style guide's voice section](/contributing/style-guide/#voice)
 is the full rule.
 
-Examples must be fictional — invent a team and stay with it within a page, as
-the [style guide's example data section](/contributing/style-guide/#example-data)
+Examples must be fictional and drawn from
+[the tidefall scenario](/contributing/example-scenario/), as the
+[style guide's example data section](/contributing/style-guide/#example-data)
 sets out — with no identifiers copied from a real graph. Nothing crosses the public-docs
 boundary; `scripts/check-boundary.sh` is the backstop. If a page restates
 mechanics owned by another page, such as a hosted page restating token or

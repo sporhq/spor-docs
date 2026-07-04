@@ -68,7 +68,7 @@ spor history dec-tidefall-billing-retries --limit 10
 Use this when a briefing keeps bringing in stale context or missing context that should be there. Here the follow-up task should stop citing the superseded legacy invoicing decision.
 
 ```sh
-spor correct task-tidefall-retry-emails --exclude dec-tidefall-legacy-invoicing "The invoicing rewrite superseded this decision; stop citing it."
+spor correct task-tidefall-retry-emails --exclude dec-tidefall-legacy-invoicing "The legacy invoicing decision predates the three-attempt retry window; the dunning-flow spec is authoritative."
 ```
 
 [`spor correct`](/reference/cli/writing-to-the-graph/#correct) records a standing correction for future briefings whose scope includes `task-tidefall-retry-emails`. The `--exclude` flag drops `dec-tidefall-legacy-invoicing`, and the quoted text becomes guidance for why it should stay out.

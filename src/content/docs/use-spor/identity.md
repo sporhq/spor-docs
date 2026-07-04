@@ -18,17 +18,17 @@ write resolves *from that node at read time*:
 
 ```markdown
 ---
-id: person-jo
+id: person-ines
 type: person
-name: Jo Berge
-title: Jo Berge
-summary: Backend lead; stewards the tracking-events spec and the webhook path.
-email: jo@example.com
+name: Ines Duarte
+title: Ines Duarte
+summary: Billing lead; stewards the dunning-flow spec and the retry path.
+email: ines@tidefall.example.com
 roles: [reviewer]
 date: 2026-05-02
 edges:
-  - {type: stewards, to: spec-tracking-events}
-  - {type: member-of-org, to: org-parcel}
+  - {type: stewards, to: spec-tidefall-dunning-flow}
+  - {type: member-of-org, to: org-tidefall}
 ---
 ```
 
@@ -60,8 +60,8 @@ a person node.
 ## Organizations
 
 An `org-` node is a durable organization identity anchor. A person's
-`member-of-org → org-parcel` edge records membership; an additional
-`stewards → org-parcel` edge records org-admin authority. Provider roles and
+`member-of-org → org-tidefall` edge records membership; an additional
+`stewards → org-tidefall` edge records org-admin authority. Provider roles and
 email domains confer neither — authority is always an explicit edge in the
 graph, visible and auditable like everything else.
 
@@ -72,14 +72,14 @@ of a dispatched background session:
 
 ```markdown
 ---
-id: agent-jo-laptop
+id: agent-ines-laptop
 type: agent
-title: Jo's laptop agent
-summary: Dispatched-session principal on Jo's laptop; owned by person-jo.
+title: Ines's laptop agent
+summary: Dispatched-session principal on Ines's laptop; owned by person-ines.
 status: active
 date: 2026-05-20
 edges:
-  - {type: owned-by, to: person-jo}
+  - {type: owned-by, to: person-ines}
 ---
 ```
 
@@ -96,16 +96,16 @@ Work an agent writes is attributed twice, deliberately:
 - `author:` stays the **owning person** — so routing, history, per-person
   queues, and "who did this" all behave exactly as if the person had written
   it;
-- `authored_by_agent: agent-jo-laptop`, `authored_via: dispatch`, and
+- `authored_by_agent: agent-ines-laptop`, `authored_via: dispatch`, and
   `session: <run-id>` are added — so you can always tell it was the agent,
   and which run.
 
 All attribution stamps are derived from the authenticated token, never from
 the write payload, so they cannot be forged by a caller. The
 `person → agent` ownership chain is the audit trail, and it is also a policy
-boundary: an agent acting on behalf of Jo counts *as Jo* for the
-self-approval ban and review quorums, so Jo's reviewer-agent cannot approve
-Jo's implementer-agent's work past the org bar.
+boundary: an agent acting on behalf of Ines counts *as Ines* for the
+self-approval ban and review quorums, so Ines's reviewer-agent cannot approve
+Ines's implementer-agent's work past the org bar.
 
 Agent tokens are self-serve and ownership-gated: a person mints short-lived
 per-session tokens (or a standing token for a headless agent) only for

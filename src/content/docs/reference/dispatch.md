@@ -15,9 +15,9 @@ Dispatch launches a background agent with the right context already
 attached:
 
 ```bash
-spor dispatch issue-webhook-retries    # brief + launch a background agent
+spor dispatch issue-tidefall-double-charge    # brief + launch a background agent
 spor dispatch --from-queue             # take the top ranked queue item
-spor dispatch issue-webhook-retries --print   # show what would launch
+spor dispatch issue-tidefall-double-charge --print   # show what would launch
 ```
 
 Dispatching a node compiles a briefing from its graph neighborhood and

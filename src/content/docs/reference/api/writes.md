@@ -47,13 +47,13 @@ graph's version history. These semantics apply to every write endpoint below
 A read that shares the compile pipeline: digest-mode context for a prompt.
 
 ```json
-{ "query": "how do we throttle the public API?",
+{ "query": "how do we retry failed card charges?",
   "project": "billing",
   "min_sim": 0.08 }
 ```
 
 Returns `{found, text}`; `found: false` is a successful empty result, not an
-error. `root` (e.g. `"root": "task-api-rate-limits"`) is the structural-walk
+error. `root` (e.g. `"root": "task-tidefall-retry-emails"`) is the structural-walk
 twin of `query` — pass one or the other; the two are mutually exclusive,
 `root` wins if both are sent, and an unknown root id is `422`. Optional `project`
 scopes the compile to the session's project (same-project relevance boost,
@@ -83,7 +83,7 @@ already applied before a later failure are not rolled back.
 curl -s https://api.sporhq.io/v1/nodes \
   -H "Authorization: Bearer $SPOR_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"nodes": ["---\nid: task-api-rate-limits\ntype: task\n..."], "if_exists": "skip"}'
+  -d '{"nodes": ["---\nid: task-tidefall-retry-emails\ntype: task\n..."], "if_exists": "skip"}'
 ```
 
 ## POST /v1/nodes/{id}/edges
@@ -91,7 +91,7 @@ curl -s https://api.sporhq.io/v1/nodes \
 Add one typed edge — normalize/flip, dedupe, append; no revision echo needed:
 
 ```json
-{ "type": "blocks", "to": "task-api-rate-limits",
+{ "type": "blocks", "to": "task-tidefall-retry-rollout",
   "attrs": { "profile": "gpu-box" } }
 ```
 
@@ -149,7 +149,7 @@ agent-set priority is distinguishable from human triage. An unknown value is
 
 ## POST /v1/nodes/{id}/commits
 
-Link a code commit to a node: `{"repo": "billing-service", "sha": "8f3a2c1"}`
+Link a code commit to a node: `{"repo": "billing", "sha": "8f3a2c1"}`
 appends `repo@sha` to the node's `commits:` list. The repo slug is
 kebab-case; the sha is 7–40 lowercase hex; at most 40 commits per node.
 Idempotent, with prefix-aware dedup. The reverse lookup is
@@ -160,8 +160,8 @@ Idempotent, with prefix-aware dedup. The reverse lookup is
 Raw text in, typed nodes out — the default write door for sessions:
 
 ```json
-{ "text": "We chose fixed-window rate limiting for the public API; sliding-window cost too much memory at the edge.",
-  "context": { "project": "billing", "during": "task-api-rate-limits" },
+{ "text": "We retry a failed card charge three times over two days, then email the customer to update billing details; a longer retry window would delay that email past the next billing cycle.",
+  "context": { "project": "billing", "during": "task-tidefall-retry-rollout" },
   "idempotency_key": "9f2c47d0-5b1e-4c8a-a7e3-2d6f8b41c9aa" }
 ```
 
@@ -199,11 +199,11 @@ Zero-fact sweeps report too.
 Propose a standing correction to briefing compiles:
 
 ```json
-{ "target": "task-api-rate-limits",
-  "pin": ["dec-fixed-window-rate-limit"],
-  "exclude": ["art-stale-benchmarks"],
-  "guidance": "The edge cache was replaced in Q2; ignore pre-Q2 latency numbers.",
-  "title": "Pin the rate-limit decision" }
+{ "target": "task-tidefall-retry-emails",
+  "pin": ["spec-tidefall-dunning-flow"],
+  "exclude": ["dec-tidefall-legacy-invoicing"],
+  "guidance": "The legacy invoicing decision predates the three-attempt retry window; the dunning-flow spec is authoritative.",
+  "title": "Pin the dunning-flow spec when briefing the retry emails" }
 ```
 
 Returns 201 `{status, id, revision, warnings}`. The server generates the
@@ -219,9 +219,9 @@ accepted verbatim.
 File a question the graph could not answer:
 
 ```json
-{ "text": "Which regions is the rate limiter deployed to?",
-  "title": "Rate-limiter regions",
-  "mentions": ["task-api-rate-limits"] }
+{ "text": "Did the dunning email copy get updated for the three-attempt retry window?",
+  "title": "Dunning email copy",
+  "mentions": ["dec-tidefall-billing-retries"] }
 ```
 
 Returns 201 `{status, id, project, routed_to, via, asker, revision,
