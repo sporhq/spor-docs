@@ -1,13 +1,10 @@
 ---
 title: Spor documentation
-description: Documentation for Spor — a typed, versioned knowledge graph of the durable outcomes of work.
+description: The Spor documentation helps you start locally, join a hosted org, connect an AI assistant, or build against the API.
 template: splash
 hero:
-  tagline: A typed, versioned knowledge graph of the durable outcomes of work — decisions, tasks, issues, norms, questions — one fact per node, joined by typed edges.
+  tagline: Spor keeps a durable, versioned record of work outcomes and uses it to brief people and AI coding tools when they start work. It runs on your machine or as one shared team service.
   actions:
-    - text: Get started
-      link: /start-here/
-      icon: right-arrow
     - text: View on GitHub
       link: https://github.com/sporhq/spor
       icon: external
@@ -16,20 +13,21 @@ hero:
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
+Each path below starts from a different situation. Pick the one that matches how you are arriving.
+
 <CardGrid>
-	<Card title="Start here" icon="rocket">
-		Install the CLI, wire your coding agent, and record your first node —
-		locally or against a team server. [Start here](/start-here/).
+	<Card title="Try Spor locally" icon="laptop">
+		Use this when you want to see Spor work before involving a team or a server; local mode keeps Spor's record as plain markdown files in a git repository on your machine, with no server and no account. In a few minutes, you install the CLI, record your first item of work, and read the ranked queue of open work. [Local quickstart](/start-here/local-quickstart/).
 	</Card>
-	<Card title="Core ideas" icon="open-book">
-		Nodes, edges, the queue, briefings, and how the graph carries context
-		between sessions. [Read the core ideas](/start-here/core-ideas/).
+	<Card title="Join a hosted Spor org" icon="server">
+		Use this when your team already runs Spor and you have an invite. Join with an invite token (`spor join`) or interactive sign-in (`spor auth login`), then make your first capture and read the team's shared queue; writes are attributed to you. [Hosted quickstart](/start-here/hosted-quickstart/).
 	</Card>
-	<Card title="CLI reference" icon="seti:shell">
-		Every `spor` verb, with flags and examples. [Browse the CLI](/reference/cli/).
+	<Card title="Connect an AI assistant" icon="comment">
+		Use this when you want claude.ai or Claude Code to read and write your team's Spor records. Give the assistant one connector URL and approve access in the browser sign-in flow; anything it records is attributed to you. [Connect an assistant](/start-here/connect-an-assistant/).
 	</Card>
-	<Card title="REST API & MCP" icon="setting">
-		The full HTTP contract and the MCP tools for connector hosts.
-		[API](/reference/api/) · [MCP](/reference/mcp/).
+	<Card title="Build an integration" icon="puzzle">
+		Use this when you are building your own tooling against Spor. The CLI and connectors use the same plain HTTPS and JSON API, versioned under `/v1/` and authenticated with a bearer token. [REST API reference](/reference/api/).
 	</Card>
 </CardGrid>
+
+If you want the mental model before choosing, start with [Core ideas](/start-here/core-ideas/).
