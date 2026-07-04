@@ -3,6 +3,17 @@ title: Diagnostics
 description: spor status, spor-hook doctor, the offline outbox, and what a slow first request after an idle period means.
 ---
 
+**Use this when** something is unclear: no briefing appeared, a capture seems
+lost, you are not sure which graph you are writing to, or the first request
+after idle is slow.
+
+**You do not need this if** everything behaves and you want to learn the
+everyday loop; start with [Use Spor](/use-spor/).
+
+**After reading this, you should be able to** choose between `spor status`
+and `spor-hook doctor`, drain the offline outbox, and know when a slow first
+request only needs time.
+
 When something is unclear — no briefing appeared, a capture seems lost, you
 are not sure which graph you are writing to — two commands answer almost
 everything.

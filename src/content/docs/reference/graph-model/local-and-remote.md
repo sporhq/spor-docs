@@ -13,6 +13,10 @@ wins on a machine.
 already shows the mode you expect; the quickstarts under [Start
 here](/start-here/) cover setup.
 
+**After reading this, you should be able to** choose local or remote mode,
+trace which configuration layer wins, and explain what happens when the
+server is unreachable.
+
 Spor runs in two modes with the same CLI, the same node format, and the same
 graph semantics. The difference is who holds the graph and who performs
 writes.

@@ -13,6 +13,10 @@ runs are tracked on the graph.
 questions; these are surfaces layered on top, and [The decision
 queue](/use-spor/queue/) is the beginner path.
 
+**After reading this, you should be able to** choose between a lens, program
+view, and workflow, read a lens's query and render blocks, and explain how
+workflow steps are claimed.
+
 Three surfaces turn the graph into something you can look at and act
 through: lenses (saved views), the program view (an auto-derived progress
 tree), and workflows (reviewable automation DAGs with tracked runs).

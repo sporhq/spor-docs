@@ -5,6 +5,17 @@ sidebar:
   order: 2
 ---
 
+**Use this when** you are choosing the type for a node written by hand or via
+`put_node`, interpreting an unfamiliar id prefix, or checking which statuses
+a type allows.
+
+**You do not need this if** you write through capture; the server picks the
+type for you, as described in [Capture and ingestion](/use-spor/capture/).
+
+**After reading this, you should be able to** name the type behind any id
+prefix, say which statuses a type allows and which types join the queue, and
+read the live registry with `spor schema`.
+
 Node types are defined by the schema registry, not hardcoded. A fresh graph
 is born with the seed schema pack below; a team extends or overrides it by
 writing its own schema nodes (see [Schemas are nodes](/reference/graph-model/schemas/)).

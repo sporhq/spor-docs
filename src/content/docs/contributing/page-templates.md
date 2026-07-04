@@ -1,14 +1,39 @@
 ---
 title: Page templates
-description: The two page shapes used across the docs — how-to and concept — and what review checks against them.
+description: The three page shapes used across the docs — how-to, concept, and reference — and what review checks against them.
 sidebar:
   order: 3
 ---
 
-Most docs pages use one of two shapes: a **how-to page**, when the reader
-wants to complete a task, or a **concept page**, when the reader wants to
-understand something. Starting from the matching template keeps a new page consistent with
-its neighbors, and the PR checklist asks which template a new page follows.
+Most docs pages use one of three shapes: a **how-to page**, when the reader
+wants to complete a task, a **concept page**, when the reader wants to
+understand something, or a **reference page**, when the reader is looking up
+exact behavior. Starting from the matching template keeps a new page
+consistent with its neighbors, and the PR checklist asks which template a new
+page follows.
+
+## The orientation block
+
+Every concept page and every reference landing page opens with the same
+three-paragraph orientation block, immediately after the frontmatter.
+Reference landing pages include section index pages and the standalone pages
+directly under `reference/`.
+
+```md
+**Use this when** ...
+
+**You do not need this if** ...
+
+**After reading this, you should be able to** ...
+```
+
+- The `You do not need this if` line names where the reader should be instead,
+  linked when a clear alternative page exists. When the honest answer is that
+  the reader needs nothing else, saying so is enough. It is the line that gives
+  permission to leave.
+- The `After reading this` line names two or three checkable abilities.
+- How-to pages keep their existing single `Use this when` sentence instead of
+  the full block.
 
 ## How-to pages
 
@@ -62,6 +87,13 @@ title: <The concept, in the reader's words>
 description: <One plain sentence.>
 ---
 
+**Use this when** <the situation that calls for this concept page>.
+
+**You do not need this if** <where the reader should go instead, with a link>.
+
+**After reading this, you should be able to** <two or three checkable
+abilities>.
+
 <Plain-language explanation: what this is and why a reader would care,
 before any Spor-specific vocabulary.>
 
@@ -76,6 +108,8 @@ before any Spor-specific vocabulary.>
 
 - Opening explanation: use plain language before canonical terms. Introduce a
   term such as `node` or `edge` only after the plain-language meaning it names.
+- Orientation block: use the canonical block above, with the exit line pointing
+  to the sibling page or task path the reader probably needs instead.
 - `Small example`: use a concrete fictional scenario. Draw from
   [the tidefall scenario](/contributing/example-scenario/), where `person-ines`
   and `person-marek` decide how many times to retry a failed card charge
@@ -87,6 +121,38 @@ before any Spor-specific vocabulary.>
 - `What to read next`: give two or three links, ordered by what the reader most
   likely needs next.
 
+## Reference pages
+
+Use a reference page when the reader is looking up the exact behavior of a
+surface: a command, endpoint, tool, schema type, or registry entry.
+
+```md
+---
+title: <The surface, named plainly>
+description: <One plain sentence.>
+---
+
+**Use this when** <the lookup situation this reference covers>.
+
+**You do not need this if** <the sibling surface or task page the reader
+should use instead>.
+
+**After reading this, you should be able to** <two or three checkable
+abilities>.
+
+<Scope paragraph: what this reference covers and where the live contract is.>
+
+## <One entry per verb, endpoint, or tool>
+```
+
+- Entries state exact, checkable behavior: what a command prints, what a
+  response contains, or what happens on failure.
+- The orientation block names the sibling surface a reader might want instead,
+  such as CLI versus MCP versus REST.
+- The full block opens reference landing pages: section index pages and the
+  standalone pages directly under `reference/`. Deeper per-entry pages do not
+  repeat it; their landing page carries the orientation.
+
 ## What review checks
 
 The PR template carries the checklist reviewers apply. It asks whether a new or
@@ -97,10 +163,11 @@ admins of a hosted organization, `reference/` for someone looking up exact
 behavior, and `contributing/` for docs contributors.
 
 Review also checks that setup and how-to pages include a working `Check it
-worked` step. The voice must hold: no marketing intensifiers or persuasion
-patterns. `scripts/check-style.sh` catches the known phrases in
-`scripts/style-denylist.txt`; the [style guide's voice section](/contributing/style-guide/#voice)
-is the full rule.
+worked` step. It checks that concept pages and reference landing pages open
+with the orientation block in its canonical form. The voice must hold: no
+marketing intensifiers or persuasion patterns. `scripts/check-style.sh`
+catches the known phrases in `scripts/style-denylist.txt`; the [style guide's
+voice section](/contributing/style-guide/#voice) is the full rule.
 
 Examples must be fictional and drawn from
 [the tidefall scenario](/contributing/example-scenario/), as the

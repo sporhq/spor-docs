@@ -5,6 +5,17 @@ sidebar:
   order: 6
 ---
 
+**Use this when** you want the model behind what the quickstarts did: what a
+node and an edge are, and why Spor uses a graph rather than a list of notes.
+
+**You do not need this if** you are mid-quickstart; the [Start
+here](/start-here/) paths work without this page, and the model can wait
+until the tool is running.
+
+**After reading this, you should be able to** distinguish nodes from edges,
+describe the orient-traverse-commit loop, and choose the deeper reference
+page for a graph-model question.
+
 Spor is a typed, versioned knowledge graph of the durable outcomes of work.
 Each node is a markdown file recording one fact: a decision that was made, a
 task that was deferred, an issue and how it was resolved, a convention the

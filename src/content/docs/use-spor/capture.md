@@ -5,6 +5,18 @@ sidebar:
   order: 2
 ---
 
+**Use this when** you want to know what happens to text you capture mid-task:
+how it becomes typed, linked, attributed nodes, or how to choose between
+capturing prose and writing a node yourself.
+
+**You do not need this if** you only want the habit; say the two sentences via
+`/spor:defer`, the `capture` tool, or
+[`spor add`](/reference/cli/writing-to-the-graph/#add), and keep working.
+
+**After reading this, you should be able to** choose the capture door for your
+surface, explain the model-and-validation handoff, and say what happens when
+text fits no schema.
+
 Most durable knowledge is discovered mid-task, at exactly the moment nobody
 wants to stop and file a ticket. Capture is Spor's answer: one call with two
 or three sentences, and the server does the structuring.

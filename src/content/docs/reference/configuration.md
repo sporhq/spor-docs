@@ -3,6 +3,18 @@ title: Configuration
 description: The config cascade, the repo markers, environment variables, and the credential store.
 ---
 
+**Use this when** you are working out which configuration source wins on a
+machine, wiring `.spor.json` or environment variables, or handling
+credentials.
+
+**You do not need this if** `spor status` already shows the mode and graph
+you expect; use [Diagnostics](/reference/diagnostics/) when something looks
+unclear.
+
+**After reading this, you should be able to** recite the cascade order, name
+the `.spor` marker exception, and keep tokens in the credential store or
+another non-committed source.
+
 Every verb resolves its settings the same way: through one cascade of
 sources, a per-repo marker pair, and a machine-local credential store. This
 page is the reference for all three.

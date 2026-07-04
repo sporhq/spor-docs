@@ -12,6 +12,10 @@ to know where they come from.
 **You do not need this if** you work in one repository under its default
 slug; an ungrouped repo resolves to itself and the gardener needs no setup.
 
+**After reading this, you should be able to** read repo aliases and
+fingerprints, choose the right scope token, and explain what gardener findings
+do and do not change.
+
 One graph spans all of a team's work, so nodes need a home. Spor groups them
 in two layers, because "project" pulls apart the moment a product spans more
 than one repository: a **repo** is one git identity, and a **project** is

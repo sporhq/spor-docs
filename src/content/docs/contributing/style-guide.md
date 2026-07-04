@@ -92,6 +92,8 @@ Pages draw scenes from it rather than inventing a new team per page.
   aside per section has none.
 - Link text describes the destination ("the CLI reference"), never "click
   here" or a bare URL in prose.
-- Bold is for UI labels and first-use definitions, backticks for anything the
-  reader would type or read verbatim: commands, flags, filenames, node ids,
-  environment variables.
+- Bold is for UI labels, first-use definitions, and the orientation block
+  lead-ins (**Use this when** / **You do not need this if** / **After reading
+  this, you should be able to**), backticks for anything the reader would type
+  or read verbatim: commands, flags, filenames, node ids, environment
+  variables.

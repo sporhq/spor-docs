@@ -5,6 +5,18 @@ sidebar:
   order: 4
 ---
 
+**Use this when** you want to know how the queue ranks open work: what the
+why-lines mean, why an item is flagged blocked, and how human priority blends
+with derived signals.
+
+**You do not need this if** you just want the next item; run
+[`spor next`](/reference/cli/reading-the-graph/#next) and take the top — this
+page explains the ranking behind it.
+
+**After reading this, you should be able to** read a queue item's suggestion
+and why-line, explain `wake:` dormancy, and choose whether to filter by
+assignee.
+
 The decision queue answers "what should I work on next?". It is a compile
 mode over the graph, not a separate store: collect every live node whose
 type is queueable (tasks, issues, incidents, questions, pending captures,

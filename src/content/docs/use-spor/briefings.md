@@ -5,6 +5,18 @@ sidebar:
   order: 5
 ---
 
+**Use this when** you want to know what an agent is told before it starts
+work, or a briefing was wrong and you want to fix the compile rather than the
+one output.
+
+**You do not need this if** briefings arrive automatically and look right;
+the hooks described in [What happens automatically](/use-spor/what-happens-automatically/)
+handle compilation without action from you.
+
+**After reading this, you should be able to** explain the structural and
+content arms of a compile, distinguish digest from full briefings, and file a
+standing correction.
+
 A briefing is the packet of context Spor hands a coding agent before it
 starts work. It is not a transcript dump and not a search result page: the
 compiler walks the graph from a starting point, ranks what it finds, and

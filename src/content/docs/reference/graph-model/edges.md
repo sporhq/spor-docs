@@ -5,6 +5,16 @@ sidebar:
   order: 3
 ---
 
+**Use this when** you are choosing the edge type for a relationship you are
+writing, or working out why a briefing pulled in or missed a node.
+
+**You do not need this if** you capture in prose and let the server link for
+you; that path is covered by [Capture and ingestion](/use-spor/capture/).
+
+**After reading this, you should be able to** write an edge from the correct
+direction, choose one precise high-weight edge over several weak ones, and
+predict how far the compiler follows a given edge type.
+
 Edges are typed, directional, and weighted. Every edge is written from the
 **source node's perspective**: `- {type: resolves, to: issue-tidefall-double-charge}`
 on a decision means "this decision resolves that issue". Weights control how

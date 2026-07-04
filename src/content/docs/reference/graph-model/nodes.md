@@ -13,6 +13,10 @@ such as the resolver gate refusing to close a task.
 where the node format is handled for you; for the basic idea, read [Core
 ideas](/start-here/core-ideas/).
 
+**After reading this, you should be able to** write a valid node id and
+standalone summary, add frontmatter edges, and explain why a task cannot move
+to `done` without a resolver.
+
 A Spor node is one markdown file in the graph home's `nodes/` directory:
 YAML frontmatter for the structured fields, a short prose body underneath.
 Here is a decision from the fictional tidefall team's billing retry work:

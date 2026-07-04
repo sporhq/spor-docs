@@ -191,4 +191,5 @@ consistent terminology is most of what makes a reference usable.
 
 New pages start from the
 [page templates](https://docs.sporhq.io/contributing/page-templates/) —
-how-to for task-shaped pages, concept for understanding-shaped pages.
+how-to for task-shaped pages, concept for understanding-shaped pages,
+reference for exact-behavior lookups.

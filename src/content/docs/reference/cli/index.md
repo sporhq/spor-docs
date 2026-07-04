@@ -5,6 +5,17 @@ sidebar:
   order: 1
 ---
 
+**Use this when** you are looking up the exact behavior of a `spor` verb: its
+flags, aliases, and which mode it runs in.
+
+**You do not need this if** you came to complete a task rather than look up a
+verb; start with [Common CLI tasks](/reference/cli/common-tasks/), or use
+[Start here](/start-here/) for first-time setup.
+
+**After reading this, you should be able to** find a verb's entry, read its
+mode badge, and check the installed version's own help with
+`spor help <command>`.
+
 The `spor` command line is the shell surface for the graph. One binary
 serves both modes: **local**, where the graph is a git repository of
 markdown files on your machine, and **remote**, where your team shares one

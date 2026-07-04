@@ -12,6 +12,10 @@ refused because the node is already held.
 **You do not need this if** you are the only writer on a personal graph;
 claims exist to keep concurrent workers from colliding.
 
+**After reading this, you should be able to** distinguish the `assigned` edge
+from the live lease, run the claim lifecycle, and read who holds a conflict
+and when it expires.
+
 When several people and background agents share one queue, two of them
 picking up the same task is the default failure. Claims prevent it with two
 mechanisms that expire on different clocks:

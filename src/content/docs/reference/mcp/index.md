@@ -5,6 +5,17 @@ sidebar:
   order: 1
 ---
 
+**Use this when** you are connecting an AI assistant to the graph over MCP,
+or looking up an MCP tool's contract.
+
+**You do not need this if** you work from a shell; the [CLI
+reference](/reference/cli/) covers the same operations, and each tool has a
+REST twin under [REST API](/reference/api/).
+
+**After reading this, you should be able to** check the connector
+prerequisites, name what a connected assistant can read and write, and find
+the tool entries and widget page.
+
 Spor exposes an MCP (Model Context Protocol) server at `/mcp`, so an AI
 assistant — claude.ai, Cowork, Claude Code, or any MCP client — can work with
 your team's knowledge graph directly. Connected, the assistant can:

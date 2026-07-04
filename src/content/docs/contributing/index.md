@@ -51,8 +51,9 @@ Every page starts with Starlight frontmatter. `title` and `description` are
 required. The description is one plain sentence shown in search results and
 link previews. `sidebar.order` sets the page's position within its section.
 
-New pages start from one of the two [page templates](/contributing/page-templates/):
-how-to for task-shaped pages, concept for understanding-shaped pages.
+New pages start from one of the three [page templates](/contributing/page-templates/):
+how-to for task-shaped pages, concept for understanding-shaped pages,
+reference for exact-behavior lookups.
 
 Reference entries describe shipped behavior. Verify the client surface and
 the graph model against the public client package

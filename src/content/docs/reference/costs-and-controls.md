@@ -3,6 +3,17 @@ title: Costs and controls
 description: Where Spor makes model calls, how to see what they cost, and how to disable pieces or supply your own backend.
 ---
 
+**Use this when** you are accounting for what Spor spends on model calls,
+disabling distilling or nudging, or supplying your own backend.
+
+**You do not need this if** the defaults are fine; only distilling and
+nudging make client model calls at all, and [Use Spor](/use-spor/) covers the
+everyday loop.
+
+**After reading this, you should be able to** name the two client model
+callers, summarize spend with `spor cost`, and apply the environment controls
+for distilling, nudging, or a custom backend.
+
 The client makes small model calls for exactly two things:
 
 - **distilling** — turning the useful parts of a finished session into one or

@@ -11,6 +11,10 @@ launches with and which machines can take the work.
 session; the everyday loop covers that without dispatch, starting with [The
 decision queue](/use-spor/queue/).
 
+**After reading this, you should be able to** choose the profile a dispatch
+will use, read a capability refusal, and decide whether `requires:` belongs
+on the work.
+
 Dispatch launches a background agent with the right context already
 attached:
 

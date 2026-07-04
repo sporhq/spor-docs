@@ -5,6 +5,16 @@ sidebar:
   order: 1
 ---
 
+**Use this when** you are building an integration against the HTTP contract:
+your own tooling, or a service that does not go through the CLI.
+
+**You do not need this if** you use the [CLI](/reference/cli/) or the
+[MCP connector](/reference/mcp/); both wrap this API — start there instead.
+
+**After reading this, you should be able to** form an authenticated request
+against `/v1/`, read the error envelope, and find the route family a task
+needs.
+
 Everything the CLI and connectors do goes through one plain HTTPS + JSON API,
 versioned under `/v1/` and authenticated with a bearer token on every route.
 A REST endpoint and its MCP tool twin are thin adapters over the same core, so

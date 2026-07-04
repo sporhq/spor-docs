@@ -11,6 +11,10 @@ type, an organization-specific write policy, or a replacement queue ranking.
 **You do not need this if** the built-in types cover your work; a team can
 use Spor indefinitely without touching the schema registry.
 
+**After reading this, you should be able to** write a schema node's registry
+fields, choose the hook that validates a write or gates a transition, and
+describe how a proposed schema becomes active.
+
 Spor's ontology — which node types exist, which edges connect them, what a
 status change requires — is not hardcoded. It lives in the **schema
 registry**: `type: schema` nodes loaded from a seed pack that ships with

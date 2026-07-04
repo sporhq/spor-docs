@@ -5,6 +5,18 @@ sidebar:
   order: 7
 ---
 
+**Use this when** you want to know who a write is attributed to, how agents
+write on behalf of a person, or how routing and review resolve through
+identity.
+
+**You do not need this if** you work alone on a personal local graph; start
+with [Core ideas](/start-here/core-ideas/) until more than one person or
+agent writes.
+
+**After reading this, you should be able to** read a person node's routing
+fields, explain organization authority edges, and tell a person's write from
+an agent's write on their behalf.
+
 In team mode, identity is graph-native: people, organizations, and agents
 are nodes, and everything that depends on who you are — attribution,
 routing, per-person queues, review quorums — resolves through edges to those
