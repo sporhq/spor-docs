@@ -1,5 +1,7 @@
 /* Map the canonical Spor design tokens (src/styles/tokens.css — a verbatim
- * vendored copy, never edited here) onto Starlight's theme variables.
+ * vendored copy, never edited here) onto Starlight's theme variables, then
+ * apply the treatments that make the docs express the system rather than
+ * stock Starlight.
  *
  * The tokens key dark mode on `html.dark`; Starlight toggles
  * `data-theme="dark"`. A small head script in astro.config.mjs mirrors the
@@ -7,9 +9,12 @@
  * this mapping stays theme-agnostic: every Starlight variable points at a
  * token, and the token carries the light/dark split.
  *
- * Identity rules this file exists to uphold: cool neutrals, ONE accent
- * (glacial teal, hue 205) for action/selection/focus — no indigo or violet
- * anywhere, flat at rest. */
+ * Identity rules this file exists to uphold (from the canonical Spor design
+ * system that owns tokens.css): cool neutrals; ONE accent (glacial teal, hue
+ * 205) for action / selection /
+ * focus / current-position, marine (--accent-deep) for wordmark-weight
+ * hierarchy; no indigo or violet anywhere; flat at rest (borders, not
+ * shadows); status only as bound triples; no side-stripe borders. */
 
 :root,
 :root[data-theme='light'],
@@ -53,4 +58,173 @@
 :root {
   --sl-shadow-sm: none;
   --sl-shadow-md: none;
+  --sl-shadow-lg: none;
+}
+
+/* ────────────────────────────────────────────────────────────────────────
+ * Treatments
+ *
+ * The vendored tokens.css declares `:where(a) { color: var(--accent) }`
+ * unlayered. Starlight's component styles live in `@layer starlight.*`, and
+ * unlayered rules beat layered ones regardless of specificity — so that one
+ * line silently repaints anything Starlight colors through a layer. Every
+ * override below is likewise unlayered and loads after tokens.css, so it
+ * wins deterministically. Where the leak is load-bearing (ordinary links are
+ * meant to be teal) we leave it; where it breaks a component we correct it.
+ * ──────────────────────────────────────────────────────────────────────── */
+
+/* Wordmark — marine (--accent-deep), the hierarchy voice, not the full
+ * action teal. Calmer at the top-left anchor, still unmistakably Spor. */
+.site-title {
+  color: var(--accent-deep);
+  font-weight: 640;
+  letter-spacing: -0.01em;
+}
+
+/* Link buttons ---------------------------------------------------------------
+ * P0 fix: the unlayered link color leak forces `.sl-link-button.primary`
+ * text to the accent — identical to its accent fill — so the label vanished.
+ * Restore an explicit on-accent label, and give every variant a real hover. */
+.sl-link-button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  transition:
+    background var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+.sl-link-button.primary:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+  color: var(--on-accent);
+}
+.sl-link-button.secondary,
+.sl-link-button.minimal {
+  color: var(--accent);
+  transition:
+    background var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+.sl-link-button.secondary:hover,
+.sl-link-button.minimal:hover {
+  color: var(--accent-deep);
+  background: var(--accent-soft);
+}
+
+/* Splash hero — field-station calm. Weight and spacing carry hierarchy, not a
+ * shouting clamp. Cap the ceiling, drop to 600, tighten tracking, balance the
+ * two-word title; demote the tagline to muted secondary. */
+.hero h1 {
+  font-size: clamp(var(--sl-text-3xl), calc(0.25rem + 4vw), var(--sl-text-5xl));
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.hero .tagline {
+  color: var(--mut);
+  text-wrap: pretty;
+}
+
+/* Content headings — hierarchy through weight and tracking, per the system's
+ * 550–650 band, not size alone. */
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content *)) {
+  font-weight: 620;
+  letter-spacing: -0.012em;
+}
+.sl-markdown-content :is(h1, h2, h3):not(:where(.not-content *)) {
+  text-wrap: balance;
+}
+
+/* Prose measure — cap body columns at the system's reading width. Tables and
+ * code stay full-width (they opt out via their own wrappers). */
+.sl-markdown-content > :is(p, ul, ol, blockquote) {
+  max-width: 68ch;
+}
+
+/* Links — accent, with an underline that settles on hover rather than
+ * shouting at rest. Ordinary prose links only; buttons/nav opt out. */
+.sl-markdown-content a:not(.sl-link-button):not(:where(.not-content *)) {
+  text-decoration-color: color-mix(in oklch, currentColor 35%, transparent);
+  text-underline-offset: 0.15em;
+  transition: text-decoration-color var(--dur-fast) var(--ease-out);
+}
+.sl-markdown-content a:not(.sl-link-button):not(:where(.not-content *)):hover {
+  text-decoration-color: currentColor;
+}
+
+/* Inline code — the chip vocabulary: mono, hairline, tight radius. */
+.sl-markdown-content code:not(:where(pre code, .not-content *)) {
+  border: 1px solid var(--line);
+  border-radius: var(--r-1);
+  padding: 0.1em 0.36em;
+  font-size: 0.9em;
+}
+
+/* Code blocks — flat at rest: a single hairline, system radius, no shadow. */
+.expressive-code .frame {
+  --ec-frm-frameBoxShdCssVal: none;
+}
+.expressive-code .frame pre,
+.expressive-code .frame .header {
+  border-color: var(--line);
+}
+.expressive-code .frame:not(.is-terminal) pre {
+  border-radius: var(--r-2);
+}
+
+/* Sidebar current item — the "you are here" mark. Accent is the right voice
+ * for current position, but a fully saturated fill shouts at rest; a soft
+ * wash with marine text reads current and stays calm. No side-stripe. */
+a[aria-current='page'],
+a[aria-current='page']:hover,
+a[aria-current='page']:focus {
+  color: var(--accent-deep);
+  background-color: var(--accent-soft);
+  font-weight: 620;
+}
+
+/* Asides → bound status triples, full 1px border (the 4px inline-start stripe
+ * Starlight ships is the banned side-stripe). note = neutral, tip = positive,
+ * caution = warning, danger = negative. Icon and title carry the triple's fg;
+ * body text stays full-ink for legibility. */
+.starlight-aside {
+  border: 1px solid var(--sl-color-asides-border);
+  border-radius: var(--r-2);
+  color: var(--fg);
+}
+.starlight-aside--note {
+  --sl-color-asides-text-accent: var(--cat-neutral-fg);
+  --sl-color-asides-border: var(--cat-neutral-bd);
+  background-color: var(--cat-neutral-bg);
+}
+.starlight-aside--tip {
+  --sl-color-asides-text-accent: var(--cat-positive-fg);
+  --sl-color-asides-border: var(--cat-positive-bd);
+  background-color: var(--cat-positive-bg);
+}
+.starlight-aside--caution {
+  --sl-color-asides-text-accent: var(--cat-warning-fg);
+  --sl-color-asides-border: var(--cat-warning-bd);
+  background-color: var(--cat-warning-bg);
+}
+.starlight-aside--danger {
+  --sl-color-asides-text-accent: var(--cat-negative-fg);
+  --sl-color-asides-border: var(--cat-negative-bd);
+  background-color: var(--cat-negative-bg);
+}
+/* Links inside an aside adopt the triple's fg so they read against the tint,
+ * not the global teal (which the unlayered leak would otherwise impose). */
+.starlight-aside__content a {
+  color: var(--sl-color-asides-text-accent) !important;
+}
+
+/* Cards — neutralise Starlight's default purple icon chip to the one-voice
+ * teal glyph on a neutral surface; keep the card itself flat and bordered. */
+.card {
+  border-color: var(--line);
+}
+.card .icon {
+  --sl-card-border: var(--line);
+  --sl-card-bg: var(--line-soft);
+  color: var(--accent);
 }
