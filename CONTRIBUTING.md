@@ -86,9 +86,9 @@ If you find a page that contradicts shipped behavior, either fix it (citing
 what the tool actually prints or returns in the PR description) or file a
 [documentation error issue](.github/ISSUE_TEMPLATE/docs-error.md).
 
-## The two CI checks
+## The three CI checks
 
-Besides the build, CI runs two repo-specific checks on every PR. Both run
+Besides the build, CI runs three repo-specific checks on every PR. They run
 locally, and running them before you push saves a round trip.
 
 ### Boundary lint
@@ -114,6 +114,17 @@ to replace a real identifier with a fictional one — see the
 not edit the denylist or the lint script in a docs PR; those are maintained
 separately.
 
+### Style lint
+
+```sh
+scripts/check-style.sh
+```
+
+The style lint scans docs pages for the phrases in
+`scripts/style-denylist.txt`. The style guide is the contract, and this lint is
+the backstop for the phrases a script can catch. Do not edit the denylist or
+the lint script in a docs PR; those are maintained separately.
+
 ### Design-token parity
 
 ```sh
@@ -133,3 +144,7 @@ Prose follows the [style guide](https://docs.sporhq.io/contributing/style-guide/
 voice, the terminology glossary with canonical casing, example-data rules, and
 formatting conventions. Read it before writing more than a sentence or two —
 consistent terminology is most of what makes a reference usable.
+
+New pages start from the
+[page templates](https://docs.sporhq.io/contributing/page-templates/) —
+how-to for task-shaped pages, concept for understanding-shaped pages.

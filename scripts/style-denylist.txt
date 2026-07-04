@@ -1,0 +1,29 @@
+# Phrases that must never appear in docs prose.
+#
+# This is the mechanical subset of the style guide's voice rules: marketing
+# intensifiers and persuasion patterns that a grep can catch reliably. The
+# style guide (src/content/docs/contributing/style-guide.md) is the contract;
+# this list is the backstop, and it only bans phrases with no legitimate use
+# in these docs.
+#
+# One extended-regex pattern per line; blank lines and # comments are ignored.
+# Matching is case-insensitive. scripts/check-style.sh greps the pages under
+# src/content/docs/ except the style guide itself, which legitimately names
+# banned words as examples.
+
+# marketing intensifiers
+\bseamless
+\beffortless
+\bpowerful\b
+\brobust
+blazing(ly)?[- ]fast
+game-chang
+supercharg
+revolutioni[sz]
+\bunlock
+\bempower
+
+# persuasion patterns and stock AI phrasing
+isn'?t just
+never lose context
+\bdelve\b

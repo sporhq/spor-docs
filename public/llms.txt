@@ -73,6 +73,7 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 
 ## Contributing
 - [Contributing to the docs](https://docs.sporhq.io/contributing/): the PR flow, page frontmatter, and the repo's CI checks
+- [Page templates](https://docs.sporhq.io/contributing/page-templates/): the how-to and concept page shapes, and what review checks against them
 - [Style guide](https://docs.sporhq.io/contributing/style-guide/): voice, terminology, example data, and formatting conventions
 
 ## Optional

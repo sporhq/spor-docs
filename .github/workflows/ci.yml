@@ -24,6 +24,9 @@ jobs:
       - name: Boundary lint (no private internals, no real graph data)
         run: scripts/check-boundary.sh
 
+      - name: Style lint (no banned phrases in docs prose)
+        run: scripts/check-style.sh
+
       - name: Design-token parity (vendored copy matches recorded fingerprint)
         run: scripts/check-token-parity.sh
 

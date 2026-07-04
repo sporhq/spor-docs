@@ -50,6 +50,9 @@ Every page starts with Starlight frontmatter. `title` and `description` are
 required. The description is one plain sentence shown in search results and
 link previews. `sidebar.order` sets the page's position within its section.
 
+New pages start from one of the two [page templates](/contributing/page-templates/):
+how-to for task-shaped pages, concept for understanding-shaped pages.
+
 Reference entries describe shipped behavior. Verify the client surface and
 the graph model against the public client package
 [`@sporhq/spor`](https://github.com/sporhq/spor) — its README and API docs.
@@ -62,12 +65,17 @@ the tool actually prints or returns in the PR description — or file a
 
 ## Checks before a PR
 
-Two repo-specific checks run on every PR and also run locally.
+Three repo-specific checks run on every PR and also run locally.
 `scripts/check-boundary.sh` keeps the public docs abstract: private repository
 paths, server deployment internals, and real identifiers from any team's graph
 are banned. The machine-readable list is `scripts/boundary-denylist.txt`. When
 this check fails, rewrite the passage abstractly or replace the identifier
 with a fictional one. Do not edit the denylist or the script in a docs PR.
+
+`scripts/check-style.sh` scans pages under `src/content/docs/`, except the
+style guide, for the phrases in `scripts/style-denylist.txt`. When this check
+fails, rewrite the passage as a plain, checkable claim. Do not edit the
+denylist or the script in a docs PR.
 
 `scripts/check-token-parity.sh` verifies that `src/styles/tokens.css` remains
 a byte-identical vendored copy of the canonical Spor design tokens. Do not edit

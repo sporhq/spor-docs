@@ -17,10 +17,11 @@ npm run build      # static build into dist/
 
 ## Checks
 
-CI runs two repo-specific checks besides the build; both run locally too:
+CI runs three repo-specific checks besides the build; all run locally too:
 
 ```sh
 scripts/check-boundary.sh       # no private internals or real graph data
+scripts/check-style.sh          # no banned phrases in docs prose
 scripts/check-token-parity.sh   # vendored design tokens match canonical
 ```
 
@@ -32,7 +33,7 @@ Maintainers re-sync tokens with `scripts/sync-tokens.sh`.
 ## Contributing
 
 Contributions are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) covers local
-setup, page conventions, and what to do when either CI check fails; prose
+setup, page conventions, and what to do when a CI check fails; prose
 follows the [style guide](https://docs.sporhq.io/contributing/style-guide/).
 
 ## License
