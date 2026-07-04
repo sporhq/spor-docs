@@ -33,7 +33,9 @@ directly under `reference/`.
   permission to leave.
 - The `After reading this` line names two or three checkable abilities.
 - How-to pages keep their existing single `Use this when` sentence instead of
-  the full block.
+  the full block. That sentence is plain body prose, deliberately not bolded —
+  the bolded **Use this when** lead-in belongs to the concept and reference
+  block only.
 
 ## How-to pages
 

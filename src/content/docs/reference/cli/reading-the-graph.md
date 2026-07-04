@@ -47,7 +47,7 @@ Both are client-side and fail soft when the `claude` binary is absent.
 Local mode also accepts `--days`, `--no-front`, `--name-only`, and
 `--nodes`.
 
-```bash
+```sh
 spor next --project billing --type task,issue --limit 50
 ```
 
@@ -66,7 +66,7 @@ an update sends (see [`put-node`](/reference/cli/writing-to-the-graph/#put-node)
 Inbound edges are gathered by scanning the whole graph, so `--json` is
 heavier than the plain read.
 
-```bash
+```sh
 spor get dec-tidefall-billing-retries --json
 ```
 
@@ -94,7 +94,7 @@ each edge's source.
 Projection: default table, or `--ids`, `--summary`, `--full`, `--json`.
 `--nodes <dir>` points at a local checkout even under a server.
 
-```bash
+```sh
 spor query --where status=open --type task --json
 ```
 
@@ -111,7 +111,7 @@ reference it in their `commits:` field — blame a line, get the why. The sha
 is 7–40 hex characters, abbreviated or full, matched prefix-aware. An empty
 result is normal (a commit linked to no node) and exits 0.
 
-```bash
+```sh
 spor blame b384469 --repo billing
 ```
 
@@ -130,7 +130,7 @@ editors. With a `<sha>`, show that revision's diff and change type;
 `--content` adds the full node at that revision. `--limit` caps the list
 (default 50, max 200). Output matches across modes.
 
-```bash
+```sh
 spor history dec-tidefall-billing-retries --limit 10
 ```
 
@@ -149,7 +149,7 @@ human. `--since` takes a sha (unresolvable is an error) or any date or
 relative phrase git understands (`'12 hours ago'`, `2026-06-15`). `--limit`
 defaults to 100, max 500. `--nodes <dir>` reads a local checkout.
 
-```bash
+```sh
 spor changes --since '12 hours ago' --project billing
 ```
 
@@ -170,7 +170,7 @@ back to frontmatter dates. `--weeks` sets the cohort window (default 12),
 `--top` the bottleneck list length (default 10), `--aging` the aging-WIP
 threshold in days (default 30).
 
-```bash
+```sh
 spor analytics --project billing --type task,issue --weeks 8
 ```
 
@@ -191,7 +191,7 @@ files, which miss resident overrides. With a `<type>`, print that type's
 detail including each hook's source. `--source` filters by provenance;
 `--code` includes hook source in `--json` output.
 
-```bash
+```sh
 spor schema task
 ```
 
@@ -207,7 +207,7 @@ Render a saved lens; lenses render server-side. With no id, list the lens
 catalog. Any extra `--PARAM VALUE` flags beyond `--format`/`--json` are
 forwarded to the lens as render parameters.
 
-```bash
+```sh
 spor lens lens-tidefall-retry-radar --project billing
 ```
 
@@ -226,7 +226,7 @@ banner), and carries no write scope, so a pasted link can never leak a
 write-capable credential. `--expires` is `<N>d` or an ISO date (server
 default 7d, max 30d). Your token must be bound to a person node.
 
-```bash
+```sh
 spor share lens-tidefall-retry-radar --expires 14d
 ```
 
@@ -250,7 +250,7 @@ provenance (the data-exit path; `git clone <bundle> graph` reproduces the
 history), and `--auth` is an admin-gated backup that also bundles the
 credential set for disaster restore.
 
-```bash
+```sh
 spor export --gzip | tar xz
 spor export --history --out graph-history.bundle
 ```

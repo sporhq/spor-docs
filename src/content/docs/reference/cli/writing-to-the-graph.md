@@ -30,7 +30,7 @@ work it was discovered during (a `derived-from` edge). `--blocks <id>` plus
 the serving project (who must do the work) and it surfaces in their queue,
 ramping urgency as the date nears.
 
-```bash
+```sh
 spor add "The dunning emails still cite the single-retry policy; update them for the three-attempt window" --type task
 spor add "Platform must expose a webhook-replay endpoint for retry testing" --project platform --blocks task-tidefall-retry-rollout --needed-by 2026-08-01
 ```
@@ -56,7 +56,7 @@ overrides the derived project — pass it for a mention-less question whose
 neighborhood is empty. Answer a question by writing a node with an `answers`
 edge to it, then `spor set-status <id> answered`.
 
-```bash
+```sh
 spor ask "Did the dunning email copy get updated for the three-attempt retry window?" --mention dec-tidefall-billing-retries
 ```
 
@@ -77,7 +77,7 @@ successful remote `spor add` also drains opportunistically, so pure-CLI
 usage self-heals without this verb. Exits 1 only when nothing could ship.
 Local mode never spools — captures write straight to the graph.
 
-```bash
+```sh
 spor drain --limit 10
 ```
 
@@ -101,7 +101,7 @@ applies server attribution, schema transition gates, edge normalization, and
 validation; local mode validates the candidate before it lands on disk, so a
 malformed node never does.
 
-```bash
+```sh
 spor get dec-tidefall-billing-retries --json     # note the revision
 spor put-node ./dec-tidefall-billing-retries.md --if-exists update --revision <blob-sha>
 ```
@@ -122,7 +122,7 @@ other node); both ids must already exist, so create the target first.
 Re-adding an existing edge is an idempotent no-op. `--attr key=value`
 (repeatable) carries flat edge attributes.
 
-```bash
+```sh
 spor edge dec-tidefall-idempotency-keys resolves issue-tidefall-double-charge
 ```
 
@@ -144,7 +144,7 @@ type's status enum and transition gates, so for example `done` on a task
 still needs a resolving decision or artifact. Local mode rewrites the status
 in place; there is no claim pool locally.
 
-```bash
+```sh
 spor set-status task-tidefall-retry-emails active
 ```
 
@@ -162,7 +162,7 @@ blend, where `p1`/`p2`/`p3` bumps an item above the signal-ranked front
 with your identity and the door it came through, so an agent-set priority is
 distinguishable from human triage.
 
-```bash
+```sh
 spor priority issue-tidefall-double-charge p1
 ```
 
@@ -180,7 +180,7 @@ includes the target. The target is a node id (fixes one topic's briefing),
 that was missed (`--pin`), exclude a stale one (`--exclude`) — both
 repeatable, both must name existing nodes — and/or pass free-text guidance.
 
-```bash
+```sh
 spor correct task-tidefall-retry-emails --exclude dec-tidefall-legacy-invoicing "The legacy invoicing decision predates the three-attempt retry window; the dunning-flow spec is authoritative."
 ```
 
@@ -200,7 +200,7 @@ argument. Re-claiming your own live claim just renews it; a live lease held
 by someone else is refused, naming the holder and expiry. Local mode has no
 claim pool, so it no-ops with a note.
 
-```bash
+```sh
 spor claim task-tidefall-retry-emails
 ```
 
@@ -217,7 +217,7 @@ during a long stretch of work. No commit; the `assigned` edge is untouched.
 A lapsed or stolen lease is refused, naming the current holder — renew never
 re-creates a lapsed lease; that is a fresh `spor claim`.
 
-```bash
+```sh
 spor renew task-tidefall-retry-emails
 ```
 
@@ -235,7 +235,7 @@ overnight) where the default heartbeat window would lapse. The duration is
 is bounded by the org's maximum claim TTL: it never shortens a lease, and a
 request past the ceiling is capped to it (reported on the result).
 
-```bash
+```sh
 spor extend task-tidefall-retry-emails 2h
 ```
 
@@ -252,7 +252,7 @@ Hand a task back to the pool: drop the lease and retire the durable
 you hold no lease on still cleans up any lingering `assigned` edge of yours.
 Releasing a claim someone else holds is refused, naming the holder.
 
-```bash
+```sh
 spor release task-tidefall-retry-emails
 ```
 
@@ -274,7 +274,7 @@ proposed workflow must be activated by a different identity first (the
 self-approval ban), else the start is refused with the reason.
 `run status <run-id>` shows a run's state and per-step status.
 
-```bash
+```sh
 spor run wf-tidefall-release-checklist --inputs '{"ref":"v1.2.0"}'
 spor run status run-tidefall-release-checklist-20260701
 ```

@@ -17,7 +17,7 @@ An agent is a node in the graph, owned by a person through an `owned-by`
 edge. Creating one is self-serve — you need no admin privilege to run your
 own agents:
 
-```bash
+```sh
 spor agent create --label "ci-reviewer"
 spor agent list
 ```

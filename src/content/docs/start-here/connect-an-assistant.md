@@ -26,7 +26,7 @@ authorization page.
 If you use Claude Code instead of claude.ai, add the server as a remote HTTP
 connector:
 
-```bash
+```sh
 claude mcp add --transport http spor https://spor.example.com/mcp
 ```
 

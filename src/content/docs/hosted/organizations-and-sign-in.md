@@ -24,7 +24,7 @@ overwriting one with the other.
 
 The CLI manages this for you:
 
-```bash
+```sh
 spor auth list            # your organizations, which is active, token health
 spor auth switch tidefall # make a different organization the active one
 spor auth whoami          # who the active credential says you are

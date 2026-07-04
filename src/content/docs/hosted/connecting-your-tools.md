@@ -22,7 +22,7 @@ code and completes through a local redirect instead.
 If you were handed a token directly — the invitation path — paste it with
 `spor join`:
 
-```bash
+```sh
 spor join spor_pat_...                 # hosted Spor; api.sporhq.io is the default
 spor join https://spor.example.com spor_pat_...   # a self-hosted server instead
 ```
@@ -30,14 +30,16 @@ spor join https://spor.example.com spor_pat_...   # a self-hosted server instead
 Both paths write the client configuration for you. Under the hood it is three
 environment variables, which you can also set directly (CI does):
 
-```bash
+```sh
 SPOR_SERVER=https://api.sporhq.io      # where the graph lives
 SPOR_TOKEN=spor_pat_...                # your credential
 SPOR_ORG=tidefall                      # which stored credential is active
 ```
 
 Verify with `spor whoami` (or `GET /v1/me`): it echoes the person your token
-is bound to and the organization it routes to.
+is bound to — name, person node id, and email. To confirm which organization
+is active, run `spor whoami --all`, which lists the stored identity for every
+organization; in the API, `GET /v1/me` reports the org directly.
 
 One thing that surprises people: setting `SPOR_SERVER` globally does not make
 every repository on your machine start writing to the team graph. Spor is
@@ -103,8 +105,9 @@ What a new teammate actually needs:
 
 1. **An invitation** from an admin, and a sign-in at the hosted front door.
 2. **The CLI connected** — `spor auth login`, then `spor whoami` to confirm
-   the token is bound to their person node (a `bound: false` warning means
-   the identity binding is missing; the admin fixes that).
+   the token is bound to their person node (a warning that the token maps to
+   no person node — `bound: false` in `GET /v1/me` — means the identity
+   binding is missing; the admin fixes that).
 3. **Their working repos enabled** — `spor enable` in each repo that should
    participate in the graph.
 4. **Optionally, the connector** — add `mcp.sporhq.io` in claude.ai.

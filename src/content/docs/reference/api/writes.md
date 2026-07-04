@@ -79,7 +79,7 @@ decision/artifact **earlier in the same batch** (resolver-first ordering; the
 gate is not deferred to end-of-batch). The 207 is partial success — entries
 already applied before a later failure are not rolled back.
 
-```bash
+```sh
 curl -s https://api.sporhq.io/v1/nodes \
   -H "Authorization: Bearer $SPOR_TOKEN" \
   -H "Content-Type: application/json" \

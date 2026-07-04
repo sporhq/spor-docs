@@ -5,17 +5,29 @@ sidebar:
   order: 7
 ---
 
-This page is for organization admins on hosted Spor. Admin is a graph fact:
-the admins are the people holding a `stewards` edge from their person node to
-the organization's root node. Provider roles and email domains confer no admin
-authority.
+**Use this when** you administer a hosted Spor organization and need to invite
+teammates with `spor invite`, understand identity binding through person nodes
+and `stewards` edges, manage tokens, or find the full CLI and API references
+for org administration.
+
+**You do not need this if** you are a non-admin member; use [Hosted
+Spor](/hosted/) instead. If you are looking up exact command entries, use
+[Team administration](/reference/cli/team-admin/).
+
+**After reading this, you should be able to** invite a teammate with a token
+bound to their person node, tell whether a token has admin authority, and find
+the full CLI or API entry for an admin operation.
+
+Admin is a graph fact: the admins are the people holding a `stewards` edge
+from their person node to the organization's root node. Provider roles and
+email domains confer no admin authority.
 
 The trust model is otherwise flat. A team token grants full read and write on
 the team graph; admin gating is the exception, not the default, and this page
 covers the admin-facing surfaces (a metrics export endpoint is also
 admin-gated — see [API reads](/reference/api/reads/#get-v1metricscapture)).
-`spor whoami` reports whether the server considers the current token an admin
-through `is_admin`.
+`spor whoami` marks an admin token with an `(admin)` suffix; in the API, the
+same fact is the `is_admin` field of `GET /v1/me`.
 
 ## Invite a teammate
 

@@ -5,8 +5,8 @@ sidebar:
   order: 2
 ---
 
-New to Spor? Start with [What is Spor?](/start-here/what-is-spor/) for the
-plain-language introduction.
+If you are new to Spor, start with [What is Spor?](/start-here/what-is-spor/)
+for the plain-language introduction.
 
 Spor runs in two modes, with the same CLI for both. In local mode, the graph
 is a plain git repository of markdown files on your machine, `~/.spor` by

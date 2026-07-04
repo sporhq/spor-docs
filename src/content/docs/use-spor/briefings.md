@@ -54,7 +54,7 @@ what the briefing actually shows.
 Two compile shapes cover most needs:
 
 - **Digest** — short, query-driven, used per-prompt and for quick questions.
-  An empty digest is a successful result, not an error: the graph simply has
+  An empty digest is a successful result, not an error: the graph has
   nothing relevant yet.
 - **Full** — a deep neighborhood compile rooted at one node
   (`spor brief <id>`), used when starting real work on it.

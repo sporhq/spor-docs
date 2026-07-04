@@ -13,7 +13,8 @@ live schema registry, attributed from your token (any supplied `author:` is
 discarded), and committed to the graph's history. Validation failures return
 the validator's error list verbatim, so a calling model can self-correct.
 
-Example ids throughout are fictional.
+Example ids throughout are fictional, drawn from
+[the tidefall scenario](/contributing/example-scenario/).
 
 ## Reading and orienting
 

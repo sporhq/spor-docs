@@ -17,7 +17,7 @@ agent writes.
 fields, explain organization authority edges, and tell a person's write from
 an agent's write on their behalf.
 
-In team mode, identity is graph-native: people, organizations, and agents
+In remote mode, identity is graph-native: people, organizations, and agents
 are nodes, and everything that depends on who you are — attribution,
 routing, per-person queues, review quorums — resolves through edges to those
 nodes.

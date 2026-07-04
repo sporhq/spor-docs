@@ -19,7 +19,8 @@ to `done` without a resolver.
 
 A Spor node is one markdown file in the graph home's `nodes/` directory:
 YAML frontmatter for the structured fields, a short prose body underneath.
-Here is a decision from the fictional tidefall team's billing retry work:
+Here is a decision from the fictional
+[tidefall team](/contributing/example-scenario/)'s billing retry work:
 
 ```markdown
 ---

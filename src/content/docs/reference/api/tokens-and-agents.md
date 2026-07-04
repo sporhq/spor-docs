@@ -26,7 +26,7 @@ PAT.
 
 Mint a `spor_pat_` token bound to the caller's own person node:
 
-```bash
+```sh
 curl -s https://api.sporhq.io/v1/me/tokens \
   -H "Authorization: Bearer $SPOR_TOKEN" \
   -H "Content-Type: application/json" \

@@ -30,6 +30,12 @@ In practice:
 - When behavior differs between local and remote mode, say which mode a
   statement applies to rather than hedging with "may" or "typically".
 
+The mechanical subset of these rules — the banned marketing intensifiers and
+persuasion patterns, such as "seamless", "powerful", "unlock", "isn't just
+X", and "never lose context" — is listed in `scripts/style-denylist.txt` and
+enforced on every PR by `scripts/check-style.sh`. This guide is the contract;
+the lint is the backstop.
+
 ## Terminology
 
 Use these terms with this casing, and use the same term every time — a

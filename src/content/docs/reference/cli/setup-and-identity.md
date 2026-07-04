@@ -24,7 +24,7 @@ Create the local graph home: a `nodes/` directory, a git repository to
 version it, and a `.gitignore` for machine-local state. Idempotent — an
 existing graph is reported, never clobbered.
 
-```bash
+```sh
 spor init
 ```
 
@@ -48,7 +48,7 @@ also persist team-graph credentials to your user config.
 | `--print` (alias `--dry-run`) | show what would change, write nothing |
 | `--server <url>`, `--token <tok>` | persist remote-graph credentials to user config |
 
-```bash
+```sh
 spor install claude
 ```
 
@@ -65,7 +65,7 @@ bumped package does not change what an agent already loaded. With no host it
 refreshes every detected host that has Spor wired, and flags a newer release
 published to npm (`--no-net` skips that check).
 
-```bash
+```sh
 spor upgrade claude --print
 ```
 
@@ -81,7 +81,7 @@ Print the resolved mode (local or remote), graph home, project slug,
 identity, and a health probe. The first thing to run when Spor is not doing
 what you expect.
 
-```bash
+```sh
 spor status
 ```
 
@@ -100,7 +100,7 @@ join the hosted Spor service — a token-shaped first positional is read as
 the token. For interactive sign-in without a pasted token, use
 [`auth login`](#auth).
 
-```bash
+```sh
 spor join spor_pat_abc123
 spor join https://graph.example.com spor_pat_abc123 --org tidefall
 ```
@@ -128,7 +128,7 @@ a sibling tenant.
 
 The non-interactive and CI path stays `SPOR_TOKEN`.
 
-```bash
+```sh
 spor auth login --server https://graph.example.com
 spor auth switch tidefall
 ```
@@ -144,7 +144,7 @@ spor login [--web] [--server <url>] [--org <slug>]
 Alias of `spor auth login` (see [`auth`](#auth) for flags).
 `spor login <url> <token>` still works as the paste path.
 
-```bash
+```sh
 spor login --server https://graph.example.com
 ```
 
@@ -160,7 +160,7 @@ Commit the local graph home and push it to a git remote you own, such as a
 private GitHub repository. The URL is remembered as `origin`, so later
 pushes need no argument. Pure git plumbing — no server route is involved.
 
-```bash
+```sh
 spor migrate git@github.com:tidefall/team-graph.git
 ```
 
@@ -176,7 +176,7 @@ Echo the identity the server binds to your token for the active tenant.
 `--all` enumerates every stored tenant. In local mode it explains there is
 no server identity. Alias of `spor auth whoami`.
 
-```bash
+```sh
 spor whoami --all
 ```
 
@@ -197,7 +197,7 @@ override the seeded values. Idempotent: a re-run that finds a node already
 bound to your git identity reports it and exits 0. In remote mode your
 person node is server-managed (`spor whoami`).
 
-```bash
+```sh
 spor person create 'Ines Duarte' --email ines@tidefall.example.com
 ```
 
@@ -222,6 +222,6 @@ identity (check `spor whoami`).
 | `token list` | your PATs by hash prefix, label, and expiry; `--all` lists the whole team's (admin) |
 | `token revoke <prefix>` | revoke one of your PATs by hash prefix; `--all` revokes any token by prefix (admin) |
 
-```bash
+```sh
 spor token create --expires 90d --label ci
 ```

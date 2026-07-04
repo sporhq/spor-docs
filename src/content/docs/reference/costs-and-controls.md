@@ -31,7 +31,7 @@ operates the server, not with your client.)
 Every model call the client makes is journaled locally, under
 `$SPOR_HOME/journal/llm-calls/`. Summarize spend with:
 
-```bash
+```sh
 spor cost
 spor cost --since 2026-06-01
 spor cost --project harbor --json
@@ -44,7 +44,7 @@ and `--json` emits machine-readable output.
 
 Both callers can be disabled independently, via the environment:
 
-```bash
+```sh
 export SPOR_DISTILL=0   # no end-of-session distillation
 export SPOR_NUDGE=0     # no mid-session capture suggestions
 ```
@@ -58,7 +58,7 @@ record outcomes yourself with `spor add`.
 
 Instead of disabling a piece, you can point it at any command you control:
 
-```bash
+```sh
 export SPOR_DISTILL_CMD=/usr/local/bin/my-distiller
 export SPOR_NUDGE_CMD=/usr/local/bin/my-classifier
 ```

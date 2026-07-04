@@ -21,7 +21,7 @@ A personal access token (`spor_pat_...`) is bound to your person node, so
 everything written under it is attributed to you. You manage your own without
 any admin involvement:
 
-```bash
+```sh
 spor token create --expires 90d --label "laptop"
 spor token list
 spor token revoke <hash-prefix>

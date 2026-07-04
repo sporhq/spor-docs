@@ -16,14 +16,14 @@ other supported hosts receive equivalent hooks from the same manifest.
 automatically. Supported hosts are `claude`, `codex`, `gemini`, `opencode`,
 `copilot`, and `cursor`.
 
-```bash
+```sh
 spor install claude
 ```
 
 With no host named, it lists what it detects on your machine and changes
 nothing:
 
-```bash
+```sh
 spor install            # detect only
 spor install --all      # install into every detected host
 spor install --print    # dry run: show what would change

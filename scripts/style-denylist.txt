@@ -26,4 +26,5 @@ revolutioni[sz]
 # persuasion patterns and stock AI phrasing
 isn'?t just
 never lose context
+documents itself
 \bdelve\b

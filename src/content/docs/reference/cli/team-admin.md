@@ -23,7 +23,7 @@ Mint a person-bound token and print a paste-ready `spor join` line. Pass
 the node first (`--id` names it explicitly). `--expires` sets the token
 lifetime.
 
-```bash
+```sh
 spor invite --name 'Marek Ilves' --email marek@tidefall.example.com --expires 30d
 ```
 
@@ -46,13 +46,13 @@ graph, so an on-demand run may take a while. `--json` prints the raw
 `{checked, filed, resolved, skipped}` envelope. The sweep endpoint is
 authenticated but not admin-gated today, so any valid team token can run it;
 a 403 means the deployment added the gate and admin privilege is required
-(check `spor whoami` for `is_admin`).
+(`spor whoami` marks an admin token with an `(admin)` suffix).
 
 `admin token list` and `admin token revoke <prefix>` are the team-wide,
 admin-gated forms of `spor token list --all` and
 `spor token revoke <prefix> --all`.
 
-```bash
+```sh
 spor admin gardener --json
 spor admin token revoke a1b2c3
 ```

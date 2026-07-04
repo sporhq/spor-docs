@@ -9,7 +9,7 @@ export default defineConfig({
 		starlight({
 			title: 'Spor',
 			description:
-				'Documentation for Spor — a typed, versioned knowledge graph of the durable outcomes of work.',
+				'Documentation for Spor, which keeps the decisions, tasks, questions, rules, and notes behind your work in one shared record.',
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/sporhq/spor' },
 			],

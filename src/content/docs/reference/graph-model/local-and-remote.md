@@ -46,7 +46,7 @@ isolation.
 
 Two environment variables switch a client to remote mode:
 
-```bash
+```sh
 export SPOR_SERVER=https://api.sporhq.io
 export SPOR_TOKEN=spor_pat_...
 ```

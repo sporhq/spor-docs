@@ -31,7 +31,7 @@ mechanisms that expire on different clocks:
 
 ## The lifecycle
 
-```bash
+```sh
 spor claim task-tidefall-retry-emails     # take the lease; writes the assigned edge once
 spor renew task-tidefall-retry-emails     # heartbeat — bump the lease expiry
 spor extend task-tidefall-retry-emails 2h # stretch the lease for a known idle gap

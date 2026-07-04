@@ -23,13 +23,13 @@ later requests. You do not need to retry immediately; see
 
 You need Node.js 20 or newer.
 
-```bash
+```sh
 npm install -g @sporhq/spor
 ```
 
 Check the install:
 
-```bash
+```sh
 spor --help
 ```
 
@@ -46,14 +46,14 @@ is still missing, npm's global bin directory is not on your PATH.
 
 If a team admin sent you a token (`spor_pat_...`), paste it:
 
-```bash
+```sh
 spor join spor_pat_9f3kexampletoken
 ```
 
 With no URL, `spor join` targets the hosted Spor service
 (`https://api.sporhq.io`). For a server of your own, name it:
 
-```bash
+```sh
 spor join https://spor.example.com spor_pat_9f3kexampletoken
 ```
 
@@ -82,7 +82,7 @@ It then prints the path of the credential file it wrote.
 
 ## 3. Verify who you are
 
-```bash
+```sh
 spor whoami
 ```
 
@@ -144,7 +144,7 @@ Next step: make your first capture below.
 
 ## 4. Make your first capture
 
-```bash
+```sh
 spor add "The dunning email templates still cite the single-retry policy. Agreed with Ines we sweep them before the rollout."
 ```
 
@@ -158,7 +158,7 @@ A few seconds later the node is visible to the whole team.
 
 ## 5. Read the team queue
 
-```bash
+```sh
 spor next
 ```
 
@@ -167,7 +167,7 @@ open work, claims, and blockers, not just your own.
 
 ## 6. Enable a repository you work in
 
-```bash
+```sh
 spor enable
 ```
 
@@ -186,7 +186,8 @@ enabled, so a side project never feeds the team graph by accident.
 
 - Remote mode uses one live team graph on a Spor server.
 - `spor join` stores an org-scoped credential and verifies it before use.
-- `spor whoami` shows the person and org bound to your token.
+- `spor whoami` shows the person bound to your token — name, person node id,
+  and email.
 - `spor enable` opts a repository into the team graph.
 
 ## Where to go next

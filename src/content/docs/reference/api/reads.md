@@ -17,7 +17,7 @@ Health check and graph summary:
 `titles: [{id, type, project, title}]` — a one-round-trip index of the whole
 graph, useful for client-side dedup.
 
-```bash
+```sh
 curl -s https://api.sporhq.io/v1/status \
   -H "Authorization: Bearer $SPOR_TOKEN"
 ```
@@ -107,7 +107,7 @@ active schema attaches — ignore keys you don't know:
 - `superseded_by` — set when an inbound `supersedes` edge marks the node
   stale.
 
-```bash
+```sh
 curl -s https://api.sporhq.io/v1/nodes/dec-tidefall-billing-retries \
   -H "Authorization: Bearer $SPOR_TOKEN"
 ```
@@ -211,7 +211,7 @@ filtered queue):
 - `type=`/`exclude_type=` (comma-separated, repeatable) whitelist/blacklist
   node types; exclude wins on overlap.
 
-```bash
+```sh
 curl -s "https://api.sporhq.io/v1/queue?project=billing&limit=10" \
   -H "Authorization: Bearer $SPOR_TOKEN"
 ```
@@ -279,7 +279,7 @@ result; an unknown id is `404`.
 The data-exit path. By default, a ustar tarball of the graph's `nodes/`
 directory, suitable for seeding a local read replica:
 
-```bash
+```sh
 curl -s https://api.sporhq.io/v1/export?gzip=1 \
   -H "Authorization: Bearer $SPOR_TOKEN" | tar xz
 ```

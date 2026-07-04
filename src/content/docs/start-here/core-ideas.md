@@ -16,12 +16,13 @@ until the tool is running.
 describe the orient-traverse-commit loop, and choose the deeper reference
 page for a graph-model question.
 
-Spor is a typed, versioned knowledge graph of the durable outcomes of work.
-Each node is a markdown file recording one fact: a decision that was made, a
-task that was deferred, an issue and how it was resolved, a convention the
-team holds, a question nobody could answer yet. Typed, directional edges
-connect them, so the graph carries what a flat list of notes cannot — why a
-node exists, what it depends on, and what replaced it.
+Spor keeps each durable work outcome for a team as one record: decisions,
+deferred tasks, resolved issues, conventions, and unanswered questions. [What
+is Spor?](/start-here/what-is-spor/) gives the plain-language introduction;
+this page assumes that framing and adds the model behind it. Each recorded
+fact is one markdown file called a node. Nodes are joined by typed,
+directional links called edges, which carry why a node exists, what it
+depends on, and what replaced it.
 
 ## Why a graph, not a list
 
@@ -65,6 +66,7 @@ attributed to the person or agent that made it.
 | [The decision queue](/use-spor/queue/) | Derived ranking signals, human priority, dormancy, and per-person views |
 | [Briefings and corrections](/use-spor/briefings/) | The compiled context packet and how to fix it when it is wrong |
 | [Capture and ingestion](/use-spor/capture/) | Raw text in, typed nodes out — the low-friction write path |
+| [Review what changed](/use-spor/review-what-changed/) | The recent-activity feed, one node's history, tracing a commit to its reasons, and the program view |
 | [Ask and answer questions](/use-spor/ask-and-answer-questions/) | Filing a question, steward routing, and the `answers` edge that closes it |
 | [Schemas are nodes](/reference/graph-model/schemas/) | Extending the ontology by writing schema nodes into the graph |
 | [Local and remote mode](/reference/graph-model/local-and-remote/) | The two deployment shapes and the configuration cascade |

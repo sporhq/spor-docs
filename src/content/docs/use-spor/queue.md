@@ -74,7 +74,7 @@ ranking it; from the date on it surfaces to **every** viewer, flagged
 This is the renew-the-certificate shape. The classic failure is a reminder
 in one person's calendar: the owner leaves, the reminder leaves with them,
 and the expiry becomes an incident. `wake:` keeps the schedule with the work
-instead — no scheduler exists anywhere; the queue simply compares dates at
+instead — no scheduler exists anywhere; the queue compares dates at
 read time, and whoever looks after the wake date sees the item. A dormant
 node is still live graph state: briefings and edges see it normally, only
 queue ranking waits.
@@ -86,7 +86,7 @@ no project filter, every project at once). Passing an assignee narrows it to
 the work one person carries — the union of nodes with an `assigned` edge to
 them and the nodes they steward:
 
-```bash
+```sh
 spor next                      # the ranked queue for this project
 spor next --all-projects       # the cross-project firehose
 ```

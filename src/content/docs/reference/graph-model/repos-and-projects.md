@@ -74,7 +74,7 @@ token through one shared up-resolution:
 | nothing | The cross-project firehose |
 
 The intuitive token returns the whole product, and the node ids are the
-escape hatches to narrower or exact scope. An ungrouped repo simply resolves
+escape hatches to narrower or exact scope. An ungrouped repo resolves
 to itself, so a graph with no project nodes behaves as before.
 
 ## The gardener: hygiene as queue items

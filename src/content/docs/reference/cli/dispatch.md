@@ -35,7 +35,7 @@ or install, reused across dispatches.
 | `agent use <agent-id>` | make it this machine's default dispatch identity — a local config write (`dispatch.agent`), not a graph write. `--clear` returns to person-scoped dispatch. |
 | `agent token <agent-id>` | mint a long-lived standing PAT for the agent — the `SPOR_TOKEN` a headless agent runs under; shown once. `--expires` shortens the lifetime (default and max 1 year), `--label` tags it. `list` and `revoke <prefix>` manage them. Remote-only, owner-gated. |
 
-```bash
+```sh
 spor agent create ines-laptop
 spor agent use agent-ines-laptop
 ```
@@ -90,7 +90,7 @@ passthrough that picks the harness agent definition the session runs.
 | `--worktree`, `--no-worktree` | per-run worktree isolation override |
 | `--print` (alias `--dry-run`) | print the prompt, launch nothing |
 
-```bash
+```sh
 spor dispatch task-tidefall-retry-emails --worktree
 spor dispatch --from-queue --print
 ```
@@ -118,7 +118,7 @@ sets (replaces) a repo's tags, and with no tags shows the current ones plus
 auto-suggestions from disk; `repos untag <slug> [tag...]` removes tags (no
 tags clears all).
 
-```bash
+```sh
 spor repos add billing ~/code/billing
 spor repos tag billing python backend
 ```
@@ -150,7 +150,7 @@ config, never a committed `.spor.json`. The axes are `harnesses`,
 | `show <agent-id>` | read what a specific machine advertised (readable by the agent's owner, the agent itself, or an admin); pass `me` for this machine's own published record |
 | `hosts <profile-id>` | which fleet machines satisfy a profile, and which cannot, with reasons. Scope with `--owner me\|person-x`; demote stale publishes with `--max-age 30m\|12h\|7d`. `spor dispatch` prints these automatically when this machine cannot satisfy a profile. |
 
-```bash
+```sh
 spor capabilities allow-mcp spor
 spor capabilities hosts profile-docs-writer
 ```

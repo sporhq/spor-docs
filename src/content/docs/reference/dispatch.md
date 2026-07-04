@@ -18,7 +18,7 @@ on the work.
 Dispatch launches a background agent with the right context already
 attached:
 
-```bash
+```sh
 spor dispatch issue-tidefall-double-charge    # brief + launch a background agent
 spor dispatch --from-queue             # take the top ranked queue item
 spor dispatch issue-tidefall-double-charge --print   # show what would launch
@@ -28,7 +28,7 @@ Dispatching a node compiles a briefing from its graph neighborhood and
 injects it into the launched session, so the agent starts pre-briefed
 instead of cold. Dispatch also refuses obvious duplicates: if the node is
 already being worked locally, or already [claimed](/reference/graph-model/claims/) in
-team mode, the second dispatch is refused unless forced. Each dispatched
+remote mode, the second dispatch is refused unless forced. Each dispatched
 session runs under an [agent identity](/use-spor/identity/) its owner
 created, so everything it writes reads "agent on behalf of person".
 

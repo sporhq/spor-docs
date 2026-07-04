@@ -14,7 +14,7 @@ installation.
 You need Node.js 20 or newer. Local mode needs nothing else: no database and
 no server.
 
-```bash
+```sh
 npm install -g @sporhq/spor
 ```
 
@@ -26,7 +26,7 @@ This installs two commands:
 
 Check the install:
 
-```bash
+```sh
 spor --help
 ```
 
@@ -41,7 +41,7 @@ is still missing, npm's global bin directory is not on your PATH.
 
 ## 2. Create the graph home
 
-```bash
+```sh
 spor init
 ```
 
@@ -54,7 +54,7 @@ clobbers one.
 
 ## 3. Create your person node
 
-```bash
+```sh
 spor person create
 ```
 
@@ -65,7 +65,7 @@ know which items are yours.
 
 Override the seeded values if they are wrong:
 
-```bash
+```sh
 spor person create 'Ines Duarte' --email ines@tidefall.example.com
 ```
 
@@ -111,7 +111,7 @@ Next step: record your first node below.
 
 ## 4. Record your first node
 
-```bash
+```sh
 spor add "A retry that succeeds while the payment provider's webhook is delayed can charge the card twice. Fix before the rollout." --type issue
 ```
 
@@ -129,7 +129,7 @@ current directory, or you can set it with `--project`.
 
 ## 5. Read the queue
 
-```bash
+```sh
 spor next
 ```
 
@@ -145,7 +145,7 @@ as what each item blocks. Your new issue appears here.
 
 ## 6. Compile a briefing
 
-```bash
+```sh
 spor compile --query "billing retry flow"
 ```
 

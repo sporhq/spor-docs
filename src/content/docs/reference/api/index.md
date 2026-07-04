@@ -37,7 +37,7 @@ a self-hosted deployment uses its own origin. All routes are versioned under
   `{"error": {"code", "message", "details"}}` envelope. See
   [Errors and compatibility](/reference/api/errors-and-compatibility/).
 
-```bash
+```sh
 curl -s https://api.sporhq.io/v1/status \
   -H "Authorization: Bearer $SPOR_TOKEN"
 ```

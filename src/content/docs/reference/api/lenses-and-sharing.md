@@ -37,7 +37,7 @@ never carry a write-capable credential.
 Mint a signed, expiring, read-only render ticket for the lens or workspace,
 recording the authenticated caller as the sharer:
 
-```bash
+```sh
 curl -s https://api.sporhq.io/v1/lens/lens-release-board/ticket \
   -H "Authorization: Bearer $SPOR_TOKEN" \
   -H "Content-Type: application/json" \

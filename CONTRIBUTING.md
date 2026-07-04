@@ -32,7 +32,7 @@ Each sidebar section is one directory under `src/content/docs/`:
 | `reference/mcp/`        | The MCP surface — the operating loop, tools, embedded views    |
 | `reference/api/`        | The versioned HTTP API — endpoints, authentication, errors     |
 | `reference/graph-model/` | The graph model — nodes, edges, schemas, claims, lenses        |
-| `contributing/`         | This guide and the style guide                                 |
+| `contributing/`         | This guide, the style guide, the page templates, and the canonical example scenario |
 
 A few loose reference pages (`reference/configuration.md`,
 `reference/costs-and-controls.md`, `reference/diagnostics.md`) sit directly

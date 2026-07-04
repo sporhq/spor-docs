@@ -14,7 +14,7 @@ reports a verdict. The server never executes effects itself.
 Start a run of an **active** workflow (a proposed workflow must first be
 activated by a different identity than its author — the self-approval ban):
 
-```bash
+```sh
 curl -s https://api.sporhq.io/v1/workflows/wf-tidefall-release-checklist/run \
   -H "Authorization: Bearer $SPOR_TOKEN" \
   -H "Content-Type: application/json" \

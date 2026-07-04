@@ -21,7 +21,7 @@ Set `{ "enabled": true }` in this repo's committable `.spor.json` — how you
 turn Spor on for a repo, and how you undo a prior `spor disable`. Commit the
 file to share the setting.
 
-```bash
+```sh
 spor enable
 ```
 
@@ -36,7 +36,7 @@ spor disable
 Set `{ "enabled": false }` in this repo's committable `.spor.json`. The
 hooks then no-op here until re-enabled.
 
-```bash
+```sh
 spor disable
 ```
 
@@ -53,7 +53,7 @@ wrong inferred slug deterministically. The slug must be canonical
 (`^[a-z0-9][a-z0-9-]*$`); with no slug it uses the inferred one. Commit the
 marker to share the identity.
 
-```bash
+```sh
 spor link billing
 ```
 
@@ -78,7 +78,7 @@ the directive only — hooked hosts get their briefing at session start;
 `--briefing` also embeds the standing project briefing, the floor for hosts
 without hooks.
 
-```bash
+```sh
 spor agents-md --briefing
 ```
 
@@ -100,7 +100,7 @@ explicit `--nodes` always names a local checkout, even under a server.
 project-level corrections, `--out` writes to a file, `--quiet` suppresses
 the stderr stats.
 
-```bash
+```sh
 spor compile --query "billing retry flow" --digest
 ```
 
@@ -114,7 +114,7 @@ spor brief <id>
 
 Compile a briefing for one node — sugar for `compile --root <id>`.
 
-```bash
+```sh
 spor brief task-tidefall-retry-emails
 ```
 
@@ -130,6 +130,6 @@ Lint the local graph and exit 1 on errors. In remote mode the server
 validates every write, so this fails fast unless `--nodes` points at a local
 checkout.
 
-```bash
+```sh
 spor validate
 ```

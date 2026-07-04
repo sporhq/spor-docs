@@ -15,12 +15,13 @@ and `spor-hook doctor`, drain the offline outbox, and know when a slow first
 request only needs time.
 
 When something is unclear — no briefing appeared, a capture seems lost, you
-are not sure which graph you are writing to — two commands answer almost
-everything.
+are not sure which graph you are writing to — start with `spor status` and
+`spor-hook doctor`. This page also covers the offline outbox, drained with
+`spor drain`, and the slow first request after an idle period.
 
 ## spor status
 
-```bash
+```sh
 spor status
 ```
 
@@ -34,7 +35,7 @@ yourself. It also warns when a wired host is running a stale plugin version.
 
 ## spor-hook doctor
 
-```bash
+```sh
 spor-hook doctor
 ```
 
@@ -57,7 +58,7 @@ outbox opportunistically, and a coding-agent session drains it at start.
 
 If you work purely from the CLI and want to flush the spool by hand:
 
-```bash
+```sh
 spor drain
 ```
 
