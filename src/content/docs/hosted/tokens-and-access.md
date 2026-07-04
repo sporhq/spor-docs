@@ -13,7 +13,7 @@ people holding a stewardship edge to the organization's root node — which
 gates the team-wide token management described at the end of this page.
 
 This page covers what the credentials are and how their lifecycle works; the
-exact request and response shapes live in the [API reference](/api/).
+exact request and response shapes live in the [API reference](/reference/api/).
 
 ## Personal access tokens
 

@@ -33,7 +33,7 @@ Maintainers re-sync tokens with `scripts/sync-tokens.sh`.
 
 Contributions are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) covers local
 setup, page conventions, and what to do when either CI check fails; prose
-follows the [style guide](https://docs.sporhq.io/style-guide/).
+follows the [style guide](https://docs.sporhq.io/contributing/style-guide/).
 
 ## License
 

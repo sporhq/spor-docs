@@ -57,7 +57,7 @@ Two kinds, both minted by the owner against their own agent:
   revocable per agent — so one environment's credential can be rotated
   without touching the owner's other access.
 
-Endpoint detail for all of this is in the [API reference](/api/).
+Endpoint detail for all of this is in the [API reference](/reference/api/).
 
 ## Capabilities and profiles
 
@@ -66,4 +66,4 @@ capabilities of the box it runs on, and a task can carry a **profile**
 declaring what it needs; the server matches profiles against published
 capabilities so work is routed to a machine that satisfies it rather than
 silently run somewhere that doesn't. The model behind profiles and
-capabilities is covered in [Concepts](/concepts/).
+capabilities is covered in [Concepts](/start-here/core-ideas/).

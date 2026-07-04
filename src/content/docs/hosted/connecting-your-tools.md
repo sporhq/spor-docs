@@ -52,7 +52,7 @@ Streamable HTTP). The host walks you through an OAuth authorization against
 `auth.sporhq.io`; the resulting grant is tied to your identity, so everything
 the assistant writes through the connector is attributed to you. Tool-level
 detail — what each MCP tool does and the interactive queue and lens views —
-is in the [MCP section](/mcp/).
+is in the [MCP section](/reference/mcp/).
 
 ## A teammate's first day
 
@@ -67,4 +67,4 @@ What a new teammate actually needs:
 4. **Optionally, the connector** — add `mcp.sporhq.io` in claude.ai.
 
 After that there is no hosted-specific workflow to learn; the
-[getting started](/getting-started/) material applies as written.
+[getting started](/start-here/) material applies as written.

@@ -4,59 +4,22 @@
 
 This is the documentation for docs.sporhq.io. It covers two audiences from day one: the open-source local mode (a personal graph on your machine) and the hosted team product (one shared graph per org). The graph is plain markdown files with YAML frontmatter; the schema registry — node types, edge types, and their rules — is itself data in the graph, so it is extensible without code changes.
 
-## Getting started
-- [Getting started](https://docs.sporhq.io/getting-started/): install, connect your agent, and run your first briefing
-- [Install](https://docs.sporhq.io/getting-started/install/): Node ≥20, `npm i -g @sporhq/spor`, and `spor install` per host (Claude Code, Codex, Gemini, Cursor, Copilot, opencode)
-- [Local quickstart](https://docs.sporhq.io/getting-started/local-quickstart/): init a personal graph, create your person, capture a first node, and compile a briefing
-- [Hosted quickstart](https://docs.sporhq.io/getting-started/hosted-quickstart/): join a team graph, sign in, and connect the MCP server
-- [What happens automatically](https://docs.sporhq.io/getting-started/what-happens-automatically/): the session-start briefing, per-prompt digest, commit linking, and session-end distiller — all fail-open
-- [Costs and controls](https://docs.sporhq.io/getting-started/costs-and-controls/): where LLM calls happen and how to bound or disable them
-- [Diagnostics](https://docs.sporhq.io/getting-started/diagnostics/): `spor status`, `spor-hook doctor`, `spor drain`, and reading the journal
+## Start here
+- [Start here](https://docs.sporhq.io/start-here/): install, connect your agent, and run your first briefing
+- [Install](https://docs.sporhq.io/start-here/install/): Node ≥20, `npm i -g @sporhq/spor`, and `spor install` per host (Claude Code, Codex, Gemini, Cursor, Copilot, opencode)
+- [Local quickstart](https://docs.sporhq.io/start-here/local-quickstart/): init a personal graph, create your person, capture a first node, and compile a briefing
+- [Hosted quickstart](https://docs.sporhq.io/start-here/hosted-quickstart/): join a team graph, sign in, and connect the MCP server
+- [Connect an AI assistant](https://docs.sporhq.io/start-here/connect-an-assistant/): wiring the Spor MCP server into claude.ai, Cowork, or Claude Code
+- [Core ideas](https://docs.sporhq.io/start-here/core-ideas/): the mental model — a typed graph of durable work outcomes, walked ORIENT → TRAVERSE → COMMIT
+- [What happens automatically](https://docs.sporhq.io/start-here/what-happens-automatically/): the session-start briefing, per-prompt digest, commit linking, and session-end distiller — all fail-open
 
-## Concepts
-- [Concepts](https://docs.sporhq.io/concepts/): the mental model — a typed graph of durable work outcomes, walked ORIENT → TRAVERSE → COMMIT
-- [The node model](https://docs.sporhq.io/concepts/nodes/): one fact per node, markdown + frontmatter, type-prefixed immutable ids, stand-alone summaries
-- [Node types](https://docs.sporhq.io/concepts/node-types/): decisions, tasks, issues, questions, norms, artifacts, people, agents, lenses, workflows, and more
-- [Edge types](https://docs.sporhq.io/concepts/edges/): blocks, supersedes, resolves, answers, derived-from, and the rest of the edge vocabulary
-- [Schemas are nodes](https://docs.sporhq.io/concepts/schemas/): the registry as data — CalVer versioning, sandboxed validate/transitions hooks, no self-approval
-- [The decision queue](https://docs.sporhq.io/concepts/queue/): open work ranked by graph signals (blocking, heat, staleness, age) plus human priority and wake dormancy
-- [Briefings and corrections](https://docs.sporhq.io/concepts/briefings/): how a compile selects relevant context, and standing corrections as pins/excludes/guidance
-- [Claims and leases](https://docs.sporhq.io/concepts/claims/): heartbeat-renewed leases so two people don't do the same work
-- [Identity and attribution](https://docs.sporhq.io/concepts/identity/): person, agent-on-behalf-of-person, and org
-- [Repos, projects, and the gardener](https://docs.sporhq.io/concepts/repos-and-projects/): repo↔project grouping and the background maintenance sweeps
-- [Local and remote mode](https://docs.sporhq.io/concepts/local-and-remote/): a personal git-backed graph versus a shared server, and the config cascade
-- [Dispatch, capabilities, and profiles](https://docs.sporhq.io/concepts/dispatch/): launching background agents against queue items
-- [Lenses, program view, and workflows](https://docs.sporhq.io/concepts/lenses-and-workflows/): saved views, the gating/progress tree, and multi-step runs
-- [Capture, ingestion, and questions](https://docs.sporhq.io/concepts/capture/): turning prose into typed nodes, and routing questions the graph can't answer
-
-## CLI reference
-- [CLI reference](https://docs.sporhq.io/cli/): every `spor` verb with flags, aliases, and a local/remote/dual mode badge
-- [Getting started verbs](https://docs.sporhq.io/cli/getting-started/): init, install, upgrade, status, join, auth, person, token
-- [Reading the graph](https://docs.sporhq.io/cli/reading-the-graph/): next, get, query, blame, history, changes, analytics, schema, lens, share, export
-- [Writing to the graph](https://docs.sporhq.io/cli/writing-to-the-graph/): add, ask, put-node, edge, set-status, priority, correct, claim, renew, extend, release, run
-- [Repo scoping](https://docs.sporhq.io/cli/repo-scoping/): enable, disable, link, agents-md, compile, brief, validate
-- [Dispatch](https://docs.sporhq.io/cli/dispatch/): agent, dispatch, repos, capabilities
-- [Team administration](https://docs.sporhq.io/cli/team-admin/): invite and admin
-- [Utilities](https://docs.sporhq.io/cli/utilities/): cost, version, help
-- [Configuration](https://docs.sporhq.io/cli/configuration/): the config cascade, `.spor`/`.spor.json` markers, environment variables, and tenant selection
-
-## REST API
-- [REST API](https://docs.sporhq.io/api/): the public `/v1` surface — endpoints, auth, and errors
-- [Reads](https://docs.sporhq.io/api/reads/): status, node reads, queue, briefings, changes, analytics, program, export
-- [Writes](https://docs.sporhq.io/api/writes/): node writes, edges, status, priority, capture, corrections, questions, digest
-- [Leases](https://docs.sporhq.io/api/leases/): claim, renew, extend, release
-- [Lenses and sharing](https://docs.sporhq.io/api/lenses-and-sharing/): listing and rendering lenses, and signed read-only share tickets
-- [Tokens and agents](https://docs.sporhq.io/api/tokens-and-agents/): self-serve and admin token management, agent principals, capabilities, heartbeat
-- [Workflow runs](https://docs.sporhq.io/api/workflow-runs/): starting runs and the worker step protocol
-- [Authentication](https://docs.sporhq.io/api/authentication/): PATs, OAuth 2.1 + PKCE, device grant, agent session tokens, render tickets, the admin gate
-- [Errors and compatibility](https://docs.sporhq.io/api/errors-and-compatibility/): the error envelope, code table, and `/v1` versioning
-
-## MCP
-- [MCP](https://docs.sporhq.io/mcp/): the Model Context Protocol surface — twenty-three tools plus the connector and the widget
-- [Connecting](https://docs.sporhq.io/mcp/connecting/): wiring the Spor MCP server into a host
-- [The operating loop](https://docs.sporhq.io/mcp/operating-loop/): ORIENT → TRAVERSE → COMMIT, the frame the tools are grouped by
-- [Tool reference](https://docs.sporhq.io/mcp/tools/): every MCP tool — purpose, key parameters, and when to reach for it
-- [The widget](https://docs.sporhq.io/mcp/widget/): the interactive queue/view widget in MCP Apps hosts
+## Use Spor
+- [Use Spor](https://docs.sporhq.io/use-spor/): the everyday working loop once Spor is installed
+- [Capture, ingestion, and questions](https://docs.sporhq.io/use-spor/capture/): turning prose into typed nodes, and routing questions the graph can't answer
+- [The decision queue](https://docs.sporhq.io/use-spor/queue/): open work ranked by graph signals (blocking, heat, staleness, age) plus human priority and wake dormancy
+- [Briefings and corrections](https://docs.sporhq.io/use-spor/briefings/): how a compile selects relevant context, and standing corrections as pins/excludes/guidance
+- [Identity and attribution](https://docs.sporhq.io/use-spor/identity/): person, agent-on-behalf-of-person, and org
+- [Dispatch, capabilities, and profiles](https://docs.sporhq.io/use-spor/dispatch/): launching background agents against queue items
 
 ## Hosted Spor
 - [Hosted Spor](https://docs.sporhq.io/hosted/): the team product — one graph per org
@@ -66,6 +29,52 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 - [Agents and attribution](https://docs.sporhq.io/hosted/agents-and-attribution/): agent principals and on-behalf-of attribution
 - [Wake-on-request](https://docs.sporhq.io/hosted/wake-on-request/): the first-request latency note
 - [Your data](https://docs.sporhq.io/hosted/your-data/): the data-minimization posture, export, and data exit
+
+## CLI reference
+- [CLI reference](https://docs.sporhq.io/reference/cli/): every `spor` verb with flags, aliases, and a local/remote/dual mode badge
+- [Getting started verbs](https://docs.sporhq.io/reference/cli/getting-started/): init, install, upgrade, status, join, auth, person, token
+- [Reading the graph](https://docs.sporhq.io/reference/cli/reading-the-graph/): next, get, query, blame, history, changes, analytics, schema, lens, share, export
+- [Writing to the graph](https://docs.sporhq.io/reference/cli/writing-to-the-graph/): add, ask, put-node, edge, set-status, priority, correct, claim, renew, extend, release, run
+- [Repo scoping](https://docs.sporhq.io/reference/cli/repo-scoping/): enable, disable, link, agents-md, compile, brief, validate
+- [Dispatch](https://docs.sporhq.io/reference/cli/dispatch/): agent, dispatch, repos, capabilities
+- [Team administration](https://docs.sporhq.io/reference/cli/team-admin/): invite and admin
+- [Utilities](https://docs.sporhq.io/reference/cli/utilities/): cost, version, help
+
+## MCP reference
+- [MCP](https://docs.sporhq.io/reference/mcp/): the Model Context Protocol surface — twenty-three tools plus the connector and the widget
+- [The operating loop](https://docs.sporhq.io/reference/mcp/operating-loop/): ORIENT → TRAVERSE → COMMIT, the frame the tools are grouped by
+- [Tool reference](https://docs.sporhq.io/reference/mcp/tools/): every MCP tool — purpose, key parameters, and when to reach for it
+- [The widget](https://docs.sporhq.io/reference/mcp/widget/): the interactive queue/view widget in MCP Apps hosts
+
+## REST API reference
+- [REST API](https://docs.sporhq.io/reference/api/): the public `/v1` surface — endpoints, auth, and errors
+- [Reads](https://docs.sporhq.io/reference/api/reads/): status, node reads, queue, briefings, changes, analytics, program, export
+- [Writes](https://docs.sporhq.io/reference/api/writes/): node writes, edges, status, priority, capture, corrections, questions, digest
+- [Leases](https://docs.sporhq.io/reference/api/leases/): claim, renew, extend, release
+- [Lenses and sharing](https://docs.sporhq.io/reference/api/lenses-and-sharing/): listing and rendering lenses, and signed read-only share tickets
+- [Tokens and agents](https://docs.sporhq.io/reference/api/tokens-and-agents/): self-serve and admin token management, agent principals, capabilities, heartbeat
+- [Workflow runs](https://docs.sporhq.io/reference/api/workflow-runs/): starting runs and the worker step protocol
+- [Authentication](https://docs.sporhq.io/reference/api/authentication/): PATs, OAuth 2.1 + PKCE, device grant, agent session tokens, render tickets, the admin gate
+- [Errors and compatibility](https://docs.sporhq.io/reference/api/errors-and-compatibility/): the error envelope, code table, and `/v1` versioning
+
+## Schema and graph model reference
+- [The node model](https://docs.sporhq.io/reference/graph-model/nodes/): one fact per node, markdown + frontmatter, type-prefixed immutable ids, stand-alone summaries
+- [Node types](https://docs.sporhq.io/reference/graph-model/node-types/): decisions, tasks, issues, questions, norms, artifacts, people, agents, lenses, workflows, and more
+- [Edge types](https://docs.sporhq.io/reference/graph-model/edges/): blocks, supersedes, resolves, answers, derived-from, and the rest of the edge vocabulary
+- [Schemas are nodes](https://docs.sporhq.io/reference/graph-model/schemas/): the registry as data — CalVer versioning, sandboxed validate/transitions hooks, no self-approval
+- [Local and remote mode](https://docs.sporhq.io/reference/graph-model/local-and-remote/): a personal git-backed graph versus a shared server, and the config cascade
+- [Claims and leases](https://docs.sporhq.io/reference/graph-model/claims/): heartbeat-renewed leases so two people don't do the same work
+- [Lenses, program view, and workflows](https://docs.sporhq.io/reference/graph-model/lenses-and-workflows/): saved views, the gating/progress tree, and multi-step runs
+- [Repos, projects, and the gardener](https://docs.sporhq.io/reference/graph-model/repos-and-projects/): repo↔project grouping and the background maintenance sweeps
+
+## Other reference
+- [Configuration](https://docs.sporhq.io/reference/configuration/): the config cascade, `.spor`/`.spor.json` markers, environment variables, and tenant selection
+- [Costs and controls](https://docs.sporhq.io/reference/costs-and-controls/): where LLM calls happen and how to bound or disable them
+- [Diagnostics](https://docs.sporhq.io/reference/diagnostics/): `spor status`, `spor-hook doctor`, `spor drain`, and reading the journal
+
+## Contributing
+- [Contributing to the docs](https://docs.sporhq.io/contributing/): the PR flow, page frontmatter, and the repo's CI checks
+- [Style guide](https://docs.sporhq.io/contributing/style-guide/): voice, terminology, example data, and formatting conventions
 
 ## Optional
 - [GitHub repository](https://github.com/sporhq/spor): the open-source client — plugin, CLI, hook engines, and the seed schema pack
