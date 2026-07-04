@@ -12,6 +12,12 @@ assumes you have [installed the CLI](/start-here/install/) and that your
 team already has a graph — either on the hosted Spor service or on a server
 of its own.
 
+:::note
+The first request after your team's graph has been idle can take longer than
+later requests. You do not need to retry immediately; see
+[slow first request diagnostics](/reference/diagnostics/#slow-first-request-after-an-idle-period).
+:::
+
 ## Join with an invite token
 
 If a team admin sent you a token (`spor_pat_...`), paste it:

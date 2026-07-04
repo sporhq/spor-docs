@@ -2,7 +2,7 @@
 title: Tokens and access
 description: Personal access tokens, OAuth grants, and the admin surface for managing both.
 sidebar:
-  order: 5
+  order: 4
 ---
 
 Every request to hosted Spor carries a credential, and every credential

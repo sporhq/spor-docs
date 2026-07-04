@@ -28,7 +28,6 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 - [Connecting your tools](https://docs.sporhq.io/hosted/connecting-your-tools/): pointing your CLI and agent hosts at the hosted graph
 - [Tokens and access](https://docs.sporhq.io/hosted/tokens-and-access/): managing tokens and OAuth grants
 - [Agents and attribution](https://docs.sporhq.io/hosted/agents-and-attribution/): agent principals and on-behalf-of attribution
-- [Wake-on-request](https://docs.sporhq.io/hosted/wake-on-request/): the first-request latency note
 - [Your data](https://docs.sporhq.io/hosted/your-data/): the data-minimization posture, export, and data exit
 
 ## CLI reference
@@ -71,7 +70,7 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 ## Other reference
 - [Configuration](https://docs.sporhq.io/reference/configuration/): the config cascade, `.spor`/`.spor.json` markers, environment variables, and tenant selection
 - [Costs and controls](https://docs.sporhq.io/reference/costs-and-controls/): where LLM calls happen and how to bound or disable them
-- [Diagnostics](https://docs.sporhq.io/reference/diagnostics/): `spor status`, `spor-hook doctor`, `spor drain`, and reading the journal
+- [Diagnostics](https://docs.sporhq.io/reference/diagnostics/): `spor status`, `spor-hook doctor`, `spor drain`, and the slow first request after an idle period
 
 ## Contributing
 - [Contributing to the docs](https://docs.sporhq.io/contributing/): the PR flow, page frontmatter, and the repo's CI checks

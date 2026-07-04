@@ -1,6 +1,6 @@
 ---
 title: Diagnostics
-description: spor status, spor-hook doctor, and the offline outbox — how to see what Spor resolved and recover spooled captures.
+description: spor status, spor-hook doctor, the offline outbox, and what a slow first request after an idle period means.
 ---
 
 When something is unclear — no briefing appeared, a capture seems lost, you
@@ -66,3 +66,15 @@ ingestion can complete after the client gave up. Before re-adding what looks
 like a lost capture, check `spor changes` for it — otherwise you may file a
 duplicate.
 :::
+
+## Slow first request after an idle period
+
+In remote mode, Hosted Spor may need to wake an idle org before serving the
+first request; this is usually quick, but occasionally longer. You do not
+need to retry immediately, and requests after the first run at normal speed.
+
+If requests keep failing rather than just starting slow, run
+[`spor status`](#spor-status) or
+[`spor-hook doctor`](#spor-hook-doctor).
+`GET /v1/status` reports service health and basic operational metrics for
+your organization's graph — see [Your data](/hosted/your-data/).

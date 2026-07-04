@@ -41,15 +41,15 @@ the organization. From there:
 3. **Work normally.** Queries, captures, the queue, and lenses behave exactly
    as in local mode, except your teammates' writes show up too.
 
-One operational note worth reading before your first morning:
-[wake-on-request](/hosted/wake-on-request/) explains why the first request
-after an idle period can take longer than the rest.
+The first request after an idle period can take longer than later requests. If
+that keeps happening, see
+[slow first request diagnostics](/reference/diagnostics/#slow-first-request-after-an-idle-period)
+for what to check.
 
 ## The rest of this section
 
 - [Organizations and sign-in](/hosted/organizations-and-sign-in/) — invitations, multi-org accounts, switching.
 - [Connecting your tools](/hosted/connecting-your-tools/) — CLI configuration and the MCP connector.
-- [Wake-on-request](/hosted/wake-on-request/) — what latency to expect and when.
 - [Tokens and access](/hosted/tokens-and-access/) — personal access tokens, OAuth grants, admin management.
 - [Agents and attribution](/hosted/agents-and-attribution/) — agent identities and the audit trail.
 - [Your data](/hosted/your-data/) — export, what the server's model sees, and the sandbox.

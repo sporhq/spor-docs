@@ -2,7 +2,7 @@
 title: Agents and attribution
 description: Agent identities, on-behalf-of attribution, and the token trail that makes agent work auditable.
 sidebar:
-  order: 6
+  order: 5
 ---
 
 Teams on hosted Spor rarely write to the graph only by hand — coding agents

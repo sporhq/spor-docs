@@ -95,5 +95,8 @@ export default defineConfig({
 		'/mcp/tools': '/reference/mcp/tools/',
 		'/mcp/widget': '/reference/mcp/widget/',
 		'/style-guide': '/contributing/style-guide/',
+		// Wake-on-request was demoted from a standalone hosted page to a
+		// troubleshooting entry on the diagnostics page.
+		'/hosted/wake-on-request': '/reference/diagnostics/#slow-first-request-after-an-idle-period',
 	},
 });

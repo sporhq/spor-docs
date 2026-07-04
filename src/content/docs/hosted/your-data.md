@@ -2,7 +2,7 @@
 title: Your data
 description: Full export at any time, exactly what the ingestion model sees, and how custom code is contained.
 sidebar:
-  order: 7
+  order: 6
 ---
 
 Hosting your team's graph should not mean surrendering it, and it should not
@@ -65,4 +65,5 @@ Two operational surfaces round this out:
   hygiene is visible work, not silent mutation.
 - **`GET /v1/status`** reports service health and basic operational metrics
   for your organization's graph, and doubles as the health check when you are
-  diagnosing slowness beyond an ordinary [wake](/hosted/wake-on-request/).
+  diagnosing slowness that outlasts a
+  [slow first request](/reference/diagnostics/#slow-first-request-after-an-idle-period).
