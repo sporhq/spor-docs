@@ -1,8 +1,6 @@
 ---
 title: Configuration
 description: The config cascade, the repo markers, environment variables, and the credential store.
-sidebar:
-  order: 9
 ---
 
 Every verb resolves its settings the same way: through one cascade of

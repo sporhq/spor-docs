@@ -67,4 +67,4 @@ What a new teammate actually needs:
 4. **Optionally, the connector** — add `mcp.sporhq.io` in claude.ai.
 
 After that there is no hosted-specific workflow to learn; the
-[getting started](/start-here/) material applies as written.
+[Start here](/start-here/) material applies as written.

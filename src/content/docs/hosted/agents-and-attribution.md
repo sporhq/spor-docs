@@ -66,4 +66,5 @@ capabilities of the box it runs on, and a task can carry a **profile**
 declaring what it needs; the server matches profiles against published
 capabilities so work is routed to a machine that satisfies it rather than
 silently run somewhere that doesn't. The model behind profiles and
-capabilities is covered in [Concepts](/start-here/core-ideas/).
+capabilities is covered in
+[Dispatch, capabilities, and profiles](/use-spor/dispatch/).

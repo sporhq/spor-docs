@@ -10,4 +10,4 @@
 - [ ] `scripts/check-boundary.sh` passes
 - [ ] Examples are fictional and anonymized — no identifiers copied from a real graph
 - [ ] No private internals — the server is described abstractly (see [CONTRIBUTING.md](https://github.com/sporhq/spor-docs/blob/main/CONTRIBUTING.md))
-- [ ] Voice and terminology match the [style guide](https://docs.sporhq.io/style-guide/)
+- [ ] Voice and terminology match the [style guide](https://docs.sporhq.io/contributing/style-guide/)

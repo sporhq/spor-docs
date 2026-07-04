@@ -1,8 +1,6 @@
 ---
 title: Diagnostics
 description: spor status, spor-hook doctor, and the offline outbox — how to see what Spor resolved and recover spooled captures.
-sidebar:
-  order: 7
 ---
 
 When something is unclear — no briefing appeared, a capture seems lost, you

@@ -1,6 +1,6 @@
 ---
 title: MCP
-description: Connect Spor to your AI workspace — setup, tools, and the widget.
+description: The MCP surface — the operating loop, the tools, and the widget.
 sidebar:
   order: 1
 ---
@@ -75,8 +75,9 @@ list. Full details in the [tool reference](/reference/mcp/tools/).
 
 ## In this section
 
-- [Connecting](/start-here/connect-an-assistant/) — adding the connector in claude.ai or
-  Claude Code, the OAuth flow you'll see, and revoking access safely.
+Connector setup — adding Spor in claude.ai or Claude Code and the OAuth flow
+you'll see — lives in [Connect an AI assistant](/start-here/connect-an-assistant/).
+
 - [The operating loop](/reference/mcp/operating-loop/) — the ORIENT → TRAVERSE → COMMIT
   mental model the server teaches connected assistants.
 - [Tool reference](/reference/mcp/tools/) — every tool: purpose, key parameters, when

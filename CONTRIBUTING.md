@@ -16,8 +16,8 @@ npm run dev      # live preview at localhost:4321
 npm run build    # static build into dist/
 ```
 
-Run the build before opening a PR — it catches broken frontmatter and dead
-internal links that the dev server tolerates.
+Run the build before opening a PR — it catches broken frontmatter and other
+errors that the dev server tolerates.
 
 ## Where pages live
 
@@ -25,13 +25,13 @@ Each sidebar section is one directory under `src/content/docs/`:
 
 | Directory               | Section                                                        |
 | ----------------------- | -------------------------------------------------------------- |
-| `start-here/`           | Installation, quickstarts, connecting an assistant, core ideas |
+| `start-here/`           | Installation, quickstarts, connecting an AI assistant, core ideas |
 | `use-spor/`             | The everyday loop — capture, the queue, briefings, dispatch    |
 | `hosted/`               | The hosted product — organizations, sign-in, tokens, export    |
 | `reference/cli/`        | CLI reference, one entry per `spor` verb                       |
 | `reference/mcp/`        | The MCP surface — the operating loop, tools, embedded views    |
 | `reference/api/`        | The versioned HTTP API — endpoints, authentication, errors     |
-| `reference/graph-model/`| The graph model — nodes, edges, schemas, claims, lenses        |
+| `reference/graph-model/` | The graph model — nodes, edges, schemas, claims, lenses        |
 | `contributing/`         | This guide and the style guide                                 |
 
 A few loose reference pages (`reference/configuration.md`,

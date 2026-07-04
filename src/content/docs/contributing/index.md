@@ -13,11 +13,16 @@ and open the PR with the behavior you verified.
 
 ## Local setup
 
-Use Node 24, which is the version CI builds with. Install dependencies with
-`npm install`, then run `npm run dev` for a live preview at
-`localhost:4321`. Before opening a PR, run `npm run build`. The build produces
-the static site and catches broken frontmatter and other errors that the dev
-server may tolerate.
+Use Node 24, which is the version CI builds with. Then:
+
+```sh
+npm install
+npm run dev      # live preview at localhost:4321
+npm run build    # static build into dist/
+```
+
+Run the build before opening a PR — it produces the static site and catches
+broken frontmatter and other errors that the dev server tolerates.
 
 ## Where pages live
 
@@ -37,16 +42,23 @@ Each sidebar section has one directory under `src/content/docs/`:
 Filenames are kebab-case and become the URL slug. Most sidebars are generated
 from their directory, so a new page appears once its frontmatter is in place.
 The Reference section's group structure is assembled in `astro.config.mjs`; a
-new top-level reference page needs an entry there too.
+new top-level reference page needs an entry there too. Moving or renaming a
+page changes its URL — add a redirect from the old path in `astro.config.mjs`
+when you do.
 
 Every page starts with Starlight frontmatter. `title` and `description` are
 required. The description is one plain sentence shown in search results and
 link previews. `sidebar.order` sets the page's position within its section.
 
-Reference entries describe shipped behavior. Verify CLI entries against the
-CLI's own help output, such as `spor help` or `spor <verb> --help`; when the
-docs and help output disagree, the help output wins. Verify API and MCP
-entries against the observed behavior of a server you can access.
+Reference entries describe shipped behavior. Verify the client surface and
+the graph model against the public client package
+[`@sporhq/spor`](https://github.com/sporhq/spor) — its README and API docs.
+Verify CLI entries against the CLI's own help output, such as `spor help` or
+`spor <verb> --help`; when the docs and help output disagree, the help output
+wins. Verify API and MCP entries against the observed behavior of a server
+you can access. If a page contradicts shipped behavior, fix it — citing what
+the tool actually prints or returns in the PR description — or file a
+[documentation error issue](https://github.com/sporhq/spor-docs/issues/new?template=docs-error.md).
 
 ## Checks before a PR
 

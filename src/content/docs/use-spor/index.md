@@ -12,7 +12,8 @@ graph when its memory is wrong.
 
 The graph is made of entries, called nodes, and typed links between them,
 called edges. A node records one durable fact: a decision, task, issue,
-question, or norm. The links say how those facts relate. That structure lets
+question, or norm. The links say how those facts relate —
+[Core ideas](/start-here/core-ideas/) explains the model. That structure lets
 Spor rank open work, compile relevant context for an agent, and attribute
 writes to the person or agent that made them.
 
@@ -21,7 +22,7 @@ writes to the person or agent that made them.
 - [Capture, ingestion, and questions](/use-spor/capture/) — record useful work
   the moment it appears. `spor add "<two or three sentences>"`, or the MCP
   `capture` tool, turns raw prose into a typed, linked node.
-  `spor ask "<question>"` files a question the graph cannot answer; in team
+  `spor ask "<question>"` files a question the graph cannot answer; in remote
   mode it routes to the person most likely to know.
 - [The decision queue](/use-spor/queue/) — `spor next`, or the `show_queue` MCP
   tool, returns open work ranked by graph signals and human-set priority, with

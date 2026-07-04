@@ -1,8 +1,6 @@
 ---
 title: Costs and controls
 description: Where Spor makes model calls, how to see what they cost, and how to disable pieces or supply your own backend.
-sidebar:
-  order: 6
 ---
 
 The client makes small model calls for exactly two things:
