@@ -48,14 +48,14 @@ A read that shares the compile pipeline: digest-mode context for a prompt.
 
 ```json
 { "query": "how do we throttle the public API?",
-  "root": "task-api-rate-limits",
   "project": "billing",
   "min_sim": 0.08 }
 ```
 
 Returns `{found, text}`; `found: false` is a successful empty result, not an
-error. `root` is the structural-walk twin of `query` — the two are mutually
-exclusive, `root` wins, and an unknown root id is `422`. Optional `project`
+error. `root` (e.g. `"root": "task-api-rate-limits"`) is the structural-walk
+twin of `query` — pass one or the other; the two are mutually exclusive,
+`root` wins if both are sent, and an unknown root id is `422`. Optional `project`
 scopes the compile to the session's project (same-project relevance boost,
 grouping union, always-on norms), resolving the slug through project aliases;
 a bad slug is `422`. Omitting `project` runs the digest project-blind, so

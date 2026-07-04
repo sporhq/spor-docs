@@ -57,6 +57,31 @@ marker to share the identity.
 spor link billing
 ```
 
+### agents-md
+
+```
+spor agents-md [--briefing] [--no-claude-md]
+```
+
+**Mode:** local · alias `agents`
+
+Write or idempotently refresh the managed Spor block in `AGENTS.md` at the
+repo root — standing, user-voice instructions that keep the graph current
+(capture discovered work as it appears, file issues before fixing, prefer the
+graph over private notes for durable facts, resolve with artifacts, add
+`Spor:` commit trailers). Committed, it reaches every contributor and
+dispatched agent. `spor enable` runs this for you, and `spor upgrade`
+refreshes the wording. If a `CLAUDE.md` exists that never mentions
+`AGENTS.md`, an `@AGENTS.md` import is appended so those sessions inherit the
+directive too (suppress with `--no-claude-md`). By default the block carries
+the directive only — hooked hosts get their briefing at session start;
+`--briefing` also embeds the standing project briefing, the floor for hosts
+without hooks.
+
+```bash
+spor agents-md --briefing
+```
+
 ### compile
 
 ```

@@ -5,9 +5,9 @@ sidebar:
   order: 4
 ---
 
-All eighteen tools, grouped by role in the
+All twenty-three tools, grouped by role in the
 [operating loop](/mcp/operating-loop/): reading and orienting, views,
-writing, and asking. Every tool returns both human-readable text and
+writing, claiming, and asking. Every tool returns both human-readable text and
 structured JSON. Writes follow one set of semantics: validated against the
 live schema registry, attributed from your token (any supplied `author:` is
 discarded), and committed to the graph's history. Validation failures return
@@ -46,6 +46,19 @@ answered this node. Extra keys are additive; ignore what you don't know.
 
 Reach for it when you need the exact text or are about to update the node.
 Trust inbound `resolves`/`answers` edges over the `status` field.
+
+### `node_history`
+
+One node's commit lineage — a `git log` projection over its file. Input
+`{id, sha?, limit?}`: without `sha` you get the chain of revisions (newest
+first, each with `sha`, actor, date, and message, and an `internal` flag that
+marks server-internal writes apart from real edits); with `sha` you get that
+one revision's detail — the change type, the patch it introduced, and the full
+node content at that point. `limit` defaults to 50 (max 200).
+
+Reach for it to see who changed a node and why over time — the frontmatter
+`author` only records the last editor, so this is the durable record of the
+whole chain.
 
 ### `show_queue`
 
@@ -168,6 +181,8 @@ The default write door: raw text in, typed nodes out. Input:
 | `text` | 2–3 standalone sentences — the fact, what and why |
 | `project` | optional project slug |
 | `during` | optional node id the work was discovered during (provenance) |
+| `blocks` | optional node id this work blocks — declares a cross-project dependency (the target must exist) |
+| `needed_by` | optional `YYYY-MM-DD` deadline that ramps the item's queue urgency as it nears |
 
 The server drafts node(s) against the live registry, validates, links, and
 commits. Output is `captured` — or `pending`, meaning the text fit no schema
@@ -272,3 +287,37 @@ Creates a workflow-run node with lineage and returns the run id and initial
 step states. A proposed workflow must first be activated by a different
 identity (the self-approval ban). This tool only starts the run — workers
 claim and execute the steps; it never executes effects itself.
+
+## Claims and leases
+
+Team coordination primitives: taking a piece of work so two people don't do
+it at once. A claim is a heartbeat-renewed **lease** plus a durable `assigned`
+edge; the claimer is always `$viewer` from your token, never an argument. A
+live lease held by someone else is a `conflict` that names the holder and when
+it expires.
+
+### `claim`
+
+Take the lease on a node: `{id, session?}`. Writes the `assigned` edge once
+and creates the lease. Re-claiming your own live claim just renews it;
+claiming one someone else holds is a `conflict`. `session` scopes the
+heartbeat to one run — omit it and any of your sessions may renew.
+
+### `renew`
+
+The heartbeat that keeps a claim from lapsing: `{id, session?}` bumps your
+live lease's expiry with no commit. A lapsed or stolen lease is a `conflict`
+naming the current holder.
+
+### `extend`
+
+Manually stretch your live lease for a known long idle gap: `{id, ms}`,
+extending it by `ms` milliseconds. Bounded by the org's maximum lease policy
+(a request past the ceiling caps to it); it never shortens a lease.
+
+### `release`
+
+Drop the lease and retire the `assigned` edge, returning the node to the pool:
+`{id}`. Idempotent — releasing a node you hold no lease on still succeeds and
+cleans up any lingering `assigned` edge of yours; releasing a claim someone
+else holds is a `conflict`.

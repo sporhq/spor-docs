@@ -39,7 +39,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [Team administration](/cli/team-admin/) | invite, admin |
 | [Reading the graph](/cli/reading-the-graph/) | next, get, query, blame, history, changes, analytics, schema, lens, share, export |
 | [Writing to the graph](/cli/writing-to-the-graph/) | add, ask, drain, put-node, edge, set-status, priority, correct, claim, renew, extend, release, run |
-| [Repo scoping](/cli/repo-scoping/) | enable, disable, link, compile, brief, validate |
+| [Repo scoping](/cli/repo-scoping/) | enable, disable, link, agents-md, compile, brief, validate |
 | [Dispatch](/cli/dispatch/) | agent, dispatch, repos, capabilities |
 | [Utilities](/cli/utilities/) | cost, version, help |
 
@@ -50,6 +50,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [add](/cli/writing-to-the-graph/#add) | dual | `capture` | capture a node from prose |
 | [admin](/cli/team-admin/#admin) | remote | | gardener sweep and team token admin |
 | [agent](/cli/dispatch/#agent) | dual | | person-owned automation identities and their standing tokens |
+| [agents-md](/cli/repo-scoping/#agents-md) | local | `agents` | write or refresh the committed AGENTS.md graph-upkeep directive |
 | [analytics](/cli/reading-the-graph/#analytics) | dual | | created-vs-completed work metrics |
 | [ask](/cli/writing-to-the-graph/#ask) | dual | `question` | file a question the graph can't answer |
 | [auth](/cli/getting-started/#auth) | remote | | sign in and manage org-scoped credentials |

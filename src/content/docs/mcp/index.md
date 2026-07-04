@@ -43,7 +43,7 @@ every write needs an author.
 
 ## The tools
 
-Eighteen tools, framed by the server itself as an
+Twenty-three tools, framed by the server itself as an
 [ORIENT → TRAVERSE → COMMIT loop](/mcp/operating-loop/) rather than a flat
 list. Full details in the [tool reference](/mcp/tools/).
 
@@ -51,6 +51,7 @@ list. Full details in the [tool reference](/mcp/tools/).
 | --- | --- |
 | [`query_graph`](/mcp/tools/#query_graph) | Free-text search, or compile one node's neighborhood (`root_id`) |
 | [`get_node`](/mcp/tools/#get_node) | One node's full markdown, edges, and revision |
+| [`node_history`](/mcp/tools/#node_history) | One node's commit lineage — who changed it, when, and the patch |
 | [`show_queue`](/mcp/tools/#show_queue) | The ranked decision queue, as data — "what's next" |
 | [`render_queue`](/mcp/tools/#render_queue) | The same queue, with the interactive widget attached |
 | [`recent_changes`](/mcp/tools/#recent_changes) | What changed in the graph since a commit or a point in time |
@@ -67,6 +68,10 @@ list. Full details in the [tool reference](/mcp/tools/).
 | [`run_workflow`](/mcp/tools/#run_workflow) | Start a run of an active workflow |
 | [`render_lens`](/mcp/tools/#render_lens) | Run a named saved view (board, table, lineage tree) |
 | [`render_program`](/mcp/tools/#render_program) | Progress and gating tree for a workstream root |
+| [`claim`](/mcp/tools/#claim) | Take the heartbeat-renewed lease on a node so no one duplicates it |
+| [`renew`](/mcp/tools/#renew) | Bump your live lease's expiry — the heartbeat that keeps a claim |
+| [`extend`](/mcp/tools/#extend) | Manually stretch your lease for a known long idle gap |
+| [`release`](/mcp/tools/#release) | Drop the lease and return the node to the pool |
 
 ## In this section
 
