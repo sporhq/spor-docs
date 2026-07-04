@@ -37,7 +37,7 @@ Hooks act only in repositories enabled with `spor enable`.
 A new npm release does not change what a host has already loaded. Upgrade the
 package with `npm install -g @sporhq/spor`, then run `spor upgrade`. The full
 flags for `spor install` and `spor upgrade`, including `--scope`, are in
-[Getting started verbs](/reference/cli/getting-started/).
+[Setup and identity](/reference/cli/setup-and-identity/).
 
 ## At session start: the briefing
 
