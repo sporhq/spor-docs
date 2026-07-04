@@ -5,9 +5,9 @@ sidebar:
   order: 3
 ---
 
-Most docs pages use one of two shapes: a how-to page, when the reader wants to
-complete a task, or a concept page, when the reader wants to understand
-something. Starting from the matching template keeps a new page consistent with
+Most docs pages use one of two shapes: a **how-to page**, when the reader
+wants to complete a task, or a **concept page**, when the reader wants to
+understand something. Starting from the matching template keeps a new page consistent with
 its neighbors, and the PR checklist asks which template a new page follows.
 
 ## How-to pages

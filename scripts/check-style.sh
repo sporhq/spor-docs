@@ -15,8 +15,10 @@ root="$(cd "$(dirname "$0")/.." && pwd)"
 denylist="$root/scripts/style-denylist.txt"
 [ -f "$denylist" ] || { echo "::error::missing $denylist" >&2; exit 2; }
 
-# Build one alternation from the non-comment, non-blank lines.
-pattern="$(grep -Ev '^\s*(#|$)' "$denylist" | paste -sd'|' -)"
+# Build one alternation from the non-comment, non-blank lines. The || true
+# keeps a comments-only denylist flowing into the explicit guard below
+# instead of tripping set -e inside the substitution.
+pattern="$(grep -Ev '^\s*(#|$)' "$denylist" | paste -sd'|' - || true)"
 [ -n "$pattern" ] || { echo "::error::denylist is empty" >&2; exit 2; }
 
 cd "$root"
