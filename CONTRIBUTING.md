@@ -91,10 +91,10 @@ what the tool actually prints or returns in the PR description) or file a
 Every docs PR is reviewed against four reader tests beyond the mechanical
 lints:
 
-> A new reader should know what Spor is before learning its data model.
-> A setup page should produce a visible result in under five minutes.
-> A reference page should start with when to use it.
-> Public docs should describe user-facing behavior, not private infrastructure.
+- A new reader should know what Spor is before learning its data model.
+- A setup page should produce a visible result in under five minutes.
+- A reference page should start with when to use it.
+- Public docs should describe user-facing behavior, not private infrastructure.
 
 These tests are already reflected in the
 [page templates](https://docs.sporhq.io/contributing/page-templates/). How-to

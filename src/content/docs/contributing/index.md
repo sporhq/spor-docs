@@ -68,10 +68,10 @@ the tool actually prints or returns in the PR description — or file a
 Every docs PR is reviewed against four reader tests in addition to the local
 checks:
 
-> A new reader should know what Spor is before learning its data model.
-> A setup page should produce a visible result in under five minutes.
-> A reference page should start with when to use it.
-> Public docs should describe user-facing behavior, not private infrastructure.
+- A new reader should know what Spor is before learning its data model.
+- A setup page should produce a visible result in under five minutes.
+- A reference page should start with when to use it.
+- Public docs should describe user-facing behavior, not private infrastructure.
 
 The [page templates](/contributing/page-templates/) build these tests into new
 pages: how-to pages state "Use this when" up front and include a "Check it
