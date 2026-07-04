@@ -57,3 +57,4 @@ for what to check.
 - [Tokens and access](/hosted/tokens-and-access/) — personal access tokens, OAuth grants, admin management.
 - [Agents and attribution](/hosted/agents-and-attribution/) — agent identities and the audit trail.
 - [Data, privacy, and export](/hosted/data-privacy-and-export/) — what the server and its model can see, full export, and revoking access.
+- [Admin reference](/hosted/admin-reference/) — invitations, identity binding, token management, and org administration from the admin's seat.

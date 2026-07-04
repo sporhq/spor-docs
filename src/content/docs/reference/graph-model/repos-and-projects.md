@@ -103,7 +103,7 @@ The gardener performs exactly one mutation: when a finding's condition
 clears, it resolves its **own** finding — never a human-authored node.
 Everything else is filed, not acted.
 
-Findings route to stewards the same way [questions](/use-spor/capture/) do:
+Findings route to stewards the same way [questions](/use-spor/ask-and-answer-questions/) do:
 the finding's subject neighborhood is walked for the closest steward, a
 `routed-to` edge materializes the route, and the queue shows each person the
 findings routed to them plus any unrouted ones. Gardener output lands with

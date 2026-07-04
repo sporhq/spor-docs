@@ -2,7 +2,7 @@
 title: What happens automatically
 description: The session hooks the plugin runs — briefing injection, per-prompt digests, commit linking, and the end-of-session distiller.
 sidebar:
-  order: 7
+  order: 9
 ---
 
 Spor can brief a coding session automatically once a host is wired and the

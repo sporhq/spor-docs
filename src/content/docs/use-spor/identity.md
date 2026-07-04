@@ -2,7 +2,7 @@
 title: Identity and attribution
 description: People as identity anchors, organizations, and agents that write "on behalf of" their owner.
 sidebar:
-  order: 5
+  order: 7
 ---
 
 In team mode, identity is graph-native: people, organizations, and agents
@@ -41,7 +41,7 @@ and token subjects, while `name` is the mutable display label.
 A few fields do real work:
 
 - **`stewards` edges** declare ownership of an area, spec, or norm — the key
-  [question routing](/use-spor/capture/) walks.
+  [question routing](/use-spor/ask-and-answer-questions/) walks.
 - **`roles`** is the qualification register org policies read: a
   definition-of-done quorum counts approvals from people holding a named
   role.

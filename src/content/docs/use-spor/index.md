@@ -19,11 +19,13 @@ writes to the person or agent that made them.
 
 ## In this section
 
-- [Capture, ingestion, and questions](/use-spor/capture/) — record useful work
+- [Capture and ingestion](/use-spor/capture/) — record useful work
   the moment it appears. `spor add "<two or three sentences>"`, or the MCP
   `capture` tool, turns raw prose into a typed, linked node.
-  `spor ask "<question>"` files a question the graph cannot answer; in remote
-  mode it routes to the person most likely to know.
+- [Ask and answer questions](/use-spor/ask-and-answer-questions/) —
+  `spor ask "<question>"` files a question the graph cannot answer. In remote
+  mode it routes to the steward most likely to know, and an `answers` edge from
+  the eventual answer closes it.
 - [The decision queue](/use-spor/queue/) — `spor next`, or the `show_queue` MCP
   tool, returns open work ranked by graph signals and human-set priority, with
   a one-line reason for each item.
@@ -31,6 +33,10 @@ writes to the person or agent that made them.
   an agent receives at session start, including decisions in force, rejected
   approaches, and open blockers. Use `spor correct` for standing corrections
   when a briefing is wrong or stale.
+- [Review what changed](/use-spor/review-what-changed/) — catch up with
+  `spor changes`, follow one node's editors with `spor history`, trace a
+  commit to its reasons with `spor blame`, and read a program view for a whole
+  workstream.
 - [Identity and attribution](/use-spor/identity/) — see how every write is
   attributed to a person, or to an agent writing on behalf of the person who
   owns it.

@@ -1,6 +1,6 @@
 ---
-title: Capture, ingestion, and questions
-description: Raw text in, typed nodes out — the low-friction write path, its durability rule, and how unanswerable questions route to the person who knows.
+title: Capture and ingestion
+description: Raw text in, typed nodes out — the low-friction write path and its durability rule.
 sidebar:
   order: 2
 ---
@@ -69,29 +69,8 @@ an elaboration appended to that node rather than a new node. For a
 standalone deferred item, write text that stands alone.
 :::
 
-## Questions: asks that route to the person who knows
+## When the graph cannot answer
 
-When the graph cannot answer something a teammate would know, file it
-instead of letting it evaporate:
-
-```text
-/spor:ask Which carrier SLAs did we commit to for scan latency?
-```
-
-This creates a `question-` node that joins the decision queue until
-answered. Routing is deterministic, not broadcast: the server walks
-`stewards` edges from the question's relevance neighborhood (its explicit
-mentions first) to the closest steward and writes a `routed-to` edge to that
-person. Their queue shows the question; everyone else's does not. A question
-no steward matches surfaces to everyone — answerable, just not directed.
-
-The answer loop is lineage, not messaging. Whoever knows writes a node — a
-decision, an artifact, sometimes just a short answer artifact — with an
-`answers` edge back to the question. The asker's next briefing pulls the
-answer through the question's neighborhood; nobody has to remember to reply
-in the right channel.
-
-Steward routing is only as good as the `stewards` edges in the graph: a
-person node with `stewards → spec-tracking-events` is what makes questions
-about tracking events land on their queue. See
-[Identity and attribution](/use-spor/identity/).
+Capture records what you learned. When you instead need something a teammate
+would know, file a question so it routes to them instead of evaporating. See
+[Ask and answer questions](/use-spor/ask-and-answer-questions/).

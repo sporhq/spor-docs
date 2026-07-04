@@ -2,7 +2,7 @@
 title: Briefings and corrections
 description: The compiled context packet an agent starts from, and the standing corrections that fix it when it is wrong.
 sidebar:
-  order: 4
+  order: 5
 ---
 
 A briefing is the packet of context Spor hands a coding agent before it

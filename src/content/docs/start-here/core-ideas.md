@@ -53,7 +53,8 @@ attributed to the person or agent that made it.
 | [Edge types](/reference/graph-model/edges/) | Every edge type, its direction, weight, and inverse forms |
 | [The decision queue](/use-spor/queue/) | Derived ranking signals, human priority, dormancy, and per-person views |
 | [Briefings and corrections](/use-spor/briefings/) | The compiled context packet and how to fix it when it is wrong |
-| [Capture, ingestion, and questions](/use-spor/capture/) | Raw text in, typed nodes out; routing questions to the person who knows |
+| [Capture and ingestion](/use-spor/capture/) | Raw text in, typed nodes out — the low-friction write path |
+| [Ask and answer questions](/use-spor/ask-and-answer-questions/) | Filing a question, steward routing, and the `answers` edge that closes it |
 | [Schemas are nodes](/reference/graph-model/schemas/) | Extending the ontology by writing schema nodes into the graph |
 | [Local and remote mode](/reference/graph-model/local-and-remote/) | The two deployment shapes and the configuration cascade |
 | [Identity and attribution](/use-spor/identity/) | People, organizations, and agents acting on behalf of people |

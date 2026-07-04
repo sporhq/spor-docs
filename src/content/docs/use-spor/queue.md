@@ -2,7 +2,7 @@
 title: The decision queue
 description: How open work is ranked — derived graph signals blended with human priority, plus dormancy and per-person views.
 sidebar:
-  order: 3
+  order: 4
 ---
 
 The decision queue answers "what should I work on next?". It is a compile
