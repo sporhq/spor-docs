@@ -2,7 +2,7 @@
 title: What Spor is not
 description: The product's boundaries — six things Spor does not try to be, and where to go if you wanted one of them.
 sidebar:
-  order: 8
+  order: 9
 ---
 
 Spor uses vocabulary that also appears in ticket trackers, wikis, chat tools,

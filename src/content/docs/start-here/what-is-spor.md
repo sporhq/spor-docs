@@ -31,3 +31,4 @@ The reference section documents the full model for nodes, edges, and the shared 
 - [Start with local mode](/start-here/local-quickstart/)
 - [Start with remote mode](/start-here/hosted-quickstart/)
 - [Read the core ideas](/start-here/core-ideas/)
+- [See what Spor is not](/start-here/what-spor-is-not/)
