@@ -11,9 +11,11 @@ the organization's root node. Provider roles and email domains confer no admin
 authority.
 
 The trust model is otherwise flat. A team token grants full read and write on
-the team graph; admin gates only the surfaces on this page. `spor whoami`
-reports whether the server considers the current token an admin through
-`is_admin`.
+the team graph; admin gating is the exception, not the default, and this page
+covers the admin-facing surfaces (a metrics export endpoint is also
+admin-gated — see [API reads](/reference/api/reads/#get-v1metricscapture)).
+`spor whoami` reports whether the server considers the current token an admin
+through `is_admin`.
 
 ## Invite a teammate
 
