@@ -2,7 +2,7 @@
 title: Reading the graph
 description: Query, rank, inspect, and export nodes — the read half of the graph verbs.
 sidebar:
-  order: 4
+  order: 5
 ---
 
 The read surface, from broadest to narrowest: `next` ranks open work,

@@ -72,7 +72,10 @@ export default defineConfig({
 		'/concepts/lenses-and-workflows': '/reference/graph-model/lenses-and-workflows/',
 		'/concepts/repos-and-projects': '/reference/graph-model/repos-and-projects/',
 		'/cli': '/reference/cli/',
-		'/cli/getting-started': '/reference/cli/getting-started/',
+		'/cli/getting-started': '/reference/cli/setup-and-identity/',
+		// The page landed at /reference/cli/getting-started/ in the IA
+		// restructure and was renamed — the slug read like a tutorial.
+		'/reference/cli/getting-started': '/reference/cli/setup-and-identity/',
 		'/cli/team-admin': '/reference/cli/team-admin/',
 		'/cli/reading-the-graph': '/reference/cli/reading-the-graph/',
 		'/cli/writing-to-the-graph': '/reference/cli/writing-to-the-graph/',

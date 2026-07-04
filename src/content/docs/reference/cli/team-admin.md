@@ -2,13 +2,13 @@
 title: Team administration
 description: Mint teammate tokens and run ops-facing operations against a team server.
 sidebar:
-  order: 3
+  order: 4
 ---
 
 Two verbs, both remote, both admin-oriented: `invite` brings a teammate into
 the graph, and `admin` collects the ops-facing operations kept apart from
 everyday graph work. Everyday self-serve token management is
-[`spor token`](/reference/cli/getting-started/#token).
+[`spor token`](/reference/cli/setup-and-identity/#token).
 
 ### invite
 

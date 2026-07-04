@@ -2,7 +2,7 @@
 title: Writing to the graph
 description: Capture, edit, and route work — plus claims, leases, and workflow runs.
 sidebar:
-  order: 5
+  order: 6
 ---
 
 The write surface has three layers. Prose in: `add` and `ask` accept free

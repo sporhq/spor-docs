@@ -2,7 +2,7 @@
 title: Utilities
 description: LLM spend reporting, the version banner, and per-command help.
 sidebar:
-  order: 8
+  order: 9
 ---
 
 ### cost

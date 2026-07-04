@@ -94,8 +94,8 @@ They live in a store keyed by `(server, org)` at
 `$SPOR_HOME/auth/credentials.json` — mode `0600`, machine-local, never
 committed.
 
-[`spor auth login`](/reference/cli/getting-started/#auth) (device grant) and
-[`spor join`](/reference/cli/getting-started/#join) (paste) both add a tenant and
+[`spor auth login`](/reference/cli/setup-and-identity/#auth) (device grant) and
+[`spor join`](/reference/cli/setup-and-identity/#join) (paste) both add a tenant and
 never overwrite a sibling; the first tenant becomes the active default.
 `spor auth list`, `switch`, `whoami`, and `logout` manage the store. A
 401/403 on a tenant carrying a refresh token transparently refreshes against

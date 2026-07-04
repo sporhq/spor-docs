@@ -1,8 +1,8 @@
 ---
-title: Getting started verbs
+title: Setup and identity
 description: Install the CLI into your agent, create or join a graph, and establish who you are.
 sidebar:
-  order: 2
+  order: 3
 ---
 
 The verbs that take you from a fresh install to a working graph: create a

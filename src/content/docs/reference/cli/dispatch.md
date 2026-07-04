@@ -2,7 +2,7 @@
 title: Dispatch
 description: Launch background agents against queue items, with agent identities, repo maps, and capability matching.
 sidebar:
-  order: 7
+  order: 8
 ---
 
 Dispatch turns a queue item into a running Claude Code background agent:

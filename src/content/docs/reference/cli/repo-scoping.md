@@ -2,7 +2,7 @@
 title: Repo scoping
 description: Opt repos in or out, fix their project identity, and compile briefings.
 sidebar:
-  order: 6
+  order: 7
 ---
 
 Spor is opt-in per repository: a repo with no `.spor` or `.spor.json` marker

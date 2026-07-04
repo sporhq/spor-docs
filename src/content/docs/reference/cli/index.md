@@ -13,6 +13,10 @@ so scripts and habits carry over when a personal graph grows into a team
 one. This reference documents the binary's own help as of version 0.18.5;
 `spor help <command>` is always the word on the version you have installed.
 
+If you came to do something specific rather than look up a verb, start with
+[Common CLI tasks](/reference/cli/common-tasks/): short recipes that link into
+the verb entries here.
+
 ## Mode badges
 
 Every verb on the following pages carries one of three badges:
@@ -35,7 +39,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 
 | Page | Verbs |
 | --- | --- |
-| [Getting started verbs](/reference/cli/getting-started/) | init, install, upgrade, status, join, auth, login, migrate, whoami, person, token |
+| [Setup and identity](/reference/cli/setup-and-identity/) | init, install, upgrade, status, join, auth, login, migrate, whoami, person, token |
 | [Team administration](/reference/cli/team-admin/) | invite, admin |
 | [Reading the graph](/reference/cli/reading-the-graph/) | next, get, query, blame, history, changes, analytics, schema, lens, share, export |
 | [Writing to the graph](/reference/cli/writing-to-the-graph/) | add, ask, drain, put-node, edge, set-status, priority, correct, claim, renew, extend, release, run |
@@ -53,7 +57,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [agents-md](/reference/cli/repo-scoping/#agents-md) | local | `agents` | write or refresh the committed AGENTS.md graph-upkeep directive |
 | [analytics](/reference/cli/reading-the-graph/#analytics) | dual | | created-vs-completed work metrics |
 | [ask](/reference/cli/writing-to-the-graph/#ask) | dual | `question` | file a question the graph can't answer |
-| [auth](/reference/cli/getting-started/#auth) | remote | | sign in and manage org-scoped credentials |
+| [auth](/reference/cli/setup-and-identity/#auth) | remote | | sign in and manage org-scoped credentials |
 | [blame](/reference/cli/reading-the-graph/#blame) | dual | `commits` | which nodes reference a commit |
 | [brief](/reference/cli/repo-scoping/#brief) | dual | | compile a briefing for a node |
 | [capabilities](/reference/cli/dispatch/#capabilities) | dual | `caps`, `profiles` | this machine's dispatch capability map |
@@ -72,16 +76,16 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [get](/reference/cli/reading-the-graph/#get) | dual | | one node by id |
 | [help](/reference/cli/utilities/#help) | local | | the verb list, or a command's detailed help |
 | [history](/reference/cli/reading-the-graph/#history) | dual | | a node's commit lineage |
-| [init](/reference/cli/getting-started/#init) | local | | create the local graph home |
-| [install](/reference/cli/getting-started/#install) | local | `setup` | wire spor into an agent |
+| [init](/reference/cli/setup-and-identity/#init) | local | | create the local graph home |
+| [install](/reference/cli/setup-and-identity/#install) | local | `setup` | wire spor into an agent |
 | [invite](/reference/cli/team-admin/#invite) | remote | | mint a teammate token (admin) |
-| [join](/reference/cli/getting-started/#join) | remote | | add an org-scoped credential from a pasted token |
+| [join](/reference/cli/setup-and-identity/#join) | remote | | add an org-scoped credential from a pasted token |
 | [lens](/reference/cli/reading-the-graph/#lens) | remote | `render-lens` | render a saved view |
 | [link](/reference/cli/repo-scoping/#link) | local | | set this repo's canonical project slug |
-| [login](/reference/cli/getting-started/#login) | remote | | interactive sign-in (alias of `auth login`) |
-| [migrate](/reference/cli/getting-started/#migrate) | local | `push` | push the local graph to a git remote you own |
+| [login](/reference/cli/setup-and-identity/#login) | remote | | interactive sign-in (alias of `auth login`) |
+| [migrate](/reference/cli/setup-and-identity/#migrate) | local | `push` | push the local graph to a git remote you own |
 | [next](/reference/cli/reading-the-graph/#next) | dual | `queue` | the ranked decision queue |
-| [person](/reference/cli/getting-started/#person) | local | | create or list local person nodes |
+| [person](/reference/cli/setup-and-identity/#person) | local | | create or list local person nodes |
 | [priority](/reference/cli/writing-to-the-graph/#priority) | dual | `set-priority` | set a queue item's human-triage priority |
 | [put-node](/reference/cli/writing-to-the-graph/#put-node) | dual | | write a full node markdown file |
 | [query](/reference/cli/reading-the-graph/#query) | dual | | filterable node and edge enumeration |
@@ -92,9 +96,9 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [schema](/reference/cli/reading-the-graph/#schema) | dual | | introspect the live schema registry |
 | [set-status](/reference/cli/writing-to-the-graph/#set-status) | dual | `status-set` | set a node's status, claiming on active |
 | [share](/reference/cli/reading-the-graph/#share) | remote | | mint a shareable read-only view link |
-| [status](/reference/cli/getting-started/#status) | dual | | resolved mode, graph, project, identity, health |
-| [token](/reference/cli/getting-started/#token) | remote | | self-serve personal access tokens |
-| [upgrade](/reference/cli/getting-started/#upgrade) | local | `update` | refresh wired spor to the installed version |
+| [status](/reference/cli/setup-and-identity/#status) | dual | | resolved mode, graph, project, identity, health |
+| [token](/reference/cli/setup-and-identity/#token) | remote | | self-serve personal access tokens |
+| [upgrade](/reference/cli/setup-and-identity/#upgrade) | local | `update` | refresh wired spor to the installed version |
 | [validate](/reference/cli/repo-scoping/#validate) | local | | lint the local graph |
 | [version](/reference/cli/utilities/#version) | local | | print the package version |
-| [whoami](/reference/cli/getting-started/#whoami) | remote | | who the team graph thinks you are |
+| [whoami](/reference/cli/setup-and-identity/#whoami) | remote | | who the team graph thinks you are |
