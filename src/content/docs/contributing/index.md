@@ -63,6 +63,43 @@ you can access. If a page contradicts shipped behavior, fix it — citing what
 the tool actually prints or returns in the PR description — or file a
 [documentation error issue](https://github.com/sporhq/spor-docs/issues/new?template=docs-error.md).
 
+## The quality bar
+
+Every docs PR is reviewed against four reader tests in addition to the local
+checks:
+
+> A new reader should know what Spor is before learning its data model.
+> A setup page should produce a visible result in under five minutes.
+> A reference page should start with when to use it.
+> Public docs should describe user-facing behavior, not private infrastructure.
+
+The [page templates](/contributing/page-templates/) build these tests into new
+pages: how-to pages state "Use this when" up front and include a "Check it
+worked" step, and reference pages use the same opening move when they explain
+when to use the entry. `scripts/check-boundary.sh` is the mechanical backstop for the fourth
+test, but the review is broader than the denylist. Reviewers apply the bar to
+the pages a PR touches; a page that fails one test is revised before it ships.
+
+## How pages are produced
+
+Reference entries for CLI commands, API routes, MCP tools, and the graph model
+may be generated or heavily derived from their source of truth: `spor help`,
+`spor <verb> --help`, the public client package `@sporhq/spor`, or observed
+server behavior. Their shape is uniform and their claims are checkable. A
+generated entry is still verified against its source before it ships.
+
+Learning pages, including quickstarts, tutorials, how-tos, and concept pages,
+require human editorial review. A person reads and edits every one; a generated
+draft never ships unedited as a learning page.
+
+Landing pages and section index pages are written fresh from the reader's
+situation, rather than assembled from passages of existing pages. Inherited
+phrasing should not anchor them.
+
+No tutorial or quickstart ships until someone who did not build the feature
+follows it successfully. This is the strongest check a learning page gets, and
+no lint substitutes for it.
+
 ## Checks before a PR
 
 Three repo-specific checks run on every PR and also run locally.

@@ -86,6 +86,50 @@ If you find a page that contradicts shipped behavior, either fix it (citing
 what the tool actually prints or returns in the PR description) or file a
 [documentation error issue](.github/ISSUE_TEMPLATE/docs-error.md).
 
+## The quality bar
+
+Every docs PR is reviewed against four reader tests beyond the mechanical
+lints:
+
+> A new reader should know what Spor is before learning its data model.
+> A setup page should produce a visible result in under five minutes.
+> A reference page should start with when to use it.
+> Public docs should describe user-facing behavior, not private infrastructure.
+
+These tests are already reflected in the
+[page templates](https://docs.sporhq.io/contributing/page-templates/). How-to
+pages open with "Use this when" and include a "Check it worked" step; a
+reference page that starts with when to use the entry is making the same move.
+`scripts/check-boundary.sh` is the mechanical backstop for the fourth test, but
+the review is broader than any denylist can be. Reviewers apply the bar to the
+pages a PR touches. A page that fails one of the four tests is revised before
+it ships.
+
+## How pages are produced
+
+Different kinds of pages are produced differently, and review follows the kind
+of page being changed.
+
+Reference entries for CLI commands, API routes, MCP tools, and the graph model
+may be generated or heavily derived from their source of truth. For CLI
+entries, that source is the CLI's own help output: `spor help` and
+`spor <verb> --help`. For client and graph-model entries, it is the public
+client package `@sporhq/spor`. For API and MCP entries, it is observed server
+behavior. These entries have a uniform shape and checkable claims. A generated
+entry is still verified against its source before it ships.
+
+Learning pages require human editorial review. This includes quickstarts,
+tutorials, how-tos, and concept pages. A person reads and edits every one; a
+generated draft never ships unedited as a learning page.
+
+Landing pages and section index pages are written fresh from the reader's
+situation, rather than assembled from passages of existing pages. Inherited
+phrasing should not anchor them.
+
+No tutorial or quickstart ships until someone who did not build the feature
+follows it successfully. This is the strongest check a learning page gets, and
+no lint substitutes for it.
+
 ## The three CI checks
 
 Besides the build, CI runs three repo-specific checks on every PR. They run

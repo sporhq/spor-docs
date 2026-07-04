@@ -9,6 +9,8 @@
 - [ ] `npm run build` passes locally
 - [ ] `scripts/check-boundary.sh` and `scripts/check-style.sh` pass
 - [ ] A new or restructured page follows the matching [page template](https://docs.sporhq.io/contributing/page-templates/) (how-to or concept)
+- [ ] The pages this PR touches meet the [quality bar](https://docs.sporhq.io/contributing/#the-quality-bar)
+- [ ] A new or restructured tutorial or quickstart was followed successfully by someone who did not build the feature it documents
 - [ ] The page is written for its section's reader
 - [ ] Setup and how-to pages include a "Check it worked" step the reader can run
 - [ ] Voice and terminology match the [style guide](https://docs.sporhq.io/contributing/style-guide/) — no persuasion patterns or marketing phrasing (the style lint catches only the known phrases)
