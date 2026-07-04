@@ -5,6 +5,14 @@ sidebar:
   order: 7
 ---
 
+**Use this when** you are building saved views or a team dashboard, asking
+where a whole workstream stands, or defining repeatable automation whose
+runs are tracked on the graph.
+
+**You do not need this if** the queue and briefings answer your day-to-day
+questions; these are surfaces layered on top, and [The decision
+queue](/use-spor/queue/) is the beginner path.
+
 Three surfaces turn the graph into something you can look at and act
 through: lenses (saved views), the program view (an auto-derived progress
 tree), and workflows (reviewable automation DAGs with tracked runs).

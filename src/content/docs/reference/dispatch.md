@@ -1,9 +1,15 @@
 ---
 title: Dispatch, capabilities, and profiles
 description: Briefed background agents, machine capability maps, and profiles as satisfiability specs — with no silent substitution.
-sidebar:
-  order: 6
 ---
+
+**Use this when** you run queue items as background agents with
+`spor dispatch`, or need to control which toolset a dispatched session
+launches with and which machines can take the work.
+
+**You do not need this if** you work queue items yourself in an interactive
+session; the everyday loop covers that without dispatch, starting with [The
+decision queue](/use-spor/queue/).
 
 Dispatch launches a background agent with the right context already
 attached:

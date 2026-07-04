@@ -5,6 +5,14 @@ sidebar:
   order: 5
 ---
 
+**Use this when** you are deciding where a graph should live, moving from a
+personal graph to a team server, or working out which configuration layer
+wins on a machine.
+
+**You do not need this if** you followed a quickstart and `spor status`
+already shows the mode you expect; the quickstarts under [Start
+here](/start-here/) cover setup.
+
 Spor runs in two modes with the same CLI, the same node format, and the same
 graph semantics. The difference is who holds the graph and who performs
 writes.

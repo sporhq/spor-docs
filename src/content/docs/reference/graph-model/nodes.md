@@ -5,6 +5,14 @@ sidebar:
   order: 1
 ---
 
+**Use this when** you write or edit node files by hand in local mode, build
+tooling that writes nodes, or need the exact rule behind a rejected write
+such as the resolver gate refusing to close a task.
+
+**You do not need this if** you write through capture and the everyday loop,
+where the node format is handled for you; for the basic idea, read [Core
+ideas](/start-here/core-ideas/).
+
 A Spor node is one markdown file in the graph home's `nodes/` directory:
 YAML frontmatter for the structured fields, a short prose body underneath.
 Here is a decision from a fictional team building a parcel-tracking product:

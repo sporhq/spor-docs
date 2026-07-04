@@ -5,6 +5,12 @@ sidebar:
   order: 4
 ---
 
+**Use this when** you are extending the ontology with a new node or edge
+type, an organization-specific write policy, or a replacement queue ranking.
+
+**You do not need this if** the built-in types cover your work; a team can
+use Spor indefinitely without touching the schema registry.
+
 Spor's ontology — which node types exist, which edges connect them, what a
 status change requires — is not hardcoded. It lives in the **schema
 registry**: `type: schema` nodes loaded from a seed pack that ships with
@@ -146,7 +152,7 @@ The `kind:` field admits a few more registry citizens:
   reported and the built-in blend stands.
 - **`register`** — an extensible enum the kernel exposes as data, such as
   the `requires` register of work risk classes used by
-  [dispatch](/use-spor/dispatch/).
+  [dispatch](/reference/dispatch/).
 
 Policies and registers go through the same proposal/activation flow as
 everything else they govern.

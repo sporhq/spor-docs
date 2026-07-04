@@ -5,6 +5,13 @@ sidebar:
   order: 8
 ---
 
+**Use this when** a team's graph spans several repositories, a repository is
+renamed or archived, or gardener findings appear in the queue and you want
+to know where they come from.
+
+**You do not need this if** you work in one repository under its default
+slug; an ungrouped repo resolves to itself and the gardener needs no setup.
+
 One graph spans all of a team's work, so nodes need a home. Spor groups them
 in two layers, because "project" pulls apart the moment a product spans more
 than one repository: a **repo** is one git identity, and a **project** is

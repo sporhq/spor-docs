@@ -58,6 +58,6 @@ attributed to the person or agent that made it.
 | [Local and remote mode](/reference/graph-model/local-and-remote/) | The two deployment shapes and the configuration cascade |
 | [Identity and attribution](/use-spor/identity/) | People, organizations, and agents acting on behalf of people |
 | [Claims and leases](/reference/graph-model/claims/) | How concurrent workers avoid doing the same task twice |
-| [Dispatch, capabilities, and profiles](/use-spor/dispatch/) | Briefed background agents and substitution-free routing |
+| [Dispatch, capabilities, and profiles](/reference/dispatch/) | Briefed background agents and substitution-free routing |
 | [Lenses, program view, and workflows](/reference/graph-model/lenses-and-workflows/) | Saved views, the progress tree, and workflow runs |
 | [Repos, projects, and the gardener](/reference/graph-model/repos-and-projects/) | Two-layer grouping and the automated hygiene sweep |

@@ -18,7 +18,6 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 - [The decision queue](https://docs.sporhq.io/use-spor/queue/): open work ranked by graph signals (blocking, heat, staleness, age) plus human priority and wake dormancy
 - [Briefings and corrections](https://docs.sporhq.io/use-spor/briefings/): how a compile selects relevant context, and standing corrections as pins/excludes/guidance
 - [Identity and attribution](https://docs.sporhq.io/use-spor/identity/): person, agent-on-behalf-of-person, and org
-- [Dispatch, capabilities, and profiles](https://docs.sporhq.io/use-spor/dispatch/): launching background agents against queue items
 - [What happens automatically](https://docs.sporhq.io/use-spor/what-happens-automatically/): wiring a host, then the session-start briefing, per-prompt digest, commit linking, and session-end distiller — all fail-open
 
 ## Hosted Spor
@@ -67,6 +66,7 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 - [Repos, projects, and the gardener](https://docs.sporhq.io/reference/graph-model/repos-and-projects/): repo↔project grouping and the background maintenance sweeps
 
 ## Other reference
+- [Dispatch, capabilities, and profiles](https://docs.sporhq.io/reference/dispatch/): launching background agents against queue items, machine capability maps, and profiles as satisfiability specs
 - [Configuration](https://docs.sporhq.io/reference/configuration/): the config cascade, `.spor`/`.spor.json` markers, environment variables, and tenant selection
 - [Costs and controls](https://docs.sporhq.io/reference/costs-and-controls/): where LLM calls happen and how to bound or disable them
 - [Diagnostics](https://docs.sporhq.io/reference/diagnostics/): `spor status`, `spor-hook doctor`, `spor drain`, and the slow first request after an idle period

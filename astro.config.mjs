@@ -38,6 +38,7 @@ export default defineConfig({
 							label: 'Schema and graph model',
 							items: [{ autogenerate: { directory: 'reference/graph-model' } }],
 						},
+						'reference/dispatch',
 						'reference/configuration',
 						'reference/costs-and-controls',
 						'reference/diagnostics',
@@ -68,7 +69,7 @@ export default defineConfig({
 		'/concepts/queue': '/use-spor/queue/',
 		'/concepts/briefings': '/use-spor/briefings/',
 		'/concepts/identity': '/use-spor/identity/',
-		'/concepts/dispatch': '/use-spor/dispatch/',
+		'/concepts/dispatch': '/reference/dispatch/',
 		'/concepts/nodes': '/reference/graph-model/nodes/',
 		'/concepts/node-types': '/reference/graph-model/node-types/',
 		'/concepts/edges': '/reference/graph-model/edges/',
@@ -103,6 +104,9 @@ export default defineConfig({
 		'/mcp/operating-loop': '/reference/mcp/operating-loop/',
 		'/mcp/tools': '/reference/mcp/tools/',
 		'/mcp/widget': '/reference/mcp/widget/',
+		// Concepts tiering: dispatch is learn-later material, moved from the
+		// beginner path (Use Spor) into Reference.
+		'/use-spor/dispatch': '/reference/dispatch/',
 		'/style-guide': '/contributing/style-guide/',
 		// Wake-on-request was demoted from a standalone hosted page to a
 		// troubleshooting entry on the diagnostics page.

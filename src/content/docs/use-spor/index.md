@@ -34,10 +34,11 @@ writes to the person or agent that made them.
 - [Identity and attribution](/use-spor/identity/) — see how every write is
   attributed to a person, or to an agent writing on behalf of the person who
   owns it.
-- [Dispatch, capabilities, and profiles](/use-spor/dispatch/) — use
-  `spor dispatch <node-id>` to compile a briefing and launch a background
-  agent against a queue item, pre-briefed instead of cold.
 - [What happens automatically](/use-spor/what-happens-automatically/) — wire
   Spor into a coding agent, then the four session hooks that run for you:
   the session-start briefing, per-prompt digest, commit linking, and the
   end-of-session distiller — all fail-open.
+
+Running work as background agents — `spor dispatch`, capability maps, and
+profiles — is reference material:
+[Dispatch, capabilities, and profiles](/reference/dispatch/).
