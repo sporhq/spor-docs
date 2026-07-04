@@ -39,6 +39,36 @@ package with `npm install -g @sporhq/spor`, then run `spor upgrade`. The full
 flags for `spor install` and `spor upgrade`, including `--scope`, are in
 [Setup and identity](/reference/cli/setup-and-identity/).
 
+### Check it worked
+
+Run:
+
+```sh
+spor status
+```
+
+A wired host adds a plugin line:
+
+```text
+plugin:   spor@spor 0.18.6 loaded
+```
+
+The end-to-end check is behavioral: start a new session in an enabled
+repository, and the briefing described below appears as injected context at
+session start.
+
+- If there is no `plugin:` line, the host is not wired; re-run
+  `spor install claude` and restart the host so it reloads.
+- If the line says `(STALE — package … installed; run 'spor upgrade')`, the
+  host loaded an older copy; run `spor upgrade`.
+- If sessions start with no briefing, the repository is probably not enabled;
+  run `spor enable` there and check `spor status` in that directory.
+- If hooks were working and stopped, `spor-hook doctor` reports recent hook
+  and distiller errors, as described in
+  [Everything fails open](#everything-fails-open).
+
+Next step: start a session and check for the briefing described below.
+
 ## At session start: the briefing
 
 When a session starts (or resumes) in an enabled repo, Spor compiles a

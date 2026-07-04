@@ -47,7 +47,7 @@ If you belong to more than one organization, pick the one this connector
 should work against. After that, the host holds short-lived OAuth credentials
 of its own, not your token.
 
-## 4. Try it
+## 4. Check it worked
 
 Ask the assistant:
 
@@ -55,8 +55,29 @@ Ask the assistant:
 what's in my Spor queue?
 ```
 
+You should see the host call a Spor tool and answer with ranked queue items:
+node ids like `issue-tidefall-double-charge` with one-line summaries.
+
 Once connected, it can search the graph, read the ranked queue, and record
 outcomes back. Each write is attributed to you.
+
+- If Spor does not appear in the host's connector or tool list, the connector
+  was not added or the URL is wrong; a self-hosted server needs the `/mcp`
+  path. In Claude Code, run `/mcp` to see the server and its authentication
+  state.
+- If this says unauthorized, or the tools start failing after working before,
+  the grant expired or was revoked; remove the connector and add it again to
+  re-authorize, and check that your `spor_pat_...` token is still valid
+  (`spor token list`).
+- If this hangs on the first use, a hosted team graph may be waking from idle;
+  wait rather than retrying. See
+  [slow first request diagnostics](/reference/diagnostics/#slow-first-request-after-an-idle-period).
+- If the assistant answers from general knowledge without calling any tool,
+  the connector's tools are disabled for that conversation; enable them in the
+  chat's tool settings.
+
+Next step: setup is complete. The links under Where to go next cover the
+operating loop and the tools the assistant can call.
 
 ## 5. Disconnecting
 

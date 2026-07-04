@@ -30,6 +30,15 @@ Check the install:
 spor --help
 ```
 
+You should see a usage listing that begins:
+
+```text
+spor — Spor client CLI
+```
+
+If the shell says `spor: command not found`, open a new terminal first. If it
+is still missing, npm's global bin directory is not on your PATH.
+
 ## 2. Create the graph home
 
 ```bash
@@ -62,10 +71,55 @@ spor person create 'Ines Duarte' --email ines@tidefall.example.com
 
 This command is idempotent too.
 
+You should see a confirmation like:
+
+```text
+created person Ines Duarte (person-9c2f51ab84d03e77) <ines@tidefall.example.com>
+```
+
+The id is derived automatically; `--id` picks your own.
+
+## Check it worked
+
+Run:
+
+```sh
+spor status
+```
+
+A healthy local graph looks like:
+
+```text
+mode:     local  (not enabled here — run /spor:onboard to set up, or 'spor enable' to opt in; hooks are a no-op)
+project:  billing
+graph:    /home/ines/.spor/nodes (1 nodes)
+node:     20.11.0 (>= 20 required, OK)
+```
+
+The `graph:` line with a node count is the success signal. The one node is
+your person node. The `(not enabled here …)` note on the `mode:` line is
+expected at this point; it is about per-repository hooks, which
+[What happens automatically](/use-spor/what-happens-automatically/) covers,
+and it does not affect anything on this page.
+
+- If the `graph:` line says `not created — run 'spor init'`, step 2 has not
+  run in this shell; check that `SPOR_HOME` points where you meant.
+- If the `node:` line reports a version below 20, upgrade Node.js and
+  reinstall.
+
+Next step: record your first node below.
+
 ## 4. Record your first node
 
 ```bash
 spor add "A retry that succeeds while the payment provider's webhook is delayed can charge the card twice. Fix before the rollout." --type issue
+```
+
+You should see:
+
+```text
+added issue-a-retry-that-succeeds-while-the-payment-provider (issue) to /home/ines/.spor/nodes
+  edit it to add edges/detail; 'spor next' will surface it.
 ```
 
 In local mode this writes a well-formed, validated node file. You never
@@ -77,6 +131,13 @@ current directory, or you can set it with `--project`.
 
 ```bash
 spor next
+```
+
+You should see:
+
+```text
+1. [0] issue-a-retry-that-succeeds-while-the-payment-provider — A retry that succeeds while the payment provider's webhook is (issue)
+   queueable and live
 ```
 
 `spor next` shows the ranked list of open work, ordered by graph signals such

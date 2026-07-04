@@ -69,9 +69,14 @@ Use this when <the situation that calls for this page>.
   versions, access, or prior pages.
 - `Steps`: use a numbered sequence. Each step is one action, with the command
   the reader runs.
-- `Check it worked`: include this on every setup page. Give the command to run
-  and the output that indicates success, so the reader knows they are done
-  before moving on.
+- `Check it worked`: include this on every setup page, after the steps it
+  verifies. The block has four parts: the command to run (for setup
+  milestones, usually `spor status`); a fenced block of the output the reader
+  should see; the most likely failure outputs — usually two or three — each
+  paired with its exit (`If you see X, do Y`, `If this hangs, ...`, `If this says
+  unauthorized, ...`); and a closing `Next step` line telling the reader where
+  to go once the check passes. Expected output is real captured output with
+  fictional identifiers, never an invented shape.
 - `Common problems`: pair each symptom the reader can see with the fix.
 - `Related reference`: link the reference entries for the commands the page
   used.
@@ -163,11 +168,14 @@ admins of a hosted organization, `reference/` for someone looking up exact
 behavior, and `contributing/` for docs contributors.
 
 Review also checks that setup and how-to pages include a working `Check it
-worked` step. It checks that concept pages and reference landing pages open
-with the orientation block in its canonical form. The voice must hold: no
-marketing intensifiers or persuasion patterns. `scripts/check-style.sh`
-catches the known phrases in `scripts/style-denylist.txt`; the [style guide's
-voice section](/contributing/style-guide/#voice) is the full rule.
+worked` step, that the step shows real expected output, and that likely
+failure outputs are paired with their exits. It checks that concept pages and
+reference landing pages open with the orientation block in its canonical form.
+The voice must hold: no marketing intensifiers or persuasion patterns.
+`scripts/check-style.sh` catches the known phrases in
+`scripts/style-denylist.txt`; the
+[style guide's voice section](/contributing/style-guide/#voice) is the full
+rule.
 
 Examples must be fictional and drawn from
 [the tidefall scenario](/contributing/example-scenario/), as the

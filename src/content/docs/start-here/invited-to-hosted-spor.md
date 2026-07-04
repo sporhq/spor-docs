@@ -33,6 +33,15 @@ Check the install:
 spor --help
 ```
 
+You should see a usage listing that begins:
+
+```text
+spor — Spor client CLI
+```
+
+If the shell says `spor: command not found`, open a new terminal first. If it
+is still missing, npm's global bin directory is not on your PATH.
+
 ## 2. Join with your invite token
 
 If a team admin sent you a token (`spor_pat_...`), paste it:
@@ -56,16 +65,82 @@ If you do not have a pasted token, `spor auth login` signs you in with a
 device code. It prints a short code and a URL, and you approve in any
 browser, which works over SSH and on headless machines.
 
+On success, `spor join` prints a line like:
+
+```text
+stored credential for tidefall @ https://api.sporhq.io as person-ines <ines@tidefall.example.com>
+```
+
+It then prints the path of the credential file it wrote.
+
+- If you see `token rejected by https://api.sporhq.io (401) — not stored`,
+  the token is mistyped, expired, or revoked; nothing was saved. Ask whoever
+  sent it to mint a new one.
+- If you see `note: could not reach … storing anyway`, the credential was
+  stored but not confirmed; check the server URL and your network, then verify
+  with `spor whoami`.
+
 ## 3. Verify who you are
 
 ```bash
 spor whoami
 ```
 
-This echoes the identity the server binds to your token: your person node,
-name, and org. If it reports that the token is not bound to a person, tell
-whoever minted it. An unbound token authenticates but gets an empty personal
-queue.
+This echoes the identity the server binds to your token: your name, person
+node id, and email.
+
+You should see:
+
+```text
+Ines Duarte (person-ines) <ines@tidefall.example.com>
+```
+
+The not-bound case prints exactly:
+
+```text
+⚠ token maps to no person node — routed questions and personal queue will be empty
+```
+
+That token authenticates, but routed questions and your personal queue have
+no person to attach to; tell whoever minted it. If `spor whoami` says
+`unauthenticated (token rejected)`, the token itself is bad; go back to
+step 2.
+
+## Check it worked
+
+Run:
+
+```sh
+spor status
+```
+
+A healthy hosted login looks like:
+
+```text
+mode:     remote  (not enabled here — run /spor:onboard to set up, or 'spor enable' to opt in; hooks are a no-op)
+project:  billing
+server:   https://api.sporhq.io
+health:   OK (214 nodes)
+token:    present
+identity: Ines Duarte (person-ines) <ines@tidefall.example.com>
+node:     20.11.0 (>= 20 required, OK)
+```
+
+The success signals are `health: OK` with a node count and an `identity:`
+line naming you. The `(not enabled here …)` note is expected until you enable
+a repository in step 6.
+
+- If you see `health:   AUTH FAILED (401) — token invalid, revoked, or expired`
+  and `identity: unauthenticated (token rejected)`, re-run `spor join` with a
+  fresh token, or sign in with `spor auth login`.
+- If you see `health:   OFFLINE — could not reach server (fetch failed)`, the
+  server URL is wrong or unreachable; check the URL you joined and your
+  network.
+- If this hangs or the first request is slow, the team graph may be waking
+  from idle; wait rather than retrying. See the slow-first-request note at the
+  top of this page.
+
+Next step: make your first capture below.
 
 ## 4. Make your first capture
 
@@ -94,6 +169,13 @@ open work, claims, and blockers, not just your own.
 
 ```bash
 spor enable
+```
+
+You should see:
+
+```text
+enabled Spor for /home/ines/code/billing
+  /home/ines/code/billing/.spor.json — hooks are now active here; commit it to share the setting
 ```
 
 This writes `{"enabled": true}` to that repo's committable `.spor.json`.

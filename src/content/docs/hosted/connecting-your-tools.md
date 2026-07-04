@@ -54,6 +54,49 @@ the assistant writes through the connector is attributed to you. Tool-level
 detail — what each MCP tool does and the interactive queue and lens views —
 is in the [MCP section](/reference/mcp/).
 
+## Check it worked
+
+For the CLI, run:
+
+```sh
+spor status
+```
+
+A healthy connection looks like:
+
+```text
+mode:     remote
+project:  billing
+server:   https://api.sporhq.io
+health:   OK (214 nodes)
+token:    present
+identity: Ines Duarte (person-ines) <ines@tidefall.example.com>
+node:     20.11.0 (>= 20 required, OK)
+```
+
+In a repository that has not run `spor enable`, the `mode:` line carries a
+`(not enabled here …)` note. That is the per-repo opt-in this page already
+describes, not a connection failure.
+
+- If you see `health:   AUTH FAILED (401) — token invalid, revoked, or expired`,
+  re-run `spor auth login`, or paste a fresh token with `spor join`.
+- If you see `health:   OFFLINE — could not reach server (fetch failed)`, the
+  server URL is wrong or there is no network.
+- If `identity:` shows
+  `⚠ token maps to no person node — routed questions and personal queue will be empty`,
+  the identity binding is missing; an admin fixes it. This is the same
+  `bound: false` condition described below.
+- If this hangs, the graph may be waking from idle; wait rather than retrying.
+  See
+  [slow first request diagnostics](/reference/diagnostics/#slow-first-request-after-an-idle-period).
+
+For the connector, ask the assistant for your Spor queue and expect a tool
+call that returns ranked items. The step-by-step check is in
+[Connect an assistant](/start-here/connect-an-assistant/#4-check-it-worked).
+
+Next step: use the teammate first-day list below when you are setting up
+someone else.
+
 ## A teammate's first day
 
 What a new teammate actually needs:

@@ -27,6 +27,34 @@ spor token list
 spor token revoke <hash-prefix>
 ```
 
+Check the first two commands before you move on. `spor token create` prints
+the minted token once:
+
+```text
+minted personal access token for Ines Duarte (person-ines) <ines@tidefall.example.com> [laptop] (expires 2026-10-02T09:15:00.000Z) [a1b2c3d4e5f6]
+  this is shown ONCE — copy it now, it is not recoverable:
+
+  spor_pat_...
+```
+
+`spor token list` then shows it by hash prefix and label:
+
+```text
+a1b2c3d4e5f6  laptop  (expires 2026-10-02T09:15:00.000Z)
+```
+
+An expired token is flagged `EXPIRED` in the listing.
+
+- If you see `no personal access tokens — mint one with 'spor token create'`,
+  the list is empty. That is the expected first-time state, not an error.
+- If you see
+  `forbidden — a personal access token needs a bound person identity.`, your
+  current token maps to no person node; check `spor whoami` and ask an admin
+  to fix the binding.
+- If you see `mint failed (401)`, the credential you are calling with is
+  itself invalid, revoked, or expired; sign in again with `spor auth login`
+  before minting.
+
 Three properties to know:
 
 - **The plaintext is shown once**, at creation. The server keeps only a hash;
@@ -63,7 +91,9 @@ different blast radius:
   `DELETE /v1/me/tokens/{hash-prefix}`) cascades the safe direction: it
   revokes the PAT itself and every OAuth grant that was authorized with it,
   so killing the token really kills the access. Reach for this when the
-  token itself may be compromised, not to disconnect a single host.
+  token itself may be compromised, not to disconnect a single host. The
+  cascade is visible in the output:
+  `revoked a1b2c3d4e5f6 (+2 oauth grants)`.
 
 Admins have a matching offboarding revoke for any token; the same cascade
 applies, so an admin removing a person's token also disconnects that
