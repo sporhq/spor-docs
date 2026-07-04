@@ -9,7 +9,9 @@ An organization is the unit of everything in hosted Spor: one shared graph,
 one membership list, one isolation boundary. You join one by invitation — an
 admin on the team invites you, and you sign in through the hosted front door
 at `auth.sporhq.io` with your email. There is no open signup into an existing
-organization's graph.
+organization's graph. See
+[Data, privacy, and export](/hosted/data-privacy-and-export/) for what the
+hosted service can see and how data leaves it.
 
 ## One account, several organizations
 

@@ -10,6 +10,9 @@ someone has told you one is coming. In remote mode the team shares one live
 graph on a Spor server. Writes are attributed to the person or agent that
 made them, and concurrent writes are handled server-side.
 
+What the server can see, what reaches a model, and how to export everything
+are stated precisely in [Data, privacy, and export](/hosted/data-privacy-and-export/).
+
 :::note
 The first request after your team's graph has been idle can take longer than
 later requests. You do not need to retry immediately; see
@@ -71,8 +74,12 @@ spor add "Retry-After is missing from 429 responses on the export API. Agreed wi
 ```
 
 In remote mode you send prose and the server types the entry and links it
-into the graph. You do not pick a type or write frontmatter. A few seconds
-later it is visible to the whole team.
+into the graph. You do not pick a type or write frontmatter. That capture
+text is all the ingestion model sees; session transcripts stay on your
+machine, as described in
+[Data, privacy, and export](/hosted/data-privacy-and-export/).
+
+A few seconds later the node is visible to the whole team.
 
 ## 5. Read the team queue
 

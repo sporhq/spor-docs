@@ -77,4 +77,5 @@ If requests keep failing rather than just starting slow, run
 [`spor status`](#spor-status) or
 [`spor-hook doctor`](#spor-hook-doctor).
 `GET /v1/status` reports service health and basic operational metrics for
-your organization's graph — see [Your data](/hosted/your-data/).
+your organization's graph — see
+[Data, privacy, and export](/hosted/data-privacy-and-export/).

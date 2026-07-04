@@ -31,6 +31,10 @@ data.
 
 ## Where to start
 
+What the service can see and how you get your data out are stated in
+[Data, privacy, and export](/hosted/data-privacy-and-export/); read it
+before you connect anything.
+
 Joining is by invitation: an admin on your team invites you, you sign in at
 the hosted front door with your email, and your account becomes a member of
 the organization. From there:
@@ -52,4 +56,4 @@ for what to check.
 - [Connecting your tools](/hosted/connecting-your-tools/) — CLI configuration and the MCP connector.
 - [Tokens and access](/hosted/tokens-and-access/) — personal access tokens, OAuth grants, admin management.
 - [Agents and attribution](/hosted/agents-and-attribution/) — agent identities and the audit trail.
-- [Your data](/hosted/your-data/) — export, what the server's model sees, and the sandbox.
+- [Data, privacy, and export](/hosted/data-privacy-and-export/) — what the server and its model can see, full export, and revoking access.

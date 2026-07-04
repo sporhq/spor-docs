@@ -27,7 +27,7 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 - [Connecting your tools](https://docs.sporhq.io/hosted/connecting-your-tools/): pointing your CLI and agent hosts at the hosted graph
 - [Tokens and access](https://docs.sporhq.io/hosted/tokens-and-access/): managing tokens and OAuth grants
 - [Agents and attribution](https://docs.sporhq.io/hosted/agents-and-attribution/): agent principals and on-behalf-of attribution
-- [Your data](https://docs.sporhq.io/hosted/your-data/): the data-minimization posture, export, and data exit
+- [Data, privacy, and export](https://docs.sporhq.io/hosted/data-privacy-and-export/): what the server and its model can see, full export and data exit, revocation, and offboarding
 
 ## CLI reference
 - [CLI reference](https://docs.sporhq.io/reference/cli/): every `spor` verb with flags, aliases, and a local/remote/dual mode badge

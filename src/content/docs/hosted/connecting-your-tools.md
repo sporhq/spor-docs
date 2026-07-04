@@ -68,3 +68,7 @@ What a new teammate actually needs:
 
 After that there is no hosted-specific workflow to learn; the
 [Start here](/start-here/) material applies as written.
+
+What the server can see once repos are enabled and the connector is added —
+and how all of it can be exported — is stated in
+[Data, privacy, and export](/hosted/data-privacy-and-export/).

@@ -107,5 +107,8 @@ export default defineConfig({
 		// Wake-on-request was demoted from a standalone hosted page to a
 		// troubleshooting entry on the diagnostics page.
 		'/hosted/wake-on-request': '/reference/diagnostics/#slow-first-request-after-an-idle-period',
+		// "Your data" was reshaped into the question-driven data, privacy,
+		// and export page.
+		'/hosted/your-data': '/hosted/data-privacy-and-export/',
 	},
 });
