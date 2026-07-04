@@ -18,13 +18,14 @@ team graph by accident.
 
 What reaches the Spor server is what clients deliberately send: nodes
 teammates write through the CLI, REST API, or MCP connector; capture text;
-and references such as commit ids that link work to nodes. Those references
-are what let `spor blame` answer which nodes reference a commit.
+short per-prompt digest queries, in remote mode, when a wired session asks
+what is relevant; and references such as commit ids that link work to
+nodes. Those references are what let `spor blame` answer which nodes
+reference a commit.
 
-Session transcripts stay on the client: what a wired session sends is the
-short capture text described under
-[what gets sent to a model](#what-gets-sent-to-a-model), never the
-transcript itself.
+Session transcripts stay on the client: a wired session sends capture text,
+described under [what gets sent to a model](#what-gets-sent-to-a-model),
+and short per-prompt digest queries — never the transcript itself.
 
 Each organization gets one graph, isolated from every other organization's
 graph. An org-scoped token routes each request to your organization's graph,
