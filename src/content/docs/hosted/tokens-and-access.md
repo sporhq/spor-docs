@@ -43,16 +43,31 @@ Three properties to know:
 ## OAuth grants
 
 Connectors such as claude.ai cannot carry a static token, so they hold OAuth
-grants instead: an access token good for 30 days and a rotating, single-use
-refresh token, both minted through the authorization flow at
-`auth.sporhq.io`. A grant carries the same identity and the same flat
-read/write scope as the token it was authorized with — the connector is you,
-as far as attribution is concerned.
+grants instead: an access token (`spor_oat_…`) good for 30 days and a
+refresh token (`spor_ort_…`) good for 90 days that rotates on each use, both
+minted through the authorization flow at `auth.sporhq.io`. Authorization
+codes are single-use and expire after 10 minutes. A grant carries the same
+identity and the same flat read/write scope as the token it was authorized
+with — the connector is you, as far as attribution is concerned. The exact
+flows, endpoints, and lifetimes are specified in
+[Authentication](/reference/api/authentication/).
 
-Grants can be revoked independently of your tokens, and the cascade runs the
-safe direction: revoking a personal access token also revokes every OAuth
-grant that was authorized with it, so killing the token really kills the
-access.
+Grants can be revoked independently of your tokens, with two levers of very
+different blast radius:
+
+- **Revoke one grant.** `POST /oauth/revoke` with the connector's token is
+  token-scoped — it ends that grant and nothing else. Your personal access
+  token and any other connected assistants keep working. Removing the
+  connector from the host's settings is the everyday way to trigger this.
+- **Revoke the personal access token.** `spor token revoke` (or
+  `DELETE /v1/me/tokens/{hash-prefix}`) cascades the safe direction: it
+  revokes the PAT itself and every OAuth grant that was authorized with it,
+  so killing the token really kills the access. Reach for this when the
+  token itself may be compromised, not to disconnect a single host.
+
+Admins have a matching offboarding revoke for any token; the same cascade
+applies, so an admin removing a person's token also disconnects that
+person's connectors.
 
 ## Admin token management
 

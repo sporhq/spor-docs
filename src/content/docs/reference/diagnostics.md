@@ -32,7 +32,7 @@ automatic machinery healthy". It reports the resolved mode, whether the
 server is reachable, whether your token is valid, the depth of the outbox and
 dead-letter spool, how fresh the cached briefings are, and the most recent
 hook and distiller errors. Because the hooks
-[fail open](/start-here/what-happens-automatically/), a quietly broken
+[fail open](/use-spor/what-happens-automatically/), a quietly broken
 setup still gives you working sessions — just with less context — so `doctor`
 is how such a state becomes visible.
 

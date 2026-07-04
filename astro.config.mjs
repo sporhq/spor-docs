@@ -51,10 +51,16 @@ export default defineConfig({
 	// /cli/, /api/, /mcp/); every old URL redirects to its journey-shaped home.
 	redirects: {
 		'/getting-started': '/start-here/',
-		'/getting-started/install': '/start-here/install/',
-		'/getting-started/local-quickstart': '/start-here/local-quickstart/',
-		'/getting-started/hosted-quickstart': '/start-here/hosted-quickstart/',
-		'/getting-started/what-happens-automatically': '/start-here/what-happens-automatically/',
+		'/getting-started/install': '/start-here/try-spor-locally/',
+		'/getting-started/local-quickstart': '/start-here/try-spor-locally/',
+		'/getting-started/hosted-quickstart': '/start-here/invited-to-hosted-spor/',
+		'/getting-started/what-happens-automatically': '/use-spor/what-happens-automatically/',
+		// The launch-era Start here pages dissolved into three entry paths
+		// (try locally / invited to hosted / connect an assistant).
+		'/start-here/install': '/start-here/try-spor-locally/',
+		'/start-here/local-quickstart': '/start-here/try-spor-locally/',
+		'/start-here/hosted-quickstart': '/start-here/invited-to-hosted-spor/',
+		'/start-here/what-happens-automatically': '/use-spor/what-happens-automatically/',
 		'/getting-started/costs-and-controls': '/reference/costs-and-controls/',
 		'/getting-started/diagnostics': '/reference/diagnostics/',
 		'/concepts': '/start-here/core-ideas/',

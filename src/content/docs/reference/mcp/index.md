@@ -73,10 +73,21 @@ list. Full details in the [tool reference](/reference/mcp/tools/).
 | [`extend`](/reference/mcp/tools/#extend) | Manually stretch your lease for a known long idle gap |
 | [`release`](/reference/mcp/tools/#release) | Drop the lease and return the node to the pool |
 
+## Protocol details
+
+The server speaks MCP over Streamable HTTP at `/mcp`, with the standard
+OAuth 2.1 discovery chain a connector host expects: protected-resource
+metadata (RFC 9728, advertised on the first unauthenticated request),
+authorization-server metadata (RFC 8414), dynamic client registration
+(RFC 7591), and authorization-code + PKCE. In practice this means you give
+your host one URL and it works out the rest. The credentials a host ends up
+holding — and how to revoke them — are described in
+[Tokens and access](/hosted/tokens-and-access/).
+
 ## In this section
 
 Connector setup — adding Spor in claude.ai or Claude Code and the OAuth flow
-you'll see — lives in [Connect an AI assistant](/start-here/connect-an-assistant/).
+you'll see — lives in [Connect an assistant](/start-here/connect-an-assistant/).
 
 - [The operating loop](/reference/mcp/operating-loop/) — the ORIENT → TRAVERSE → COMMIT
   mental model the server teaches connected assistants.

@@ -27,8 +27,8 @@ The reference section documents the full model for nodes, edges, and the shared 
 
 ## Where next
 
-- [Install Spor](/start-here/install/)
-- [Start with local mode](/start-here/local-quickstart/)
-- [Start with remote mode](/start-here/hosted-quickstart/)
+- [Try Spor locally](/start-here/try-spor-locally/)
+- [I was invited to hosted Spor](/start-here/invited-to-hosted-spor/)
+- [Connect an assistant](/start-here/connect-an-assistant/)
 - [Read the core ideas](/start-here/core-ideas/)
 - [See what Spor is not](/start-here/what-spor-is-not/)

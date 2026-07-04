@@ -6,13 +6,11 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 
 ## Start here
 - [What is Spor?](https://docs.sporhq.io/start-here/what-is-spor/): the plain-language introduction — what Spor keeps for a team and the few terms the rest of the docs use
-- [Start here](https://docs.sporhq.io/start-here/): install, connect your agent, and run your first briefing
-- [Install](https://docs.sporhq.io/start-here/install/): Node ≥20, `npm i -g @sporhq/spor`, and `spor install` per host (Claude Code, Codex, Gemini, Cursor, Copilot, opencode)
-- [Local quickstart](https://docs.sporhq.io/start-here/local-quickstart/): init a personal graph, create your person, capture a first node, and compile a briefing
-- [Hosted quickstart](https://docs.sporhq.io/start-here/hosted-quickstart/): join a team graph, sign in, and connect the MCP server
-- [Connect an AI assistant](https://docs.sporhq.io/start-here/connect-an-assistant/): wiring the Spor MCP server into claude.ai, Cowork, or Claude Code
+- [Start here](https://docs.sporhq.io/start-here/): routes a new reader to the entry path that matches how they are arriving
+- [Try Spor locally](https://docs.sporhq.io/start-here/try-spor-locally/): install the CLI (Node ≥20, `npm i -g @sporhq/spor`), init a personal graph, create your person, capture a first node, and compile a briefing
+- [I was invited to hosted Spor](https://docs.sporhq.io/start-here/invited-to-hosted-spor/): install the CLI, join a team graph with an invite token or device-code sign-in, make a first capture, and read the team queue
+- [Connect an assistant](https://docs.sporhq.io/start-here/connect-an-assistant/): wiring the Spor MCP server into claude.ai, Cowork, or Claude Code
 - [Core ideas](https://docs.sporhq.io/start-here/core-ideas/): the mental model — a typed graph of durable work outcomes, walked ORIENT → TRAVERSE → COMMIT
-- [What happens automatically](https://docs.sporhq.io/start-here/what-happens-automatically/): the session-start briefing, per-prompt digest, commit linking, and session-end distiller — all fail-open
 
 ## Use Spor
 - [Use Spor](https://docs.sporhq.io/use-spor/): the everyday working loop once Spor is installed
@@ -21,6 +19,7 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 - [Briefings and corrections](https://docs.sporhq.io/use-spor/briefings/): how a compile selects relevant context, and standing corrections as pins/excludes/guidance
 - [Identity and attribution](https://docs.sporhq.io/use-spor/identity/): person, agent-on-behalf-of-person, and org
 - [Dispatch, capabilities, and profiles](https://docs.sporhq.io/use-spor/dispatch/): launching background agents against queue items
+- [What happens automatically](https://docs.sporhq.io/use-spor/what-happens-automatically/): wiring a host, then the session-start briefing, per-prompt digest, commit linking, and session-end distiller — all fail-open
 
 ## Hosted Spor
 - [Hosted Spor](https://docs.sporhq.io/hosted/): the team product — one graph per org

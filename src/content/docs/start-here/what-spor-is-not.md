@@ -2,7 +2,7 @@
 title: What Spor is not
 description: The product's boundaries — six things Spor does not try to be, and where to go if you wanted one of them.
 sidebar:
-  order: 9
+  order: 7
 ---
 
 Spor uses vocabulary that also appears in ticket trackers, wikis, chat tools,
@@ -41,7 +41,7 @@ session, a distiller writes back the durable outcomes, typically one or two
 nodes: a decision that got made, an approach that was rejected, or a follow-up
 that was deferred. Briefings are compiled from those outcomes, so the next
 session inherits conclusions, not chat to re-read; [what happens
-automatically](/start-here/what-happens-automatically/) covers that flow.
+automatically](/use-spor/what-happens-automatically/) covers that flow.
 Session logs, if wanted, live in the coding agent's own history.
 
 ## Spor is not just RAG over docs

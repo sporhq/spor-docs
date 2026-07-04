@@ -2,14 +2,42 @@
 title: What happens automatically
 description: The session hooks the plugin runs — briefing injection, per-prompt digests, commit linking, and the end-of-session distiller.
 sidebar:
-  order: 8
+  order: 7
 ---
 
-Once a host is [wired](/start-here/install/) and a repository is enabled
-(`spor enable`), you mostly stop thinking about Spor. The plugin does its
-work through four hooks in the coding session. In Claude Code these attach to
-the host's native hook points; the other supported hosts receive equivalent
-hooks from the same manifest.
+Spor can brief a coding session automatically once a host is wired and the
+repository is enabled. The plugin does its work through four hooks in the
+session. In Claude Code these attach to the host's native hook points; the
+other supported hosts receive equivalent hooks from the same manifest.
+
+## Wire a host
+
+`spor install` connects Spor to an agent host so sessions get briefed
+automatically. Supported hosts are `claude`, `codex`, `gemini`, `opencode`,
+`copilot`, and `cursor`.
+
+```bash
+spor install claude
+```
+
+With no host named, it lists what it detects on your machine and changes
+nothing:
+
+```bash
+spor install            # detect only
+spor install --all      # install into every detected host
+spor install --print    # dry run: show what would change
+```
+
+Re-running `spor install` is safe. It refreshes paths and does not duplicate
+hooks.
+
+Hooks act only in repositories enabled with `spor enable`.
+
+A new npm release does not change what a host has already loaded. Upgrade the
+package with `npm install -g @sporhq/spor`, then run `spor upgrade`. The full
+flags for `spor install` and `spor upgrade`, including `--scope`, are in
+[Getting started verbs](/reference/cli/getting-started/).
 
 ## At session start: the briefing
 
