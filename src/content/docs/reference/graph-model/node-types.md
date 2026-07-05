@@ -34,7 +34,7 @@ These are the types sessions read and write every day.
 | `issue` | `issue-` | A defect or finding and its resolution lineage. Statuses: `open`, `active`, `resolved`; `resolved` requires a resolver. |
 | `incident` | `inc-` | Something that went wrong in operation. Live incidents join the decision queue. |
 | `artifact` | `spec-`, `art-` | A document, spec, module, or build product worth referencing. When it represents a change it may carry a delivery-stage status: `in-review` / `approved` (non-resolving) or `merged` / `released` (resolving). |
-| `norm` | `norm-` | A standing convention or constraint. Norms ride along in every project-relevant briefing without needing to match the query. |
+| `norm` | `norm-` | A standing convention or constraint. Norms ride along in every project-relevant briefing without needing to match the query, and can declare [coupling anchors](#coupling-norms) — file globs that pair artifacts that must change together. |
 | `question` | `question-` | A routed ask the graph could not answer. Statuses: `open`, `answered`. Routed to the steward of the closest relevant node. |
 | `capture-pending` | `cap-` | Raw captured text that fit no schema, preserved for later triage. Closed only as `merged` (content moved into proper nodes) or `rejected` (no durable fact). |
 | `finding` | `find-` | A gardener observation about another node, filed as a queue item — see [the gardener](/reference/graph-model/repos-and-projects/). |
@@ -89,3 +89,42 @@ Each type's schema declares a handful of flags the rest of the system reads:
 
 Run `spor schema` to see which flags each type carries in your graph's live
 registry.
+
+## Coupling norms
+
+A norm becomes a **coupling norm** by declaring two file-glob lists: when
+files matching `couples_when` change, the artifacts in `couples_also` should
+change in the same edit — or be consciously dismissed. The tidefall team
+pairs its API handlers with the reference page that describes them:
+
+```yaml
+couples_when: [src/api/**]
+couples_also: [docs/api.md]
+```
+
+Globs are repo-root-relative: `**` crosses path segments, `*` stays within
+one, `?` matches one character, a trailing `/` means the whole subtree, and a
+bare `docs/api.md` anchors at the repo root. An entry may be repo-qualified
+as `<slug>:<glob>` to couple artifacts across repositories — a qualified
+trigger fires only in that repo, while unqualified entries follow the norm's
+own scope (its project, or its `applies_to_*` selectors). Both keys are
+required; either alone does nothing, and `spor validate` warns.
+
+Two consumers read the anchors. The [edit-time
+hook](/use-spor/what-happens-automatically/#after-edits-coupling-reminders)
+reminds a session the moment it edits a trigger file, and
+[`spor check`](/reference/cli/reading-the-graph/#check) reports drift over a
+whole diff, for CI and pre-commit.
+
+For pairings where the coupled thing is a **value** that must agree — a
+runtime version repeated in two files — add a machine-checkable invariant:
+
+```yaml
+couples_value_a: ".nvmrc#v?(\\d+)"
+couples_value_b: "Dockerfile#FROM node:(\\d+)"
+```
+
+Each side is `<path>#<regex>`; the first capture group is the value. `spor
+check` compares the two extracted values: agreement means the coupling is
+satisfied even when one file went untouched, and disagreement is reported
+even when both files were edited.

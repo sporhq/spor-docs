@@ -93,6 +93,19 @@ links them to the graph nodes they relate to. This is what lets `spor blame`
 and node history answer "which decision does this commit implement?" later,
 without anyone annotating commits by hand.
 
+## After edits: coupling reminders
+
+Some files change together — an API handler and its reference page, a
+runtime version and the Dockerfile that repeats it. A team can declare such a
+pairing on a norm node as [coupling
+anchors](/reference/graph-model/node-types/#coupling-norms), and when a
+session edits a file matching the trigger set, a hook injects the coupled
+targets as a reminder: update them in the same change, or dismiss with a
+reason. The match is a plain glob comparison — no model call — and each norm
+reminds at most once per session. The same declarations power [`spor
+check`](/reference/cli/reading-the-graph/#check), the diff-level report for
+CI and pre-commit.
+
 ## At session end: the distiller
 
 When the session ends, a distiller reviews what happened and writes the

@@ -153,6 +153,29 @@ defaults to 100, max 500. `--nodes <dir>` reads a local checkout.
 spor changes --since '12 hours ago' --project billing
 ```
 
+### check
+
+```
+spor check [--staged | --range <a..b> | --files <f...>] [--strict] [--json]
+```
+
+**Mode:** dual
+
+Check a change set against the graph's [coupling
+norms](/reference/graph-model/node-types/#coupling-norms): report each norm
+whose trigger globs are touched while its target artifacts are not, and each
+declared value invariant whose two extracted values disagree. The change set
+is always local git — everything uncommitted plus untracked files by
+default, `--staged` for the index only, `--range` for a commit range (value
+invariants read the range's newer side), `--files` for an explicit list.
+Targets that live in another repository are listed as reminders, never
+failures. Advisory by default; `--strict` exits 1 when findings exist, which
+is the CI and pre-commit shape.
+
+```sh
+spor check --range origin/main..HEAD --strict
+```
+
 ### analytics
 
 ```
