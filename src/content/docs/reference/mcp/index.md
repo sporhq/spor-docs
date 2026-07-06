@@ -24,7 +24,8 @@ your team's knowledge graph directly. Connected, the assistant can:
   designing or deciding anything ([`query_graph`](/reference/mcp/tools/#query_graph)).
 - **Walk a node's neighborhood** — why it exists, what it depends on, what
   answered it ([`get_node`](/reference/mcp/tools/#get_node), root-mode
-  [`query_graph`](/reference/mcp/tools/#query_graph), [`render_lens`](/reference/mcp/tools/#render_lens)).
+  [`query_graph`](/reference/mcp/tools/#query_graph), [`render_lens`](/reference/mcp/tools/#render_lens),
+  [`explore_graph`](/reference/mcp/tools/#explore_graph)).
 - **Read the ranked decision queue** — open work ordered by graph signal, each
   item with a one-line why ([`show_queue`](/reference/mcp/tools/#show_queue)).
 - **Write outcomes back** — a decision, a finding, a deferral — as typed,
@@ -54,9 +55,9 @@ every write needs an author.
 
 ## The tools
 
-Twenty-three tools, framed by the server itself as an
+The tools, framed by the server itself as an
 [ORIENT → TRAVERSE → COMMIT loop](/reference/mcp/operating-loop/) rather than a flat
-list. Full details in the [tool reference](/reference/mcp/tools/).
+list — one entry per tool in the [tool reference](/reference/mcp/tools/).
 
 | Tool | What it does |
 | --- | --- |
@@ -68,6 +69,7 @@ list. Full details in the [tool reference](/reference/mcp/tools/).
 | [`recent_changes`](/reference/mcp/tools/#recent_changes) | What changed in the graph since a commit or a point in time |
 | [`analytics`](/reference/mcp/tools/#analytics) | Created-vs-completed, throughput, cycle time, WIP, bottlenecks |
 | [`schema`](/reference/mcp/tools/#schema) | Introspect the live schema registry — the contract as data |
+| [`explore_graph`](/reference/mcp/tools/#explore_graph) | Browse the graph's structure as nodes + typed edges — the birds-eye programs view, or walk outward from a node |
 | [`capture`](/reference/mcp/tools/#capture) | Raw prose in, typed and linked nodes out — the default write door |
 | [`put_node`](/reference/mcp/tools/#put_node) | Create or update one node from full markdown |
 | [`add_edge`](/reference/mcp/tools/#add_edge) | Add one typed edge between two nodes |
@@ -77,11 +79,14 @@ list. Full details in the [tool reference](/reference/mcp/tools/).
 | [`propose_correction`](/reference/mcp/tools/#propose_correction) | Pin, exclude, or add guidance to future briefings |
 | [`ask_question`](/reference/mcp/tools/#ask_question) | File a question, routed to whoever stewards the closest node |
 | [`run_workflow`](/reference/mcp/tools/#run_workflow) | Start a run of an active workflow |
+| [`apply_lens_action`](/reference/mcp/tools/#apply_lens_action) | Run one declarative action offered on a rendered lens item — the widget's own write path |
 | [`render_lens`](/reference/mcp/tools/#render_lens) | Run a named saved view (board, table, lineage tree) |
 | [`render_program`](/reference/mcp/tools/#render_program) | Progress and gating tree for a workstream root |
+| [`hello_mcp_app`](/reference/mcp/tools/#hello_mcp_app) | Debug-only: render a minimal hello-world widget to check host support |
 | [`claim`](/reference/mcp/tools/#claim) | Take the heartbeat-renewed lease on a node so no one duplicates it |
 | [`renew`](/reference/mcp/tools/#renew) | Bump your live lease's expiry — the heartbeat that keeps a claim |
 | [`extend`](/reference/mcp/tools/#extend) | Manually stretch your lease for a known long idle gap |
+| [`reserve`](/reference/mcp/tools/#reserve) | Convert a live claim into a resumption reservation when a session ends unfinished |
 | [`release`](/reference/mcp/tools/#release) | Drop the lease and return the node to the pool |
 
 ## Protocol details

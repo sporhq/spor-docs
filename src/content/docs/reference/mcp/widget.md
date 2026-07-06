@@ -5,9 +5,10 @@ sidebar:
   order: 4
 ---
 
-Three tools — [`render_queue`](/reference/mcp/tools/#render_queue),
+[`explore_graph`](/reference/mcp/tools/#explore_graph),
+[`render_queue`](/reference/mcp/tools/#render_queue),
 [`render_lens`](/reference/mcp/tools/#render_lens), and
-[`render_program`](/reference/mcp/tools/#render_program) — attach an interactive view
+[`render_program`](/reference/mcp/tools/#render_program) attach an interactive view
 to their result. On a host that supports MCP Apps (Claude, Goose, VS Code),
 the result renders as an embedded widget in the conversation instead of a
 wall of text: one trusted interpreter of Spor's view catalog, covering
@@ -25,13 +26,16 @@ What you get in the widget:
 - **Conversational affordances** on queue items — hand an item back to the
   assistant to pick up as the next task.
 
-## Read-only by design
+## Mutations are explicit tool calls
 
-The widget never writes. It emits no write-path actions; every mutation goes
-through the [write tools](/reference/mcp/tools/#writing), where it is validated,
-schema-gated, and attributed to your token. What you see in the widget is a
-view; what changes the graph is always a tool call you can see in the
-conversation.
+The widget's views are read-only rendering, with one exception: a lens can
+offer a declarative action on a rendered item (a status button on a board
+card, say), and selecting it calls
+[`apply_lens_action`](/reference/mcp/tools/#apply_lens_action) — validated
+and attributed to your token exactly like any other write, not a silent
+mutation of the view in place. Every other write goes through the
+[write tools](/reference/mcp/tools/#writing) directly. Either way, what
+changes the graph is always a tool call you can see in the conversation.
 
 ## Hosts without app support
 
