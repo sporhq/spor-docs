@@ -50,7 +50,7 @@ spor status
 A wired host adds a plugin line:
 
 ```text
-plugin:   spor@spor 0.18.6 loaded
+plugin:   spor@spor x.y.z loaded
 ```
 
 The end-to-end check is behavioral: start a new session in an enabled
