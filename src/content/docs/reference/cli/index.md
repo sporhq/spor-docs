@@ -21,8 +21,8 @@ serves both modes: **local**, where the graph is a git repository of
 markdown files on your machine, and **remote**, where your team shares one
 graph on the Spor server. Each verb resolves local-versus-remote per call,
 so scripts and habits carry over when a personal graph grows into a team
-one. This reference documents the binary's own help as of version 0.18.5;
-`spor help <command>` is always the word on the version you have installed.
+one. This reference documents the binary's own help; `spor help <command>`
+is always the word on the version you have installed.
 
 If you came to do something specific rather than look up a verb, start with
 [Common CLI tasks](/reference/cli/common-tasks/): short recipes that link into
