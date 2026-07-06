@@ -12,22 +12,14 @@ of those two addresses.
 
 ## The CLI
 
-The interactive path is `spor auth login`. It uses a device flow, so it works
-on a headless box or over SSH: the CLI prints a URL and a short code, you
-approve in any browser (signing in at the hosted front door if you aren't
-already), and the CLI receives an org-scoped credential and stores it. When a
-browser is available on the same machine, `spor auth login --web` skips the
-code and completes through a local redirect instead.
+Getting a credential onto a machine — `spor join` with a pasted invite token,
+or an interactive `spor auth login` — and confirming it with `spor whoami` is
+covered step by step in
+[I was invited to hosted Spor](/start-here/invited-to-hosted-spor/#2-join-with-your-invite-token).
+This section covers what carries across every machine and organization you
+connect, rather than that first walkthrough.
 
-If you were handed a token directly — the invitation path — paste it with
-`spor join`:
-
-```sh
-spor join spor_pat_...                 # hosted Spor; api.sporhq.io is the default
-spor join https://spor.example.com spor_pat_...   # a self-hosted server instead
-```
-
-Both paths write the client configuration for you. Under the hood it is three
+Under the hood, both paths write the client configuration as three
 environment variables, which you can also set directly (CI does):
 
 ```sh
@@ -36,10 +28,12 @@ SPOR_TOKEN=spor_pat_...                # your credential
 SPOR_ORG=tidefall                      # which stored credential is active
 ```
 
-Verify with `spor whoami` (or `GET /v1/me`): it echoes the person your token
-is bound to — name, person node id, and email. To confirm which organization
-is active, run `spor whoami --all`, which lists the stored identity for every
-organization; in the API, `GET /v1/me` reports the org directly.
+Credentials are keyed by `(server, org)`, so joining a second organization
+adds a credential rather than overwriting the first, and `SPOR_ORG` (or
+`spor whoami --all`) tells you which one is active. See
+[Organizations and sign-in](/hosted/organizations-and-sign-in/) for switching
+between them, and [Configuration](/reference/configuration/) for the full
+cascade these variables sit in.
 
 One thing that surprises people: setting `SPOR_SERVER` globally does not make
 every repository on your machine start writing to the team graph. Spor is
@@ -64,56 +58,31 @@ For the CLI, run:
 spor status
 ```
 
-A healthy connection looks like:
-
-```text
-mode:     remote
-project:  billing
-server:   https://api.sporhq.io
-health:   OK (214 nodes)
-token:    present
-identity: Ines Duarte (person-ines) <ines@tidefall.example.com>
-node:     20.11.0 (>= 20 required, OK)
-```
-
-In a repository that has not run `spor enable`, the `mode:` line carries a
-`(not enabled here …)` note. That is the per-repo opt-in this page already
-describes, not a connection failure.
-
-- If you see `health:   AUTH FAILED (401) — token invalid, revoked, or expired`,
-  re-run `spor auth login`, or paste a fresh token with `spor join`.
-- If you see `health:   OFFLINE — could not reach server (fetch failed)`, the
-  server URL is wrong or there is no network.
-- If `identity:` shows
-  `⚠ token maps to no person node — routed questions and personal queue will be empty`,
-  the identity binding is missing; an admin fixes it. This is the same
-  `bound: false` condition described below.
-- If this hangs, the graph may be waking from idle; wait rather than retrying.
-  See
-  [slow first request diagnostics](/reference/diagnostics/#slow-first-request-after-an-idle-period).
+Expect `health: OK` with a node count and an `identity:` line naming you. The
+full expected output, the per-repo `(not enabled here …)` note, and what each
+failure (`AUTH FAILED`, `OFFLINE`, a hang) means are walked through in
+[I was invited to hosted Spor](/start-here/invited-to-hosted-spor/#check-it-worked).
 
 For the connector, ask the assistant for your Spor queue and expect a tool
 call that returns ranked items. The step-by-step check is in
 [Connect an assistant](/start-here/connect-an-assistant/#4-check-it-worked).
 
-Next step: use the teammate first-day list below when you are setting up
+Next step: use the teammate first-day pointer below when you are setting up
 someone else.
 
 ## A teammate's first day
 
-What a new teammate actually needs:
+Setting someone else up? Point them at
+[I was invited to hosted Spor](/start-here/invited-to-hosted-spor/) — it is
+the full walkthrough: join or sign in, verify identity, make a first capture,
+and enable a repo. The one thing that has to happen on your side first is the
+**invitation** — a team admin invites them, so they have something to sign in
+to.
 
-1. **An invitation** from an admin, and a sign-in at the hosted front door.
-2. **The CLI connected** — `spor auth login`, then `spor whoami` to confirm
-   the token is bound to their person node (a warning that the token maps to
-   no person node — `bound: false` in `GET /v1/me` — means the identity
-   binding is missing; the admin fixes that).
-3. **Their working repos enabled** — `spor enable` in each repo that should
-   participate in the graph.
-4. **Optionally, the connector** — add `mcp.sporhq.io` in claude.ai.
-
-After that there is no hosted-specific workflow to learn; the
-[Start here](/start-here/) material applies as written.
+Optionally, they can also add the connector; see
+[Connect an assistant](/start-here/connect-an-assistant/). After that there
+is no other hosted-specific step — the [Start here](/start-here/) material
+applies as written.
 
 What the server can see once repos are enabled and the connector is added —
 and how all of it can be exported — is stated in
