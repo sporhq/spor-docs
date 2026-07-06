@@ -157,6 +157,12 @@ Prefer [`query_graph`](#query_graph) for compiled context and digests; reach
 for this when the user wants to see how nodes connect, or a host needs raw
 nodes-and-edges data to render.
 
+**No REST twin.** This is the one browse tool that is MCP (and widget) only
+— there is no `/v1/explore`-style route on [REST API](/reference/api/reads/).
+A remote client walks the graph via [`GET /v1/nodes/{id}`](/reference/api/reads/#get-v1nodesid)
+edge-by-edge, or gets a workstream's gating tree from
+[`GET /v1/program/{id}`](/reference/api/reads/#get-v1programid) instead.
+
 ### `render_queue`
 
 The widget twin of [`show_queue`](#show_queue): same input, same queue, same
@@ -336,6 +342,13 @@ a raw id.
 
 This is the one write path that originates from the
 [widget](/reference/mcp/widget/) itself rather than a model-issued tool call.
+
+**No REST twin.** Unlike every other write, there is no `/v1/lens/{id}/action`
+route on [REST API](/reference/api/writes/) — a lens's declarative actions
+only exist on a rendered widget, so this tool is reachable only through an
+MCP call. A REST-only client mutates the target node directly through
+[Writes](/reference/api/writes/) instead (`POST /v1/nodes/{id}/status`,
+`/edges`, and so on).
 
 ## Claims and leases
 

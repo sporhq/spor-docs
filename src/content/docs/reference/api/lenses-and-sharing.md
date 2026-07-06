@@ -32,6 +32,13 @@ recorded sharer, and the render shows a "Viewing as &lt;sharer&gt;" banner.
 There is no `?token=<PAT>` sharing path — it was removed so a shared link can
 never carry a write-capable credential.
 
+A lens can also offer a declarative action on a rendered item (a status
+button on a board card, say). Selecting one is a write, but there is no REST
+route for it — `apply_lens_action` is reachable only as an
+[MCP tool call](/reference/mcp/tools/#apply_lens_action) from the
+[widget](/reference/mcp/widget/) itself. A REST-only client mutates the
+target node directly through [Writes](/reference/api/writes/) instead.
+
 ## POST /v1/lens/{id}/ticket
 
 Mint a signed, expiring, read-only render ticket for the lens or workspace,

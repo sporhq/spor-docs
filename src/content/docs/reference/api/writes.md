@@ -42,6 +42,13 @@ graph's version history. These semantics apply to every write endpoint below
 - **Success shape.** Writes return `{status, id, revision, warnings}` with
   `status: created|updated|skipped`.
 
+One write has no REST route at all: a lens's declarative actions (a status
+button on a rendered board card) only exist on the
+[widget](/reference/mcp/widget/), so that path —
+[`apply_lens_action`](/reference/mcp/tools/#apply_lens_action) — is MCP-only.
+A REST-only client makes the equivalent change directly, through the node
+endpoints below.
+
 ## POST /v1/digest
 
 A read that shares the compile pipeline: digest-mode context for a prompt.

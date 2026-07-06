@@ -274,6 +274,14 @@ JSON view tree by default; `?format=text` for the terminal rendering.
 `truncated`, never silently. A root that nothing blocks is a successful empty
 result; an unknown id is `404`.
 
+This is the REST twin of `render_program`; the MCP tool
+[`explore_graph`](/reference/mcp/tools/#explore_graph) — free-form
+neighborhood browsing of plain nodes and edges, and the birds-eye overview
+across every program root — has no REST equivalent. It backs the interactive
+[graph navigator widget](/reference/mcp/widget/) and is reachable only over
+MCP; a REST-only client walks the graph via [`GET /v1/nodes/{id}`](#get-v1nodesid)
+edge-by-edge instead.
+
 ## GET /v1/export
 
 The data-exit path. By default, a ustar tarball of the graph's `nodes/`

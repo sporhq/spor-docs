@@ -114,6 +114,7 @@ verbatim so a calling program can self-correct. The full contract is on
 | POST | `/v1/nodes/{id}/claim` | take the heartbeat-renewed lease |
 | POST | `/v1/nodes/{id}/renew` | heartbeat: bump the lease expiry |
 | POST | `/v1/nodes/{id}/extend` | stretch a live lease for a long idle gap |
+| POST | `/v1/nodes/{id}/reserve` | convert a live claim into a resumption reservation |
 | POST | `/v1/nodes/{id}/release` | drop the lease, return the node to the pool |
 
 ### [Lenses and sharing](/reference/api/lenses-and-sharing/)

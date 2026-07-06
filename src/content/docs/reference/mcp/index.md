@@ -9,8 +9,11 @@ sidebar:
 or looking up an MCP tool's contract.
 
 **You do not need this if** you work from a shell; the [CLI
-reference](/reference/cli/) covers the same operations, and each tool has a
-REST twin under [REST API](/reference/api/).
+reference](/reference/cli/) covers the same operations, and most tools have a
+REST twin under [REST API](/reference/api/) — the widget-only
+[`apply_lens_action`](/reference/mcp/tools/#apply_lens_action) and the
+graph-browse [`explore_graph`](/reference/mcp/tools/#explore_graph) are the
+two MCP-only exceptions, noted on their tool entries.
 
 **After reading this, you should be able to** check the connector
 prerequisites, name what a connected assistant can read and write, and find
