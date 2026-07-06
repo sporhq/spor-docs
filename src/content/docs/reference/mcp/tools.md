@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-All twenty-three tools, grouped by role in the
+Every tool, grouped by role in the
 [operating loop](/reference/mcp/operating-loop/): reading and orienting, views,
 writing, claiming, and asking. Every tool returns both human-readable text and
 structured JSON. Writes follow one set of semantics: validated against the
@@ -131,9 +131,29 @@ add node and edge types, and this reflects what is actually live.
 
 ## Views
 
-Three tools whose results carry a view tree; on MCP-Apps hosts they attach
+Tools whose results carry a view tree; on MCP-Apps hosts they attach
 the [interactive widget](/reference/mcp/widget/), elsewhere the same view renders as
 text.
+
+### `explore_graph`
+
+Browse the graph's **structure**: a bounded neighborhood of plain nodes and
+typed edges, each node carrying truth flags (`superseded` / `resolved` /
+`blocked`) and a count of further unexpanded neighbors. On MCP-Apps hosts
+this renders the interactive graph navigator (lineage bands, expand/re-root,
+node inspector); elsewhere it returns the same slice as text.
+
+Call with no arguments for the birds-eye **programs overview** — every
+umbrella root (any node other work `blocks`) with resolution-driven
+completion percentage, most complete first — the answer to "show me the
+graph" with no node in mind. Pass `root_id` to walk outward from one node
+(depth 1–2, deterministic, no LLM call); pass `query` instead to seed the
+roots by relevance. Re-call with a neighbor's id as `root_id` to expand the
+frontier.
+
+Prefer [`query_graph`](#query_graph) for compiled context and digests; reach
+for this when the user wants to see how nodes connect, or a host needs raw
+nodes-and-edges data to render.
 
 ### `render_queue`
 
@@ -170,6 +190,13 @@ node caps report what they skipped — never silently.
 
 A root that nothing blocks is a successful empty result telling you how to
 model the program (add `blocks` edges from the gating tasks).
+
+### `hello_mcp_app`
+
+A tiny hello-world widget, with no inputs. It exists to debug whether a host
+can mount a minimal Spor app resource at all — it intentionally skips the
+real view-tree renderer, so it tells you nothing about queue, lens, or
+program rendering. Not a tool to reach for during normal work.
 
 ## Writing
 
@@ -289,6 +316,21 @@ step states. A proposed workflow must first be activated by a different
 identity (the self-approval ban). This tool only starts the run — workers
 claim and execute the steps; it never executes effects itself.
 
+### `apply_lens_action`
+
+The **app-only** door for one declarative action offered on a rendered lens
+item — the write path behind a widget button, not a tool a model calls cold.
+Input `{lens_id, action_id, target_id, params?}`, where `params` echoes the
+same parameters used to render the view. The server re-runs the lens,
+confirms the target and action are still eligible, resolves any
+authenticated-viewer parameter bindings, and passes the update through the
+target node's own schema validation and transitions gate — the same rules
+`set_status`/`add_edge` enforce, just reached through a lens item instead of
+a raw id.
+
+This is the one write path that originates from the
+[widget](/reference/mcp/widget/) itself rather than a model-issued tool call.
+
 ## Claims and leases
 
 Team coordination primitives: taking a piece of work so two people don't do
@@ -315,6 +357,22 @@ naming the current holder.
 Manually stretch your live lease for a known long idle gap: `{id, ms}`,
 extending it by `ms` milliseconds. Bounded by the org's maximum lease policy
 (a request past the ceiling caps to it); it never shortens a lease.
+
+### `reserve`
+
+Convert your live claim into an owner-exclusive **resumption reservation**
+when a session ends cleanly with the task advanced but unfinished: `{id,
+session?}`. The heartbeat lease is not held overnight; instead the task stays
+at the top of your queue and out of teammates' actionable lists for a grace
+window (~2 days, tenant policy), then escalates back to the team's pool if
+no further activity lands. The durable `assigned` edge is kept, so a steward
+view still shows it reserved by you. Fails with `lease_lost` if you don't
+hold a live claim; returning and claiming (or renewing) it re-establishes a
+fresh heartbeat lease.
+
+Reach for it instead of `release` when you intend to pick the task back up
+yourself; reach for `release` when you're handing it back to the pool for
+good.
 
 ### `release`
 
