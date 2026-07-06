@@ -14,6 +14,11 @@ the result renders as an embedded widget in the conversation instead of a
 wall of text: one trusted interpreter of Spor's view catalog, covering
 boards, tables, lists, and trees.
 
+One more tool, [`hello_mcp_app`](/reference/mcp/tools/#hello_mcp_app), also
+mounts a widget on an MCP-Apps host, but it sits outside this catalog: a
+bare connectivity probe for debugging whether a host can mount a Spor app
+resource at all, not a rendering of graph data.
+
 What you get in the widget:
 
 - **Status chips** on queue and board items, and **progress bars** on a
@@ -42,9 +47,15 @@ changes the graph is always a tool call you can see in the conversation.
 The widget is strictly additive. A host without the MCP Apps surface ignores
 the attached view and shows the same result as text — `render_program` still
 returns its progress header and glyphed gating tree, `render_lens` its
-rendered view, `render_queue` the ranked items. Nothing about the data
-differs; only the presentation does. That is also why
+rendered view, `render_queue` the ranked items, and `explore_graph` the same
+neighborhood as plain nodes and edges. Nothing about the data differs; only
+the presentation does. That is also why
 [`show_queue`](/reference/mcp/tools/#show_queue) exists alongside `render_queue`: same
 queue, but `show_queue` is the data-oriented answer for hosts (and turns)
 that just need it, while `render_queue` makes widget attachment an explicit
 choice.
+
+The one thing a non-Apps host has nothing to fall back to is a lens's
+declarative actions: those buttons only exist on a rendered widget, so
+`apply_lens_action` has no path in without one. On such a host, every
+mutation goes through the explicit [write tools](/reference/mcp/tools/#writing) instead.

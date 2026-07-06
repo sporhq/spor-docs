@@ -133,7 +133,9 @@ add node and edge types, and this reflects what is actually live.
 
 Tools whose results carry a view tree; on MCP-Apps hosts they attach
 the [interactive widget](/reference/mcp/widget/), elsewhere the same view renders as
-text.
+text. `hello_mcp_app` is the one exception in this section — a bare
+connectivity probe, not a rendering of graph data, so it has no text-mode
+equivalent.
 
 ### `explore_graph`
 
@@ -196,7 +198,11 @@ model the program (add `blocks` edges from the gating tasks).
 A tiny hello-world widget, with no inputs. It exists to debug whether a host
 can mount a minimal Spor app resource at all — it intentionally skips the
 real view-tree renderer, so it tells you nothing about queue, lens, or
-program rendering. Not a tool to reach for during normal work.
+program rendering. Because checking app-mount support is its entire job, it
+has no meaningful text-mode fallback on a host without MCP Apps support;
+reach for `explore_graph`, `render_lens`, or `render_program` instead when
+you actually want the text rendering. Not a tool to reach for during normal
+work.
 
 ## Writing
 
