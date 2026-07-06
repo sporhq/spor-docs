@@ -77,6 +77,21 @@ Token lifetimes:
 A client holding a refresh token transparently refreshes on a 401/403
 (`grant_type=refresh_token`) and retries once.
 
+### Revoking a grant
+
+`POST /oauth/revoke {token, token_type_hint?}` (RFC 7009 §2.1) ends exactly
+the grant `token` belongs to, leaving the caller's PATs and any other
+connector grants for the same identity untouched. It's a public-client
+route — no bearer, since the token itself is the credential — and per
+RFC 7009 §2.2 it always returns `200`, whether or not the token was
+recognized, so a client can't probe token validity via the response.
+
+This is the token-scoped teardown lever, narrower than the identity-wide
+cascades: `DELETE /v1/me/tokens/{hash-prefix}` and its admin/agent twins
+revoke a PAT or agent token *and* cascade to every OAuth grant minted from it
+(`oauth_grants_revoked`), while `/oauth/revoke` ends only the one grant named
+in the request. See [Tokens and agents](/reference/api/tokens-and-agents/).
+
 ## CLI sign-in: the device grant
 
 `spor auth login` (alias `spor login`) defaults to the OAuth 2.0 device
