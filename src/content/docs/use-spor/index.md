@@ -23,7 +23,7 @@ writes to the person or agent that made them.
   the moment it appears. `spor add "<two or three sentences>"`, or the MCP
   `capture` tool, turns raw prose into a typed, linked node.
 - [Ask and answer questions](/use-spor/ask-and-answer-questions/) —
-  `spor ask "<question>"` files a question the graph cannot answer. In remote
+  `spor ask "Did the dunning email copy get updated for the three-attempt retry window?"` files a question the graph cannot answer. In remote
   mode it routes to the steward most likely to know, and an `answers` edge from
   the eventual answer closes it.
 - [The decision queue](/use-spor/queue/) — `spor next`, or the `show_queue` MCP

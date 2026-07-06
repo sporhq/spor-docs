@@ -12,7 +12,7 @@ answered.
 
 ## File the question
 
-`spor ask "<question>"` records an open question. The command is also
+`spor ask "Did the dunning email copy get updated for the three-attempt retry window?"` records an open question. The command is also
 available as `spor question`, and it works in both local mode and remote mode:
 in remote mode the server routes the question and attributes it to your token;
 in local mode it writes an open, queueable question node so it still appears

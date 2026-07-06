@@ -38,7 +38,7 @@ spor add "Platform must expose a webhook-replay endpoint for retry testing" --pr
 ### ask
 
 ```
-spor ask "<question>" [--title ...] [--mention <id>] [--project S] [--id <id>]
+spor ask "Did the dunning email copy get updated for the three-attempt retry window?" [--title ...] [--mention <id>] [--project S] [--id <id>]
 ```
 
 **Mode:** dual · **Alias:** `question`
