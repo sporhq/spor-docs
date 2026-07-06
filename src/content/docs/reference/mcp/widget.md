@@ -5,6 +5,7 @@ sidebar:
   order: 4
 ---
 
+<!-- view-carrying-tools:start -->
 [`explore_graph`](/reference/mcp/tools/#explore_graph),
 [`render_queue`](/reference/mcp/tools/#render_queue),
 [`render_lens`](/reference/mcp/tools/#render_lens), and
@@ -13,6 +14,7 @@ to their result. On a host that supports MCP Apps (Claude, Goose, VS Code),
 the result renders as an embedded widget in the conversation instead of a
 wall of text: one trusted interpreter of Spor's view catalog, covering
 boards, tables, lists, and trees.
+<!-- view-carrying-tools:end -->
 
 One more tool, [`hello_mcp_app`](/reference/mcp/tools/#hello_mcp_app), also
 mounts a widget on an MCP-Apps host, but it sits outside this catalog: a
