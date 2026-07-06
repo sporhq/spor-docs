@@ -139,13 +139,17 @@ an incident.
 
 ## Keeping the graph healthy
 
-Two operational surfaces round this out:
+Two operational surfaces round this out, each documented in full elsewhere:
 
 - **The gardener** is an automated hygiene sweep any authenticated member can
-  run (`POST /v1/gardener`). It files what it finds as items in the decision
-  queue and resolves its own findings once they are cleared, so graph hygiene
-  is visible work, not silent mutation.
+  run. It files what it finds as items in the decision queue and resolves its
+  own findings once they are cleared, so graph hygiene is visible work, not
+  silent mutation. See
+  [Repos, projects, and the gardener](/reference/graph-model/repos-and-projects/#the-gardener-hygiene-as-queue-items)
+  for what it checks and how findings route to stewards.
 - **`GET /v1/status`** reports service health and basic operational metrics
   for your organization's graph, and doubles as the health check when
   diagnosing slowness that outlasts a
   [slow first request](/reference/diagnostics/#slow-first-request-after-an-idle-period).
+  See the [API reference](/reference/api/reads/#get-v1status) for the full
+  response shape.
