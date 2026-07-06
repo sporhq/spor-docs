@@ -83,7 +83,10 @@ Graphs rot in predictable ways: a task's anchors get superseded, work goes
 cold, a `blocks` edge outlives the blocker. The gardener is a periodic
 server-side sweep that runs these checks and **files its findings as queue
 items** rather than acting — backlog grooming stops being a meeting and
-becomes ranked items with compiled context.
+becomes ranked items with compiled context. Beyond the periodic run, trigger
+a sweep on demand via [`POST /v1/gardener`](/reference/api/writes/#post-v1gardener)
+or [`spor admin gardener`](/reference/cli/team-admin/#admin) (walked through
+for hosted admins in [Admin reference](/hosted/admin-reference/#run-a-gardener-sweep)).
 
 Findings are ordinary `find-` nodes written through the validated,
 attributed write path (`authored_via: gardener`) with deterministic ids, so
