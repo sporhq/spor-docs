@@ -137,6 +137,7 @@ text. `hello_mcp_app` is the one exception in this section — a bare
 connectivity probe, not a rendering of graph data, so it has no text-mode
 equivalent.
 
+<!-- view-carrying-tool -->
 ### `explore_graph`
 
 Browse the graph's **structure**: a bounded neighborhood of plain nodes and
@@ -163,6 +164,7 @@ A remote client walks the graph via [`GET /v1/nodes/{id}`](/reference/api/reads/
 edge-by-edge, or gets a workstream's gating tree from
 [`GET /v1/program/{id}`](/reference/api/reads/#get-v1programid) instead.
 
+<!-- view-carrying-tool -->
 ### `render_queue`
 
 The widget twin of [`show_queue`](#show_queue): same input, same queue, same
@@ -170,6 +172,7 @@ ranking, filters, and pagination — it exists only to make widget attachment
 an explicit choice. Use `show_queue` when you just need the answer;
 `render_queue` when the user should get the interactive queue.
 
+<!-- view-carrying-tool -->
 ### `render_lens`
 
 Run a saved lens — a named, versioned view over the live graph: a board, a
@@ -182,6 +185,7 @@ the discovery step before rendering. An unknown `lens_id` errors but still
 carries the catalog. A lineage lens is the fast way to see why one node
 exists and what it depends on.
 
+<!-- view-carrying-tool -->
 ### `render_program`
 
 The birds-eye "where do we stand" for a large workstream, derived on demand
