@@ -46,7 +46,9 @@ dead-letter spool, how fresh the cached briefings are, and the most recent
 hook and distiller errors. Because the hooks
 [fail open](/use-spor/what-happens-automatically/), a quietly broken
 setup still gives you working sessions — just with less context — so `doctor`
-is how such a state becomes visible.
+is how such a state becomes visible. It is one verb of a separate binary;
+the field-by-field breakdown and the rest of `spor-hook` are on the
+[spor-hook reference](/reference/cli/spor-hook/#doctor).
 
 ## The offline outbox
 

@@ -28,6 +28,11 @@ If you came to do something specific rather than look up a verb, start with
 [Common CLI tasks](/reference/cli/common-tasks/): short recipes that link into
 the verb entries here.
 
+Installing the package also gives you a second, much smaller binary:
+`spor-hook`, the dispatcher wired hosts call automatically, plus the
+`doctor` diagnostic meant to be run by hand. It has its own entry: [the
+spor-hook reference](/reference/cli/spor-hook/).
+
 ## Mode badges
 
 Every verb on the following pages carries one of three badges:

@@ -115,4 +115,4 @@ spor status
 spor-hook doctor
 ```
 
-[`spor status`](/reference/cli/setup-and-identity/#status) prints what the CLI actually resolved: mode, graph home, project slug, identity, and health. `spor-hook doctor` checks the automatic machinery, including server reachability, token validity, outbox depth, briefing freshness, and recent hook or distiller errors; the [Diagnostics](/reference/diagnostics/) page gives the fuller troubleshooting walk.
+[`spor status`](/reference/cli/setup-and-identity/#status) prints what the CLI actually resolved: mode, graph home, project slug, identity, and health. [`spor-hook doctor`](/reference/cli/spor-hook/#doctor) checks the automatic machinery, including server reachability, token validity, outbox depth, briefing freshness, and recent hook or distiller errors; the [Diagnostics](/reference/diagnostics/) page gives the fuller troubleshooting walk.
