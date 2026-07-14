@@ -40,7 +40,7 @@ done | sort -u)"
 
 [ -n "$pages" ] || { err "::error::no content pages found under $content"; exit 2; }
 
-urls="$(grep -oE 'https://docs\.sporhq\.io[^)[:space:]]*' "$llms" | sed -E 's#^https://docs\.sporhq\.io##' | sort -u)"
+urls="$(grep -oE 'https://docs\.sporhq\.io[^)[:space:]]*' "$llms" | sed -E 's#^https://docs\.sporhq\.io##; s/#.*$//' | sort -u)"
 
 [ -n "$urls" ] || { err "::error::no docs.sporhq.io URLs found in $llms"; exit 2; }
 
