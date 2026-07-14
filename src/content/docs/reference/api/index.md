@@ -100,6 +100,7 @@ verbatim so a calling program can self-correct. The full contract is on
 | DELETE | `/v1/nodes/{id}/edges` | remove one typed edge |
 | POST | `/v1/nodes/{id}/status` | one-scalar status update |
 | POST | `/v1/nodes/{id}/priority` | human priority override |
+| POST | `/v1/nodes/{id}/readiness` | agent-readiness override (the only hand-settable value is `agent`) |
 | POST | `/v1/nodes/{id}/commits` | link a code commit to a node |
 | POST | `/v1/capture` | raw text in, typed nodes out |
 | POST | `/v1/distill/report` | sweep telemetry (journal-only) |

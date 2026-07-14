@@ -58,7 +58,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [Setup and identity](/reference/cli/setup-and-identity/) | init, install, upgrade, status, join, auth, login, migrate, whoami, person, token |
 | [Team administration](/reference/cli/team-admin/) | invite, admin |
 | [Reading the graph](/reference/cli/reading-the-graph/) | next, get, query, blame, history, changes, analytics, schema, lens, share, export |
-| [Writing to the graph](/reference/cli/writing-to-the-graph/) | add, ask, drain, put-node, edge, set-status, priority, correct, claim, renew, extend, release, run |
+| [Writing to the graph](/reference/cli/writing-to-the-graph/) | add, ask, drain, put-node, edge, set-status, priority, ready, correct, claim, renew, extend, release, run |
 | [Repo scoping](/reference/cli/repo-scoping/) | enable, disable, link, agents-md, compile, brief, validate |
 | [Dispatch](/reference/cli/dispatch/) | agent, dispatch, repos, capabilities |
 | [Utilities](/reference/cli/utilities/) | cost, version, help |
@@ -105,6 +105,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [priority](/reference/cli/writing-to-the-graph/#priority) | dual | `set-priority` | set a queue item's human-triage priority |
 | [put-node](/reference/cli/writing-to-the-graph/#put-node) | dual | | write a full node markdown file |
 | [query](/reference/cli/reading-the-graph/#query) | dual | | filterable node and edge enumeration |
+| [ready](/reference/cli/writing-to-the-graph/#ready) | dual | | stamp or clear a node's agent-readiness override |
 | [release](/reference/cli/writing-to-the-graph/#release) | remote | | hand a task back to the pool |
 | [renew](/reference/cli/writing-to-the-graph/#renew) | remote | | heartbeat your live claim |
 | [repos](/reference/cli/dispatch/#repos) | dual | | the dispatch slug map and repo-identity tags |
