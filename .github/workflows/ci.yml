@@ -33,6 +33,9 @@ jobs:
       - name: View-tools parity (widget.md matches tools.md's view-carrying tools)
         run: scripts/check-view-tools-parity.sh
 
+      - name: llms.txt parity (every page is listed, no orphaned URLs)
+        run: scripts/check-llms-txt-parity.sh
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24

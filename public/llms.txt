@@ -42,6 +42,7 @@ This is the documentation for docs.sporhq.io. It covers two audiences from day o
 - [Dispatch](https://docs.sporhq.io/reference/cli/dispatch/): agent, dispatch, repos, capabilities
 - [Team administration](https://docs.sporhq.io/reference/cli/team-admin/): invite and admin
 - [Utilities](https://docs.sporhq.io/reference/cli/utilities/): cost, version, help
+- [spor-hook](https://docs.sporhq.io/reference/cli/spor-hook/): the hook-dispatcher binary agent hosts call automatically, and `spor-hook doctor`, the one verb meant to be run by hand
 
 ## MCP reference
 - [MCP](https://docs.sporhq.io/reference/mcp/): the Model Context Protocol surface — twenty-three tools plus the connector and the widget
