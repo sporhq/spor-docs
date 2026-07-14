@@ -61,6 +61,12 @@ A few fields do real work:
   view only.
 - **`github`** maps a GitHub login to this person, so reflected PR reviews
   attach to the right person's review edges.
+- **`register`** is a free-text note on how to communicate with this person —
+  their role and preferred language style, e.g. `register: Non-technical
+  founder. Plain everyday language, no graph jargon; use node titles, never
+  raw ids.` Assistants reading the graph on this person's behalf receive it
+  and adapt how they explain graph content. It changes presentation only,
+  never what is returned. Edit your own person node to set it.
 
 Onboarding a teammate is three deliberate steps: author the person node, add
 their `stewards` edges, and mint a token bound to the node. Skip the
