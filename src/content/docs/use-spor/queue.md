@@ -110,3 +110,36 @@ graph moved on, `triage` for a task held open with a recorded outcome but no
 resolver and no blocker, `approve` for a proposed schema or workflow
 awaiting review. The queue presents the evidence and the recommendation; a
 person decides.
+
+## Agent-readiness and the make-ready loop
+
+Alongside the ranking, a task, issue, or incident carries a second, derived
+answer to a narrower question: "could a coding agent pick this up right now
+and finish it unattended, or does a person need to act first?" That answer is
+`readiness: agent`, `human`, or `untriaged`, worked out from what's already
+true about the item — see
+[Agent-readiness](/reference/graph-model/node-types/#agent-readiness) for
+exactly what puts an item in each bucket.
+
+`spor next` shows the classification on the items where it's decisive
+(`agent-ready: …` / `needs human: …` in the why-line), a
+[`--readiness` filter](/reference/cli/reading-the-graph/#next) narrows to one
+class, and a lead line — `readiness: 4 agent-ready, 6 need human, 2
+untriaged` — gives the "how much of this can an agent take?" headline the
+moment the graph has any signal at all.
+
+**The make-ready loop.** `/spor:triage`'s make-ready pass is how an item
+*earns* the agent bucket rather than being declared into it: pick a
+needs-human or untriaged item, read it as if about to dispatch it cold, and
+close every gap a coding agent would actually hit — an open question, an
+undecided fork in the body, missing acceptance criteria, an undeclared or
+unsatisfiable [`requires`/profile](/reference/dispatch/#the-requires-risk-register).
+Settled forks and filled-in criteria get written back as real graph state; a
+gap that needs its own prerequisite work becomes a `blocks` edge instead —
+the honest move where a readiness stamp would be a lie. Only once every gap
+is closed does the pass run
+[`spor ready <id>`](/reference/cli/writing-to-the-graph/#ready), stamping the
+item agent-ready.
+
+[`spor dispatch`](/reference/dispatch/#agent-readiness-before-launch) checks
+the classification before it launches a background agent at the item.

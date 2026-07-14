@@ -154,6 +154,26 @@ Server-side read-modify-write, no revision round-trip. Stamps `priority_by`
 agent-set priority is distinguishable from human triage. An unknown value is
 `invalid_node` with the allowed list in `details`.
 
+## POST /v1/nodes/{id}/readiness
+
+The one hand-settable piece of the otherwise-derived
+[agent-readiness](/reference/graph-model/node-types/#agent-readiness)
+classification: `{"readiness": "agent"}` stamps the node agent-ready; a
+clearing form (`""`, `none`, `null`, or `clear`) removes the stamp and falls
+back to whatever the structural derivation produces on its own. `agent` is
+the **only** settable value — there is no hand-settable `human` value, since
+human is always derived; an unknown value is `invalid_node` with the allowed
+list in `details`. Server-side read-modify-write, no revision round-trip.
+Stamps `readiness_by` (acting identity), `readiness_at`, and `readiness_via`
+(the surface), mirroring `priority`/`priority_by`.
+
+This override has no dedicated MCP tool today — only the CLI
+([`spor ready`](/reference/cli/writing-to-the-graph/#ready)) and this REST
+route reach it directly. A Cowork or other MCP-only session without REST
+access can still write the `readiness: agent` frontmatter field through
+`put_node`, though only this route (and the CLI) also stamp the
+`readiness_by`/`readiness_at`/`readiness_via` provenance automatically.
+
 ## POST /v1/nodes/{id}/commits
 
 Link a code commit to a node: `{"repo": "billing", "sha": "8f3a2c1"}`

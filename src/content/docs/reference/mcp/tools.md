@@ -71,15 +71,24 @@ queue", "the backlog".
 | `project` | scope to one project slug |
 | `types` / `exclude_types` | whitelist / blacklist of node types (exclude wins on overlap) |
 | `assignee` | a person id, or `"me"` — see below |
+| `readiness` | array of `agent`/`human`/`untriaged` — a hard scope filter to items of that derived agent-readiness classification (a non-matching item is excluded, not just annotated); omit for no filter |
 | `limit` | page size, default 20, max 100 (clamped) |
 | `offset` | items to skip in the ranked order |
 
 Each item carries id, title, type, status, priority, score, its ranking
-signals (blocking, heat, staleness, age), a suggestion (`do` or `close`), and
-a one-line *why*. Items retired by a live inbound `resolves`/`answers` edge
-are excluded whatever their status field says. Alongside the items ride open
-gardener findings, pending captures, questions you asked, and nodes whose
-review is requested of you.
+signals (blocking, heat, staleness, age), a suggestion (`do`, `blocked`,
+`triage`, `close`, or `approve` for a schema-approval item), and a one-line
+*why*. Items retired by a live inbound `resolves`/`answers` edge are excluded
+whatever their status field says. Alongside the items ride open gardener
+findings, pending captures, questions you asked, and nodes whose review is
+requested of you.
+
+An item's derived [agent-readiness](/reference/graph-model/node-types/#agent-readiness)
+rides along as `readiness` (`agent` or `human`) plus `readiness_reasons`,
+present only when the classification is decisive — an `untriaged` item
+carries neither field. Pass `readiness` to filter to one or more classes; the
+result's `counts_by_readiness` gives the aggregate agent/human/untriaged
+breakdown whenever readiness signal exists or a filter was applied.
 
 The aggregate counts always cover the full ranked set regardless of the
 page, so one call answers "how many issues vs tasks". Pagination is an offset

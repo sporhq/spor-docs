@@ -166,6 +166,41 @@ distinguishable from human triage.
 spor priority issue-tidefall-double-charge p1
 ```
 
+### ready
+
+```
+spor ready <id> [--needs-input]
+```
+
+**Mode:** dual
+
+Stamp (or clear) a node's [agent-readiness](/reference/graph-model/node-types/#agent-readiness)
+override — the one hand-settable piece of the otherwise-derived
+`readiness: agent | human | untriaged` classification. `spor ready <id>`
+stamps `readiness: agent`; `--needs-input` clears the stamp instead, falling
+back to whatever the structural derivation produces on its own (`human` if a
+`requires: human`/assigned-to-person/held-task/open-question signal already
+applies, `untriaged` otherwise). There is no hand-settable `readiness:
+human` value — human is always derived, never stamped; a hard gap that
+can't be closed by writing nodes is recorded as a `blocks` edge instead, the
+[make-ready triage pass](/use-spor/queue/#agent-readiness-and-the-make-ready-loop)'s
+job.
+
+The stamp is an override, not a status: a later open question or `requires:
+human` edit still wins over it, flipping a stamped item back to `human` (the
+derivation checks the human conditions first, so the override can't rot the
+way a plain hand-set flag would). The change is stamped with your identity
+and the door it came through (`readiness_by`/`readiness_at`/`readiness_via`),
+mirroring `priority`/`priority_by`. Remote mode POSTs
+`/v1/nodes/{id}/readiness` (one call, no revision round-trip); local mode
+rewrites the node file's frontmatter in place, attributing to your git
+identity.
+
+```sh
+spor ready task-tidefall-retry-emails
+spor ready task-tidefall-retry-emails --needs-input
+```
+
 ### correct
 
 ```

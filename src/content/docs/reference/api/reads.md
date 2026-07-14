@@ -173,13 +173,13 @@ export.
 The ranked decision queue:
 
 ```
-GET /v1/queue?project=&assignee=&type=&exclude_type=&limit=&offset=
+GET /v1/queue?project=&assignee=&type=&exclude_type=&readiness=&limit=&offset=
 ```
 
 Returns `{items, count, offset, returned_count, total_count, truncated,
-next_offset, counts_by_type, counts_by_project, counts_by_suggest, muted?,
-dormant?, questions, asked, findings, pending, reviews, policy?,
-generated_at}`.
+next_offset, counts_by_type, counts_by_project, counts_by_suggest,
+counts_by_readiness?, muted?, dormant?, questions, asked, findings, pending,
+reviews, policy?, generated_at}`.
 
 Items already retired by a live inbound `resolves`/`answers` edge are
 excluded whatever their status field reads; items hidden by the viewer's
@@ -210,6 +210,21 @@ filtered queue):
   the token maps to no person node).
 - `type=`/`exclude_type=` (comma-separated, repeatable) whitelist/blacklist
   node types; exclude wins on overlap.
+- `readiness=<agent|human|untriaged>` (comma-separated, repeatable) is a
+  **hard** scope filter to items carrying that derived
+  [agent-readiness](/reference/graph-model/node-types/#agent-readiness)
+  classification — a non-matching item is excluded, not just annotated. An
+  unknown value is `422`.
+
+**Agent-readiness.** Each item may carry `readiness` (`agent` or `human`) and
+`readiness_reasons` (why), present only when the classification is decisive
+— an `untriaged` item carries neither field, so a graph with no readiness
+signal reads byte-identical to before. The envelope's `counts_by_readiness`
+(`{agent, human, untriaged}`) rides along whenever there is readiness signal
+or a `readiness` filter was applied — even a zero-item filtered result still
+carries the (all-zero) breakdown, so a caller can't mistake it for an
+unbound token. Set the one hand-settable override with
+[`POST /v1/nodes/{id}/readiness`](/reference/api/writes/#post-v1nodesidreadiness).
 
 ```sh
 curl -s "https://api.sporhq.io/v1/queue?project=billing&limit=10" \

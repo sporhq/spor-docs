@@ -62,6 +62,15 @@ also refused when an agent for that node is already in flight on this
 machine, or when the target is already resolved (a terminal status, or
 retired by an inbound `resolves`/`answers` edge) — `--force` overrides both.
 
+A node dispatch also checks its derived
+[agent-readiness](/reference/graph-model/node-types/#agent-readiness) before
+launch, refusing outright on `requires: human` (`cannot dispatch <id>: this
+item requires a human — <reasons>.`, no `--force` override) and warning on a
+broader `readiness: human`. See [Dispatch, capabilities, and
+profiles](/reference/dispatch/#agent-readiness-before-launch) for the full
+behavior, including the local-vs-remote difference in what the warn case
+checks.
+
 `--worktree` runs the agent in its own git worktree off the repo (branch
 named for the node id or sanitized task), so parallel dispatches never race
 the shared tree. Make it a repo default with the `dispatch.worktree` config

@@ -128,3 +128,52 @@ Each side is `<path>#<regex>`; the first capture group is the value. `spor
 check` compares the two extracted values: agreement means the coupling is
 satisfied even when one file went untouched, and disagreement is reported
 even when both files were edited.
+
+## Agent-readiness
+
+Any queueable node — a task, issue, incident, and the rest of the
+[queueable set](#flags-that-shape-behavior); schema-approval items are
+excluded, since they have their own review lane — carries a second, derived
+classification alongside status: `readiness: agent | human | untriaged`,
+computed structurally in the queue's ranking pass. It is deliberately
+*not* a status (that would overload the lifecycle vocabulary every consumer
+already partitions on) and *not* an edge (`assigned → agent` pins who does
+the work; readiness is about whether the spec is complete enough for anyone
+to start unattended). It answers "can a coding agent complete this
+unattended, or does it need a human first?":
+
+- **`human`** — `requires:` includes `human` (see [the `requires:` risk
+  register](/reference/dispatch/#the-requires-risk-register)); an
+  `assigned → person` edge; a held task awaiting triage; the item is itself
+  an open question or an unprocessed capture; or a live, unanswered question
+  node sits in its 1-hop neighborhood.
+- **`agent`** — an explicit `readiness: agent` frontmatter stamp, or an
+  `assigned → agent` edge.
+- **`untriaged`** — neither of the above. A deliberate third bucket:
+  "nobody has checked the spec yet" must not default into either agent or
+  human.
+
+`human` is checked first and wins on conflict, which is what makes this
+derivation-with-override rather than a plain hand-set flag that could drift
+out of sync with reality: a `readiness: agent`-stamped item that later gains
+an open question, or a `requires: human` edit, flips back to `human` on the
+very next read.
+
+The **only** hand-settable piece is the stamp itself — `readiness: agent`
+plus its provenance (`readiness_by`, `readiness_at`, `readiness_via`), set
+with [`spor ready`](/reference/cli/writing-to-the-graph/#ready) or
+`POST /v1/nodes/{id}/readiness` and cleared the same way. There is no
+hand-settable `readiness: human` value: human is always derived, never
+stamped. A gap that can't be closed by writing nodes — an unbuilt
+prerequisite, a profile no machine can currently satisfy — is instead
+recorded as an explicit `blocks` edge, which genuinely removes the item from
+the queue until the prerequisite lands; readiness only ever covers the
+soft, derived side.
+
+The queue surfaces the classification on every item where it is decisive —
+`readiness` plus `readiness_reasons[]`, omitted entirely on an `untriaged`
+item, so a graph with no readiness signal reads byte-identical to before —
+and as an aggregate `counts_by_readiness` on the envelope. See [The decision
+queue](/use-spor/queue/#agent-readiness-and-the-make-ready-loop),
+[`spor next --readiness`](/reference/cli/reading-the-graph/#next), and
+[`GET /v1/queue`](/reference/api/reads/#get-v1queue).

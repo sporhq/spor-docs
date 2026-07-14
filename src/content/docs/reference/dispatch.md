@@ -104,6 +104,33 @@ these things", validated against the assigned profile's granted classes and
 gated by org policy. `human` is unsatisfiable by any agent — that work goes
 to a person.
 
+## Agent-readiness before launch
+
+Dispatching a node also checks its derived
+[agent-readiness](/reference/graph-model/node-types/#agent-readiness) before any
+claim, lease, or launch:
+
+- **`requires: human`** — the risk register's own declaration that no agent
+  can do this work, regardless of capability — refuses outright, naming the
+  gap, with **no `--force` override** (overriding it would be exactly the
+  silent substitution the profile-satisfiability rule above also forbids).
+  The assignment is left completely unchanged; a human must do the work, or
+  edit the node's `requires:` list, then dispatch again.
+- A **broader `readiness: human`** classification — assigned to a person, or
+  a held task, or (in local mode only — see below) an open question on the
+  item or in its 1-hop neighborhood — is not a capability gap, so it only
+  **warns**: dispatch prints the reason and proceeds.
+- A clean, agent-ready, or untriaged item produces no guard output at all.
+
+`--print`/dry-run shows the same distinction ahead of a real launch. Local
+mode runs the exact ranking derivation `spor next` uses, front-activity
+signal included. Remote mode has no client-side graph to walk, so it
+approximates from the node's own frontmatter and its `assigned` edges,
+through the same classification logic — but it deliberately skips the
+1-hop-neighborhood open-question check (a second network fetch for a
+warn-only signal), so a node whose only human trigger is an open question on
+a *neighboring* node warns locally but not over a remote dispatch.
+
 ## Routines
 
 A `routine-` node, owned by a person, holds declarative trigger-to-action

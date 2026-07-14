@@ -23,8 +23,11 @@ resource at all, not a rendering of graph data.
 
 What you get in the widget:
 
-- **Status chips** on queue and board items, and **progress bars** on a
-  program view — where the workstream stands at a glance.
+- **Status chips** on queue and board items — including a readiness chip
+  (`Agent-ready` / `Needs human`) wherever an item's derived
+  [agent-readiness](/reference/graph-model/node-types/#agent-readiness) is
+  decisive — and **progress bars** on a program view — where the workstream
+  stands at a glance.
 - **Lineage trees** — why a node exists and what it depends on, expandable
   in place.
 - **Node detail on click.** Selecting an item fetches the node directly from

@@ -38,6 +38,18 @@ page.
 Types: `--type` and `--exclude-type` whitelist and blacklist node types.
 Both are repeatable and comma-splittable; exclude wins on overlap.
 
+Readiness: local mode's `--readiness <agent|human|untriaged>` (repeatable,
+comma-splittable — `--readiness agent,untriaged`) narrows the queue to items
+carrying that derived [agent-readiness](/reference/graph-model/node-types/#agent-readiness)
+classification. When the graph has any readiness signal, local text output
+also prints a lead line, `readiness: N agent-ready, N need human, N
+untriaged`, and `--json` carries the same breakdown as `counts_by_readiness`.
+The server's [`GET /v1/queue`](/reference/api/reads/#get-v1queue) and the
+[`show_queue`/`render_queue`](/reference/mcp/tools/#show_queue) MCP tools
+expose the identical filter and fields — this CLI's remote `next` does not
+yet forward `--readiness` or print the lead line, so reach for the REST or
+MCP surface directly for a readiness view over a team graph.
+
 In-flight: `--json` stamps each item with an `in_flight` flag (and a
 `dispatched` agent summary) by cross-referencing live background agents —
 [`spor dispatch`](/reference/cli/dispatch/#dispatch) names each agent after its node
