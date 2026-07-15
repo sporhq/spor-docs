@@ -2,13 +2,16 @@
 #
 # Style lint: fail if any docs page under src/content/docs/ contains a phrase
 # from scripts/style-denylist.txt (marketing intensifiers, persuasion
-# patterns). This is the mechanical subset of the style guide's voice rules;
-# the guide itself is the contract. Runs in CI on every PR; run it locally
-# with:
+# patterns), then hand off to scripts/check-prose.sh for the markdown-aware
+# pass (exclamation marks and emoji), which needs to strip code before
+# scanning rather than grep raw lines. This is the mechanical subset of the
+# style guide's voice rules; the guide itself is the contract. Runs in CI on
+# every PR; run it locally with:
 #
 #   scripts/check-style.sh
 #
-# Exit 0 = clean.  Exit 1 = banned phrase found.  Exit 2 = misconfigured.
+# Exit 0 = clean.  Exit 1 = a banned phrase, or an exclamation mark/emoji
+# found by the check-prose.sh handoff.  Exit 2 = misconfigured.
 set -euo pipefail
 
 root="$(cd "$(dirname "$0")/.." && pwd)"
@@ -52,3 +55,9 @@ if [ -n "$hits" ]; then
 fi
 
 echo "Style lint OK: no banned phrases in the docs pages."
+
+# Hand off to the markdown-aware prose pass (exclamation marks, emoji);
+# exec so its exit code becomes this script's. Invoked via `bash` rather
+# than run directly so this doesn't depend on check-prose.sh keeping its
+# own executable bit.
+exec bash "$root/scripts/check-prose.sh"
