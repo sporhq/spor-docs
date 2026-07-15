@@ -36,6 +36,9 @@ jobs:
       - name: llms.txt parity (every page is listed, no orphaned URLs)
         run: scripts/check-llms-txt-parity.sh
 
+      - name: Redirect table lint (no stale sources, duplicates, broken targets, or chains)
+        run: scripts/check-redirects.sh
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
