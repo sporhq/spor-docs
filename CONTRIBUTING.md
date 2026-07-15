@@ -167,9 +167,12 @@ scripts/check-style.sh
 ```
 
 The style lint scans docs pages for the phrases in
-`scripts/style-denylist.txt`. The style guide is the contract, and this lint is
-the backstop for the phrases a script can catch. Do not edit the denylist or
-the lint script in a docs PR; those are maintained separately.
+`scripts/style-denylist.txt`, then hands off to `scripts/check-prose.sh`,
+which strips code (fences, indented blocks, inline spans) and flags any
+exclamation mark or emoji left in the prose. The style guide is the
+contract, and this lint is the backstop for the parts a script can catch. Do
+not edit the denylist or either lint script in a docs PR; those are
+maintained separately.
 
 ### Design-token parity
 

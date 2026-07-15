@@ -112,9 +112,11 @@ this check fails, rewrite the passage abstractly or replace the identifier
 with a fictional one. Do not edit the denylist or the script in a docs PR.
 
 `scripts/check-style.sh` scans pages under `src/content/docs/`, except the
-style guide, for the phrases in `scripts/style-denylist.txt`. When this check
-fails, rewrite the passage as a plain, checkable claim. Do not edit the
-denylist or the script in a docs PR.
+style guide, for the phrases in `scripts/style-denylist.txt`, then hands off
+to `scripts/check-prose.sh`, which strips code and flags any exclamation
+mark or emoji left in the prose. When either check fails, rewrite the
+passage as a plain, checkable claim, or drop the exclamation mark or emoji.
+Do not edit the denylist or either script in a docs PR.
 
 `scripts/check-token-parity.sh` verifies that `src/styles/tokens.css` remains
 a byte-identical vendored copy of the canonical Spor design tokens. Do not edit
