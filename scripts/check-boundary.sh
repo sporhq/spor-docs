@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #
-# Boundary lint: fail if any tracked file leaks a term from
-# scripts/boundary-denylist.txt (private repository paths, server deployment
-# internals, or real graph data). Runs in CI on every PR; run it locally with:
+# Boundary lint: fail if any file in the working tree, tracked or not, leaks
+# a term from scripts/boundary-denylist.txt (private repository paths, server
+# deployment internals, or real graph data). Runs in CI on every PR; run it
+# locally with:
 #
 #   scripts/check-boundary.sh
 #
@@ -39,4 +40,4 @@ if [ -n "$hits" ]; then
   exit 1
 fi
 
-echo "Boundary lint OK: no private paths, server internals, or real graph data in tracked files."
+echo "Boundary lint OK: no private paths, server internals, or real graph data in the working tree."
