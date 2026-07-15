@@ -3,7 +3,9 @@
 # Redirect table lint: fail on entries in astro.config.mjs's `redirects` map
 # that have gone stale. Nothing else catches this -- starlight-links-validator
 # only validates links that already appear in markdown content, so a
-# redirects entry nobody links to is invisible to it. Checks:
+# redirects entry nobody links to is invisible to it, and the map is the same
+# object astro.config.mjs feeds into the generated Cloudflare `_redirects`
+# file, so a bad entry here becomes a bad 301 in production too. Checks:
 #
 #   - unparseable entry: the entry isn't a flat `'/src': '/dst',` string
 #     pair (e.g. Astro's object-form `{ destination, status }`, or a
@@ -53,18 +55,18 @@ is_external() { [[ "$1" =~ ^[a-zA-Z][a-zA-Z0-9+.-]*:// ]]; }
 [ -f "$config" ] || { err "::error::missing $config"; exit 2; }
 [ -d "$content" ] || { err "::error::missing $content"; exit 2; }
 
-grep -qE 'redirects:[[:space:]]*\{' "$config" || {
-  err "::error::no \`redirects: {\` block found in $config"
+grep -qE 'const[[:space:]]+redirects[[:space:]]*=[[:space:]]*\{' "$config" || {
+  err "::error::no \`const redirects = {\` block found in $config"
   exit 2
 }
 
-# Isolate the `redirects: { ... }` block by brace depth, not by "the next
-# line starting with `}`" -- a naive scan like that ends the block early at
-# the closing brace of any multi-line, object-shaped entry value nested
+# Isolate the `const redirects = { ... }` block by brace depth, not by "the
+# next line starting with `}`" -- a naive scan like that ends the block early
+# at the closing brace of any multi-line, object-shaped entry value nested
 # inside it, silently dropping every entry written after it.
 redirect_block="$(awk '
   BEGIN { depth = 0; in_block = 0 }
-  in_block == 0 && /redirects:[[:space:]]*\{/ { in_block = 1; depth = 1; next }
+  in_block == 0 && /const[[:space:]]+redirects[[:space:]]*=[[:space:]]*\{/ { in_block = 1; depth = 1; next }
   in_block {
     line = $0
     opens = gsub(/\{/, "{", line)
