@@ -142,10 +142,12 @@ scripts/check-boundary.sh
 ```
 
 The public docs describe the Spor server abstractly. Four categories of terms
-are banned from every tracked file: private repository names and paths, server
-deployment internals, server-side configuration variables, and real
-identifiers from any team's graph (node ids, person handles, organization
-names). The machine-readable list is `scripts/boundary-denylist.txt`.
+are banned from every file in the working tree, tracked or not — so a
+brand-new page catches a leak before it's even staged: private repository
+names and paths, server deployment internals, server-side configuration
+variables, and real identifiers from any team's graph (node ids, person
+handles, organization names). The machine-readable list is
+`scripts/boundary-denylist.txt`.
 
 Client-side surface is fine to document — environment variables the CLI reads,
 token formats, the public API. The line is what runs on the server side and

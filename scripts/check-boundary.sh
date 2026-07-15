@@ -20,8 +20,10 @@ pattern="$(grep -Ev '^\s*(#|$)' "$denylist" | paste -sd'|' - || true)"
 [ -n "$pattern" ] || { echo "::error::denylist is empty" >&2; exit 2; }
 
 cd "$root"
+# --untracked also scans new files that haven't been `git add`ed yet, so this
+# matches what CI enforces on tracked files after they land in a commit.
 # The lint machinery itself legitimately names the banned terms.
-hits="$(git grep -I -i -n -E "$pattern" -- \
+hits="$(git grep -I -i -n -E --untracked "$pattern" -- \
   ':(exclude)scripts/boundary-denylist.txt' \
   ':(exclude)scripts/check-boundary.sh' \
   || true)"
