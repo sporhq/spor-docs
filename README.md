@@ -21,7 +21,7 @@ CI runs three repo-specific checks besides the build; all run locally too:
 
 ```sh
 scripts/check-boundary.sh       # no private internals or real graph data
-scripts/check-style.sh          # no banned phrases in docs prose
+scripts/check-style.sh          # no banned phrases, exclamation marks, or emoji in docs prose
 scripts/check-token-parity.sh   # vendored design tokens match canonical
 ```
 

@@ -16,8 +16,8 @@ npm run dev      # live preview at localhost:4321
 npm run build    # static build into dist/
 ```
 
-Run the build before opening a PR — it catches broken frontmatter and other
-errors that the dev server tolerates.
+Run the build before opening a PR — it catches broken frontmatter and dead
+internal links that the dev server tolerates.
 
 ## Where pages live
 
@@ -142,10 +142,12 @@ scripts/check-boundary.sh
 ```
 
 The public docs describe the Spor server abstractly. Four categories of terms
-are banned from every tracked file: private repository names and paths, server
-deployment internals, server-side configuration variables, and real
-identifiers from any team's graph (node ids, person handles, organization
-names). The machine-readable list is `scripts/boundary-denylist.txt`.
+are banned from every file in the working tree, tracked or not — so a
+brand-new page catches a leak before it's even staged: private repository
+names and paths, server deployment internals, server-side configuration
+variables, and real identifiers from any team's graph (node ids, person
+handles, organization names). The machine-readable list is
+`scripts/boundary-denylist.txt`.
 
 Client-side surface is fine to document — environment variables the CLI reads,
 token formats, the public API. The line is what runs on the server side and
@@ -165,9 +167,12 @@ scripts/check-style.sh
 ```
 
 The style lint scans docs pages for the phrases in
-`scripts/style-denylist.txt`. The style guide is the contract, and this lint is
-the backstop for the phrases a script can catch. Do not edit the denylist or
-the lint script in a docs PR; those are maintained separately.
+`scripts/style-denylist.txt`, then hands off to `scripts/check-prose.sh`,
+which strips code (fences, indented blocks, inline spans) and flags any
+exclamation mark or emoji left in the prose. The style guide is the
+contract, and this lint is the backstop for the parts a script can catch. Do
+not edit the denylist or either lint script in a docs PR; those are
+maintained separately.
 
 ### Design-token parity
 
