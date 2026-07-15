@@ -16,8 +16,8 @@ npm run dev      # live preview at localhost:4321
 npm run build    # static build into dist/
 ```
 
-Run the build before opening a PR — it catches broken frontmatter and other
-errors that the dev server tolerates.
+Run the build before opening a PR — it catches broken frontmatter and dead
+internal links that the dev server tolerates.
 
 ## Where pages live
 

@@ -22,7 +22,7 @@ npm run build    # static build into dist/
 ```
 
 Run the build before opening a PR — it produces the static site and catches
-broken frontmatter and other errors that the dev server tolerates.
+broken frontmatter and dead internal links that the dev server tolerates.
 
 ## Where pages live
 
