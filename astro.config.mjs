@@ -82,17 +82,27 @@ const redirects = {
 // -- unlike Astro's own `redirects` config, which (with no adapter, in static
 // output mode) can only emit a meta-refresh HTML stub served with a 200.
 // Generate that file from the same `redirects` map above so the moved-URL
-// list has exactly one source of truth.
+// list has exactly one source of truth. (String destinations only, matching
+// what scripts/check-redirects.sh's lint accepts -- Astro's object-form
+// `{ destination, status }` entries aren't needed here and would silently
+// fail that lint, so support for them is intentionally left out rather than
+// half-added.)
 function cloudflareRedirects() {
 	return {
 		name: 'cloudflare-redirects',
 		hooks: {
 			/** @param {{ dir: URL }} options */
 			'astro:build:done': async ({ dir }) => {
-				const lines = Object.entries(redirects).map(([source, target]) => {
-					const destination = typeof target === 'string' ? target : target.destination;
-					const status = typeof target === 'string' ? 301 : (target.status ?? 301);
-					return `${source}  ${destination}  ${status}`;
+				const lines = Object.entries(redirects).flatMap(([source, destination]) => {
+					// Astro's default `trailingSlash: 'ignore'` treats `/foo` and
+					// `/foo/` as the same route, but Cloudflare's `_redirects`
+					// source matching is literal -- emit both forms so a visitor
+					// landing on either gets a real 301 instead of falling through
+					// to the static build output (the meta-refresh stub).
+					const bare = source.replace(/\/$/, '') || '/';
+					const slashed = bare === '/' ? bare : `${bare}/`;
+					const sources = bare === slashed ? [bare] : [bare, slashed];
+					return sources.map((s) => `${s}  ${destination}  301`);
 				});
 				await writeFile(new URL('_redirects', dir), lines.join('\n') + '\n', 'utf8');
 			},
