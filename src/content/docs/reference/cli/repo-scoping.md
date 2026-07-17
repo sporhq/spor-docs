@@ -78,11 +78,13 @@ the directive only — hooked hosts get their briefing at session start;
 `--briefing` also embeds the standing project briefing, the floor for hosts
 without hooks.
 
-The block's tools-line sentence pointing at your `SPOR_SERVER`'s MCP endpoint
-is omitted by default when that server is loopback (`127.0.0.0/8`, `0.0.0.0`,
-`localhost`, or `::1`, in any spelling) — a machine-local dev address has no
-business in a file every contributor and dispatched agent commits and reads.
-`--no-server-line` omits the sentence unconditionally, even for a public URL.
+The block's tools-line sentence pointing at your `SPOR_SERVER`'s MCP endpoint,
+and (with `--briefing`) the briefing heading's `@ <host>` meta, are both
+omitted by default when that server is loopback (`127.0.0.0/8`, `0.0.0.0`,
+`localhost`, or `::1`, including IPv4-mapped/-compatible forms) — a
+machine-local dev address has no business in a file every contributor and
+dispatched agent commits and reads. `--no-server-line` omits both
+unconditionally, even for a public URL.
 
 ```sh
 spor agents-md --briefing
