@@ -60,7 +60,7 @@ spor link billing
 ### agents-md
 
 ```
-spor agents-md [--briefing] [--no-claude-md]
+spor agents-md [--briefing] [--no-claude-md] [--no-server-line]
 ```
 
 **Mode:** local · alias `agents`
@@ -78,8 +78,15 @@ the directive only — hooked hosts get their briefing at session start;
 `--briefing` also embeds the standing project briefing, the floor for hosts
 without hooks.
 
+The block's tools-line sentence pointing at your `SPOR_SERVER`'s MCP endpoint
+is omitted by default when that server is loopback (`127.0.0.0/8`, `0.0.0.0`,
+`localhost`, or `::1`, in any spelling) — a machine-local dev address has no
+business in a file every contributor and dispatched agent commits and reads.
+`--no-server-line` omits the sentence unconditionally, even for a public URL.
+
 ```sh
 spor agents-md --briefing
+spor agents-md --no-server-line
 ```
 
 ### compile
