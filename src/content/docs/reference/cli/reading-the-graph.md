@@ -261,6 +261,12 @@ banner), and carries no write scope, so a pasted link can never leak a
 write-capable credential. `--expires` is `<N>d` or an ISO date (server
 default 7d, max 30d). Your token must be bound to a person node.
 
+Against an MCP-only server the printed link points at the app host instead
+of the render route — see [`url` on an MCP-only
+host](/reference/api/lenses-and-sharing/#url-on-an-mcp-only-host) — and a
+live session on that app host outranks the ticket, so a signed-in recipient
+always sees their own session rather than the sharer's view.
+
 ```sh
 spor share lens-tidefall-retry-radar --expires 14d
 ```

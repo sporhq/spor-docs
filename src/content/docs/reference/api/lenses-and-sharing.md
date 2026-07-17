@@ -61,3 +61,20 @@ shareable link, ready to paste.
   expiry is the bound.
 
 The CLI front-door is `spor share <lens-id> [--expires <Nd>]`.
+
+### `url` on an MCP-only host
+
+An MCP-only host doesn't serve `/v1/lens/{id}/render` (it 404s), so a relative
+link there would be dead on arrival. If that host is configured with a
+`SPOR_APP_URL` (pointing at the separate app host that renders lenses for
+browsers), the minted `url` is instead the absolute
+`${SPOR_APP_URL}/views/{id}?ticket=...` — still ready to paste. Without
+`SPOR_APP_URL` set, the response falls back to the prior relative shape.
+
+The app host's `GET /views/{id}` exchanges that `?ticket=` exactly once into
+the same HttpOnly `spor_render_ticket` cookie described above, then forwards
+the ticket to api as the credential on its own render fetch. One rule flips
+relative to the direct render route: on the app host a **live session
+outranks the ticket cookie** — a signed-in visitor sees their own session,
+never the sharer's view — so a pasted link can never silently pin a
+signed-in user's session to the sharer's identity.
