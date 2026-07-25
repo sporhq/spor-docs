@@ -64,6 +64,12 @@ Identity ids: `person-ines`, `person-marek`, `org-tidefall`,
    excludes `dec-tidefall-legacy-invoicing`.
 8. The team records `norm-tidefall-reversible-migrations`: a **norm** that
    migrations on billing tables must be reversible.
+9. tidefall's own CLI reference page for `retryctl retry` is anchored to the
+   command's implementation: `art-tidefall-doc-retryctl-cli` carries a
+   `derived-from` edge to `art-tidefall-anchor-retryctl-js`, a provenance
+   anchor recording `path: bin/retryctl.js` and its blob `sha` at anchoring
+   time. If `bin/retryctl.js` changes without a matching anchor re-stamp, the
+   gardener's drift sweep files a finding against the anchor.
 
 ## Node id registry
 
@@ -90,6 +96,8 @@ Identity ids: `person-ines`, `person-marek`, `org-tidefall`,
 | `lens-tidefall-retry-radar` | lens | A saved board view of open work gating the retry rollout. |
 | `wf-tidefall-release-checklist` | workflow | A release-checklist workflow used elsewhere in the docs. |
 | `schema-provider-escalation` | schema | A custom node type for provider-facing escalations with a required severity field. |
+| `art-tidefall-anchor-retryctl-js` | artifact | Provenance anchor for `bin/retryctl.js`, the source `retryctl retry`'s reference page documents. |
+| `art-tidefall-doc-retryctl-cli` | artifact | The CLI reference page for `retryctl retry`, anchored to its implementation via `derived-from`. |
 
 ## Using the scenario
 

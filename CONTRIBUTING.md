@@ -86,6 +86,79 @@ If you find a page that contradicts shipped behavior, either fix it (citing
 what the tool actually prints or returns in the PR description) or file a
 [documentation error issue](.github/ISSUE_TEMPLATE/docs-error.md).
 
+## Doc-provenance anchors
+
+The previous section says to verify a reference entry against its source
+before writing it down. Doc-provenance anchors make that tracking mechanical
+on the graph, so a source drifting out from under a page becomes a queue item
+instead of something a reader has to notice first.
+
+A **provenance anchor** is an [artifact node](/reference/graph-model/nodes/)
+that names one source of truth. It carries `path` and `sha` as plain
+frontmatter scalars, not [edge attributes](/reference/api/writes/) — a
+repo-relative path needs dots and slashes that the edge-attribute grammar's
+`[A-Za-z0-9_-]` tokens reject:
+
+- `path` is the source file's path, relative to its repo.
+- `sha` is that file's git **blob** sha at anchoring time
+  (`git rev-parse HEAD:<path>`), not a commit sha — so a commit elsewhere in
+  the source repo never trips a false drift finding.
+- The anchor's `repo` field, the one every node already carries, says which
+  checkout to resolve `path` against; no extra field is needed to say that.
+
+A reference doc that draws from one or more anchors is itself an artifact
+node, carrying one [`derived-from` edge](/reference/graph-model/edges/) to
+each anchor it depends on. That edge may also carry a `sha` attribute as a
+convenience mirror of the anchor's own `sha` (a bare hex sha fits the strict
+edge-attribute grammar), but the anchor node's frontmatter `sha` is what the
+gardener sweep actually reads.
+
+**Worked example**, extending [the tidefall scenario](/contributing/example-scenario/):
+
+```markdown
+---
+id: art-tidefall-anchor-retryctl-js
+type: artifact
+repo: billing
+title: Provenance anchor — retryctl's retry command
+path: bin/retryctl.js
+sha: 4a1c9f2e8b7d6053a1e4f9c8d2b6a70e5f3c1d9a
+---
+
+Anchors `bin/retryctl.js`, the implementation the CLI reference page for
+`retryctl retry` documents.
+```
+
+```markdown
+---
+id: art-tidefall-doc-retryctl-cli
+type: artifact
+repo: billing
+title: CLI reference — retryctl retry
+edges:
+  - {type: derived-from, to: art-tidefall-anchor-retryctl-js, sha: 4a1c9f2e8b7d6053a1e4f9c8d2b6a70e5f3c1d9a}
+---
+
+The reference page for `retryctl retry`, derived from the anchor above.
+```
+
+What to do:
+
+- **Anchoring a new reference page.** When you write or regenerate a
+  reference entry derived from a source file, create — or reuse, if one
+  already anchors that path in that repo — a provenance-anchor node stamped
+  with the source's `path` and its current blob `sha`, then add a
+  `derived-from` edge from the page's artifact node to the anchor. Do this in
+  the same PR as the page change, not as a follow-up.
+- **When a drift finding fires.** The gardener sweep resolves every anchor's
+  `path` against its repo and compares the file's current blob sha to the
+  recorded one. A changed sha or an unresolvable path files a
+  `find-doc-provenance-drift-<anchor-id>` finding into the queue. Check
+  whether the change affects what the page documents, and update the page if
+  it does. Either way, re-stamp the anchor's `sha` (and `path`, if the file
+  moved) to match the source's current state — the finding auto-resolves once
+  the anchor matches again; it is never cleared by hand.
+
 ## The quality bar
 
 Every docs PR is reviewed against four reader tests beyond the mechanical
