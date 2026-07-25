@@ -103,8 +103,8 @@ repo-relative path needs dots and slashes that the edge-attribute grammar's
 - `sha` is that file's git **blob** sha at anchoring time
   (`git rev-parse HEAD:<path>`), not a commit sha — so a commit elsewhere in
   the source repo never trips a false drift finding.
-- The anchor's `repo` field, the one every node already carries, says which
-  checkout to resolve `path` against; no extra field is needed to say that.
+- The anchor's `repo` field says which checkout to resolve `path` against, so
+  no extra field is needed to name the source repo.
 
 A reference doc that draws from one or more anchors is itself an artifact
 node, carrying one [`derived-from` edge](/reference/graph-model/edges/) to
@@ -121,6 +121,8 @@ id: art-tidefall-anchor-retryctl-js
 type: artifact
 repo: billing
 title: Provenance anchor — retryctl's retry command
+summary: Anchors bin/retryctl.js at blob 4a1c9f2, the implementation behind the
+  retryctl retry CLI reference page.
 path: bin/retryctl.js
 sha: 4a1c9f2e8b7d6053a1e4f9c8d2b6a70e5f3c1d9a
 ---
@@ -135,6 +137,8 @@ id: art-tidefall-doc-retryctl-cli
 type: artifact
 repo: billing
 title: CLI reference — retryctl retry
+summary: The reference page for retryctl retry, derived from the retryctl.js
+  provenance anchor so the gardener flags it when that source moves.
 edges:
   - {type: derived-from, to: art-tidefall-anchor-retryctl-js, sha: 4a1c9f2e8b7d6053a1e4f9c8d2b6a70e5f3c1d9a}
 ---
