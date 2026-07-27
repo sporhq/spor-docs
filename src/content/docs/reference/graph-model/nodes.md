@@ -26,7 +26,7 @@ Here is a decision from the fictional
 ---
 id: dec-tidefall-billing-retries
 type: decision
-project: billing
+repo: billing
 title: Failed card charges retry three times over two days before the update-billing email
 summary: Failed card charges retry three times over two days, then a dunning
   email asks the customer to update billing details, because a single
@@ -43,6 +43,23 @@ churned after one transient card failure. The three-attempt window over two
 days recovers most of them. A longer window was rejected because it delays
 the update-billing email past the next billing cycle.
 ```
+
+## The `repo` field names the originating repo
+
+`repo: billing` above is a scalar stamp naming the git repo the node was
+written in — inferred from the checkout at write time, or fixed by a
+committed `.spor` marker (see [Configuration](/reference/configuration/)).
+If you write a node file by hand, stamp `repo:`, not `project:`: `project:`
+is the old spelling of this same field, kept only because existing stamps
+are never rewritten, so older nodes still read `project` while everything
+written today writes `repo`. Both spellings are valid to read; only `repo:`
+is valid to write.
+
+Don't confuse this per-node stamp with the separate `type: repo` and `type:
+project` node types, a durable identity layer where a `repo-` node owns a
+repo's git identity (slug aliases, fingerprints) and a `proj-` node groups
+repos into the stable product above them — see [Repos, projects, and the
+gardener](/reference/graph-model/repos-and-projects/) for that layer.
 
 ## One fact per node
 

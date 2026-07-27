@@ -31,7 +31,7 @@ else:
 ---
 id: lens-tidefall-retry-radar
 type: lens
-project: billing
+repo: billing
 title: Retry rollout radar
 summary: Open work gating the billing retry rollout, grouped by status.
 status: active
