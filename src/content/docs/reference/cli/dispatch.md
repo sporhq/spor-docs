@@ -104,6 +104,62 @@ spor dispatch task-tidefall-retry-emails --worktree
 spor dispatch --from-queue --print
 ```
 
+### runs
+
+```
+spor runs [<run-id>] [options]
+```
+
+**Mode:** local
+
+The durable record of every background agent *this machine* has dispatched —
+how each run ended, and where to look. Don't confuse this with [`run
+status`](/reference/cli/writing-to-the-graph/#run), which inspects a
+server-side workflow-engine run; `runs` is the local dispatch launch record.
+
+A native dispatch detaches into the harness daemon, so the launcher never
+sees the child exit — without this record a finished run and a dead one are
+indistinguishable afterwards. **Reading reconciles first**: every run the
+harness no longer reports live is resolved against its own transcript and
+stamped with a terminal state, a classification, a reason, and a transcript
+pointer — so a run's state can advance simply from running `spor runs`.
+
+A run moves through `launching` → `running` to one of four terminal states:
+
+| State | Meaning |
+| --- | --- |
+| `done` | the session ended its turn cleanly |
+| `failed` | it ended for a recognized reason (see the classification) |
+| `vanished` | it stopped mid-turn with no end-of-turn marker, or left nothing attributable to it |
+| `failed_launch` | the harness never started |
+
+Each terminal run also carries a classification that keeps causes from being
+conflated: `environment` (provider credit exhaustion, usage limits, rate
+limits, rejected auth — re-dispatch once that clears), `launch`, `failed`,
+`completed`, or `unknown`. Evidence is always the run's own — a transcript is
+matched by the session the run bound, never by the directory it ran in, since
+several dispatches can share one checkout. A run still inside its first
+minute, or one whose harness couldn't be queried at all, is left alone rather
+than declared dead.
+
+`<run-id>` filters to one run by full id or short prefix; `--node <id>`
+filters to every run dispatched for a node; `--limit <N>` bounds how many are
+shown (default 20); `--json` prints the raw run records instead of the
+one-line-plus-detail text format. Terminal records age out after
+`dispatch.runRetentionMs` (default 14 days).
+
+| Flag | Effect |
+| --- | --- |
+| `--node <id>` | only runs dispatched for this node id |
+| `--limit <N>` | how many runs to show (default 20) |
+| `--json` | machine-readable JSON (the raw run records) |
+
+```sh
+spor runs
+spor runs --node issue-x
+spor runs --json
+```
+
 ### repos
 
 ```

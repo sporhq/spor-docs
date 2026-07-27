@@ -60,7 +60,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [Reading the graph](/reference/cli/reading-the-graph/) | next, get, query, blame, history, changes, analytics, schema, lens, share, export |
 | [Writing to the graph](/reference/cli/writing-to-the-graph/) | add, ask, drain, put-node, edge, set-status, priority, ready, correct, claim, renew, extend, release, run |
 | [Repo scoping](/reference/cli/repo-scoping/) | enable, disable, link, agents-md, compile, brief, validate |
-| [Dispatch](/reference/cli/dispatch/) | agent, dispatch, repos, capabilities |
+| [Dispatch](/reference/cli/dispatch/) | agent, dispatch, runs, repos, capabilities |
 | [Utilities](/reference/cli/utilities/) | cost, version, help |
 
 ## All verbs, A to Z
@@ -110,6 +110,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [renew](/reference/cli/writing-to-the-graph/#renew) | remote | | heartbeat your live claim |
 | [repos](/reference/cli/dispatch/#repos) | dual | | the dispatch slug map and repo-identity tags |
 | [run](/reference/cli/writing-to-the-graph/#run) | remote | | start or inspect a workflow run |
+| [runs](/reference/cli/dispatch/#runs) | local | | what happened to the runs this machine dispatched |
 | [schema](/reference/cli/reading-the-graph/#schema) | dual | | introspect the live schema registry |
 | [set-status](/reference/cli/writing-to-the-graph/#set-status) | dual | `status-set` | set a node's status, claiming on active |
 | [share](/reference/cli/reading-the-graph/#share) | remote | | mint a shareable read-only view link |
