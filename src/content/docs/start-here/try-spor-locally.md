@@ -124,7 +124,7 @@ added issue-a-retry-that-succeeds-while-the-payment-provider (issue) to /home/in
 
 In local mode this writes a well-formed, validated node file. You never
 hand-author frontmatter. The default type is `task`; `--type`, `--title`,
-and `--id` override the defaults. Spor infers the project slug from the
+and `--id` override the defaults. Spor infers the repo slug from the
 current directory, or you can set it with `--project`.
 
 ## 5. Read the queue

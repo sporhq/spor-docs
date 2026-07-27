@@ -27,8 +27,8 @@ spor status
 
 The first thing to run. It prints what the CLI actually resolved from your
 flags, environment, and config files: the mode (local or remote), the graph
-home, the project slug for the current repo, your identity, and a health
-probe. Because configuration comes from several layers (flags, environment,
+home, the repo slug, your identity, and a health probe. Because configuration
+comes from several layers (flags, environment,
 `.spor.json`, user config), `status` is the authoritative answer to "which
 graph am I on right now?" — more reliable than re-reading the config files
 yourself. It also warns when a wired host is running a stale plugin version.

@@ -7,7 +7,7 @@ sidebar:
 
 Dispatch turns a queue item into a running Claude Code background agent:
 `dispatch` compiles a briefing and launches the session, `agent` manages the
-identity it runs as, `repos` maps project slugs to directories on this
+identity it runs as, `repos` maps repo slugs to directories on this
 machine, and `capabilities` declares what this machine can run.
 
 ### agent
@@ -88,7 +88,7 @@ passthrough that picks the harness agent definition the session runs.
 | Flag | Effect |
 | --- | --- |
 | `--dir <path>` | launch directory, overriding the slug map |
-| `--node <id>`, `--slug <slug>` | dispatch a specific node; target a project slug |
+| `--node <id>`, `--slug <slug>` | dispatch a specific node; target a repo slug |
 | `--as <agent-id>` | Spor identity to run as (remote-only) |
 | `--model <M>`, `--permission-mode <P>`, `--agent <A>`, `--name <N>` | passthroughs to `claude` |
 | `--profile <profile-id>` | profile to run under, checked against this machine's capabilities |

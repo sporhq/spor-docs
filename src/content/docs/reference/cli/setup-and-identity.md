@@ -77,7 +77,7 @@ spor status
 
 **Mode:** dual
 
-Print the resolved mode (local or remote), graph home, project slug,
+Print the resolved mode (local or remote), graph home, repo slug,
 identity, and a health probe. The first thing to run when Spor is not doing
 what you expect.
 

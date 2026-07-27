@@ -97,7 +97,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [invite](/reference/cli/team-admin/#invite) | remote | | mint a teammate token (admin) |
 | [join](/reference/cli/setup-and-identity/#join) | remote | | add an org-scoped credential from a pasted token |
 | [lens](/reference/cli/reading-the-graph/#lens) | remote | `render-lens` | render a saved view |
-| [link](/reference/cli/repo-scoping/#link) | local | | set this repo's canonical project slug |
+| [link](/reference/cli/repo-scoping/#link) | local | | set this repo's canonical repo slug |
 | [login](/reference/cli/setup-and-identity/#login) | remote | | interactive sign-in (alias of `auth login`) |
 | [migrate](/reference/cli/setup-and-identity/#migrate) | local | `push` | push the local graph to a git remote you own |
 | [next](/reference/cli/reading-the-graph/#next) | dual | `queue` | the ranked decision queue |
