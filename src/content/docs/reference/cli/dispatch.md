@@ -120,11 +120,14 @@ server-side workflow-engine run; `runs` is the local dispatch launch record.
 A native dispatch detaches into the harness daemon, so the launcher never
 sees the child exit — without this record a finished run and a dead one are
 indistinguishable afterwards. **Reading reconciles first**: every run the
-harness no longer reports live is resolved against its own transcript and
-stamped with a terminal state, a classification, a reason, and a transcript
-pointer — so a run's state can advance simply from running `spor runs`.
+harness no longer reports live is resolved against its own evidence — a
+native dispatch's transcript, a supervised one's own log — and stamped with a
+terminal state, a classification, a reason, and a diagnostic pointer — so a
+run's state can advance simply from running `spor runs`.
 
-A run moves through `launching` → `running` to one of four terminal states:
+A run starts at `launching`; the harness never starting closes it straight to
+`failed_launch`, otherwise it advances to `running` and from there to one of
+the other three terminal states:
 
 | State | Meaning |
 | --- | --- |
