@@ -133,6 +133,8 @@ verbatim so a calling program can self-correct. The full contract is on
 | DELETE | `/v1/me/tokens/{hash-prefix}` | revoke one of your own tokens |
 | GET / POST | `/v1/admin/tokens` | team-wide token list / mint (admin) |
 | DELETE | `/v1/admin/tokens/{hash-prefix}` | revoke any token (admin) |
+| GET / POST | `/v1/admin/people` | list every person / create a person subject (admin) |
+| DELETE | `/v1/admin/people/{id}` | offboard a member: revoke tokens and OAuth grants (admin) |
 | GET / POST | `/v1/agents` | list / create agents you own |
 | POST | `/v1/admin/agents` | create an agent for another person (admin) |
 | POST | `/v1/agents/{id}/token` | mint a per-session or standing agent token |

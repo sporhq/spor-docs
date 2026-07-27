@@ -65,6 +65,17 @@ Use the invitation path above, or mint a person-bound token with
 `POST /v1/admin/tokens`. The admin gate for these endpoints is described in
 [Authentication](/reference/api/authentication/).
 
+## Manage people
+
+Onboarding a teammate through the API is two calls: `POST /v1/admin/people`
+creates the canonical person subject first (neither a PAT mint nor a
+provider callback can conjure one), then `POST /v1/admin/tokens` binds a PAT
+to it. `GET /v1/admin/people` lists every person subject, including token
+counts and admin status; `DELETE /v1/admin/people/{id}` offboards one,
+revoking every PAT and OAuth grant without deleting the node itself. Full
+endpoint detail, including error cases, is in
+[Tokens and agents](/reference/api/tokens-and-agents/#people-admin).
+
 ## Manage tokens
 
 Everyday token management is self-serve:

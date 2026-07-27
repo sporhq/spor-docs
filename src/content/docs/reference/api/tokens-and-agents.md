@@ -51,7 +51,8 @@ minted from that token. A prefix that isn't one of the caller's is `404`
 ### GET /v1/admin/tokens
 
 The team-wide token list: `{tokens: [{hash_prefix, person, name, email,
-created, expires, expired}], count}`. Never plaintext, never full hashes.
+created, expires, expired, last_used}], count}`. Never plaintext, never full
+hashes.
 
 ### POST /v1/admin/tokens
 
@@ -64,6 +65,61 @@ hash_prefix, person, name, email, expires}`, plaintext returned once.
 Revoke the single token matching the hash prefix (at least 8 hex characters;
 an ambiguous prefix is `409`). Returns `{revoked, hash_prefix}`. Revokes any
 token; the self-serve route above revokes only your own.
+
+## People (admin)
+
+### GET /v1/admin/people
+
+List every person subject: `{people: [{id, name, email, roles, is_admin,
+status, tokens, active_tokens, last_used}], count}`. `is_admin` reflects the
+`stewards → root` edge — the same per-person check the admin gate itself
+runs. `tokens`/`active_tokens`/`last_used` summarize the subject's PATs from
+the same store `GET /v1/admin/tokens` above lists. `status` is the node's own
+frontmatter status, stamped `active` at creation; offboarding (below) revokes
+access without touching it, so it is not an offboarded/active signal today.
+
+### POST /v1/admin/people
+
+Create the canonical person subject a PAT or provider callback binds to —
+neither `POST /v1/admin/tokens` nor a provider (IdP) callback can conjure
+one, so this is the deliberate first step onboarding a new teammate needs:
+
+```sh
+curl -s https://api.sporhq.io/v1/admin/people \
+  -H "Authorization: Bearer $SPOR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Marek Ilves", "email": "marek@tidefall.example.com"}'
+```
+
+Returns 201 `{id, name, email, roles, revision, org_invitation?}`. `name` and
+`email` are required, single-line, at most 200 characters; `id` defaults to
+an opaque, deterministic email-hash when omitted (never the mutable display
+name) and must be a `person-<slug>` kebab id; `roles` is an optional array of
+at most 20 kebab-case role slugs. No `stewards` edge is written — a regular
+teammate is not an admin; grant that separately (see
+[Authentication](/reference/api/authentication/#the-admin-gate)).
+
+`invite: true` additionally issues a WorkOS Organization invitation for the
+same email (`connection_id` disambiguates when more than one WorkOS
+connection is configured). `org` pins the invitation's org and is honored
+only on an unbound/self-host server — on a server already bound to one org
+(the hosted default), a supplied `org` that disagrees with it is `403
+forbidden` rather than silently corrected; omitting it just pins to the bound
+org. The invite shape is validated up front so a bad argument never leaves a
+half-done onboarding, but an invitation failure never rolls back the created
+person: `org_invitation: {status: "issued"|"failed", ...}` reports either
+outcome. `409` on a colliding id, `422` invalid.
+
+### DELETE /v1/admin/people/{id}
+
+Offboard a member: revoke every PAT and OAuth grant bound to the subject —
+the same cascade a directory deprovision runs. Returns `{offboarded,
+tokens_revoked, oauth_grants_revoked}`. Does **not** delete the person
+node — it stays the canonical subject every attribution reference points at,
+so removal here means "revoke access," not "erase the record."
+Self-offboarding is refused (`422`) so an admin can't lock themselves out; a
+malformed or non-`person-` id is also `422`, checked before the `404` lookup
+for an unknown id.
 
 ## Agents
 
