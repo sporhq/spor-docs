@@ -25,9 +25,19 @@ wt="${SPOR_WORKTREE:-$PWD}"
 
 cd "$wt"
 
-if [ -d "$main/node_modules" ] && [ ! -e node_modules ]; then
-  ln -s "$main/node_modules" node_modules
-  echo "dispatch-worktree-setup: linked node_modules -> $main/node_modules"
+if [ -d "$main/node_modules" ]; then
+  # A stale/dangling symlink (e.g. left over from a prior run against a
+  # different SPOR_MAIN_CHECKOUT) makes `-e` false even though the path
+  # exists, so always clear a pre-existing symlink before relinking —
+  # otherwise `ln -s` collides with it and dies under set -e. A real
+  # directory (not a symlink) is left untouched.
+  if [ -L node_modules ]; then
+    rm node_modules
+  fi
+  if [ ! -e node_modules ]; then
+    ln -s "$main/node_modules" node_modules
+    echo "dispatch-worktree-setup: linked node_modules -> $main/node_modules"
+  fi
 fi
 
 if ! npm ls --depth=0 >/dev/null 2>&1; then
