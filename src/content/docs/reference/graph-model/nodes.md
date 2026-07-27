@@ -151,6 +151,34 @@ files directly, and file writes are ungated — the discipline still applies,
 but nothing stops you.
 :::
 
+## Status vocabulary is write-gated, separately from transition legality
+
+A type's schema can gate a status two different ways (see [Schemas are
+nodes](/reference/graph-model/schemas/)): `validate(node)` checks the node in
+isolation on every write, create and update — is this a word the type
+recognizes at all — while `transitions(current, proposed, view)` checks
+whether one *specific* change is legal given the node's history and
+neighborhood. A type can carry either, both, or neither; the two are
+independent gates, not two names for the same check.
+
+`artifact` gates only through `validate()` — it has no `transitions()`,
+because its stages are not a state machine: a change may be born `merged`,
+and a living doc may move `active` → `done` and back, so there is nothing
+to gate on order. What `validate()` enforces instead is vocabulary
+membership: every write's status must be empty (a plain reference doc) or
+one of `in-review`, `approved`, `merged`, `released`, `done`, `active` — see
+[Node types](/reference/graph-model/node-types/#work-and-knowledge-types).
+A server-mediated write with an off-vocabulary status (`shipped`,
+`complete`, `landed`) is rejected as `422 invalid_node`, on create exactly as
+on update, the same as a missing required field.
+
+Don't confuse this with the resolver gate above, which is a `transitions()`
+concern: whether an artifact's *current* delivery status (`in-review` /
+`approved` vs. `merged` / `released` / none) lets it resolve a task or issue.
+Membership asks whether the value is a word this type recognizes at all,
+independent of what it's changing from or to; legality asks whether this
+specific change, in this specific context, is allowed.
+
 ## Attribution
 
 When a node is written through the Spor server, the server stamps
