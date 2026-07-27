@@ -59,7 +59,7 @@ graph: ../team-graph    # local mode: bind this repo to a shared graph home
 org: tidefall           # remote mode: select a stored tenant
 ```
 
-`repo:` fixes the project slug ([`spor link`](/reference/cli/repo-scoping/#link)
+`repo:` fixes the repo slug ([`spor link`](/reference/cli/repo-scoping/#link)
 writes it). `graph:` binds the repo to a graph home, resolved relative to
 the marker itself; nearest-ancestor marker wins, and it applies in local
 mode only. `org:` is the remote-mode sibling: it selects which stored
