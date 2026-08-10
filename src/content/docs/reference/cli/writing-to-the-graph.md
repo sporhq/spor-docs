@@ -148,6 +148,24 @@ in place; there is no claim pool locally.
 spor set-status task-tidefall-retry-emails active
 ```
 
+Flipping a node to a completion status (`done`, `resolved`, `completed`, or
+`merged`) that carries `commits:` stamps also runs an advisory ancestry
+check: for each stamp mapped to a repo in `dispatch.repos`, it runs `git
+merge-base --is-ancestor` against that local checkout's trunk branches. A
+stamp definitively not found on any of them prints a `warning:` line to
+stderr — the work may still be sitting on an unmerged branch. The check is
+warn-never-block and fails silent on anything it can't verify (an unmapped
+repo, a missing checkout, an unresolvable sha): only a confirmed miss
+warns, and the status write itself always succeeds.
+
+```sh
+spor set-status task-tidefall-retry-emails done
+# status set: task-tidefall-retry-emails -> done
+#   warning: task-tidefall-retry-emails is now done, but 1 commit it rests
+#     on (tidefall@8f3a2c1) is on no trunk branch in the local checkout —
+#     the work may still be on an unmerged branch.
+```
+
 ### priority
 
 ```
