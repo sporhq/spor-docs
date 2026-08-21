@@ -121,9 +121,11 @@ defaulted. Hand-written nodes should use the canonical forms.
 
 ## Weights are registry data
 
-The table above shows the seed pack's weights. Like everything else in the
-ontology, edge types and their weights live in schema nodes, so a team can
-add an edge type or retune a weight by writing a schema node rather than
-waiting for a release. `spor schema --edges` prints the live table for your
-graph. View-layer schemas may add their own structural edges — for example,
-a workspace mirrors its lens slots with low-weight `composes` edges.
+The tables above show the seed pack's weights, except `member-of-program`,
+which ships graph-resident rather than seed (see above). Like everything
+else in the ontology, edge types and their weights live in schema nodes, so
+a team can add an edge type or retune a weight by writing a schema node
+rather than waiting for a release. `spor schema --edges` prints the live
+table for your graph. View-layer schemas may add their own structural
+edges — for example, a workspace mirrors its lens slots with low-weight
+`composes` edges.
