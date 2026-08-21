@@ -80,9 +80,13 @@ with `{id, max_depth?, max_nodes?}` and by
 [`GET /v1/program/{id}`](/reference/api/reads/). On MCP-Apps-capable hosts, it
 renders as an interactive view.
 
-Start from a root node that other work `blocks`, such as an umbrella task or a
-milestone. The server walks everything that transitively blocks the root and
-buckets each node from the same truth the queue uses:
+Start from a root node that other work `blocks`, or that other work declares
+[`member-of-program`](/reference/graph-model/edges/) to, such as an umbrella
+task or a milestone. At each node the walk prefers inbound
+`member-of-program` edges — the dedicated, pure-topology membership edge —
+falling back to inbound `blocks` only where a node declares no membership
+edges, so an unmigrated or partially migrated program still renders. The
+server buckets each member from the same truth the queue uses:
 
 - **done** — terminal status, superseded, or retired by a live `resolves` or
   `answers` edge. This counts even while the status field lags.
@@ -94,14 +98,19 @@ The result includes progress totals, percent complete, and the gating tree.
 Shared blockers render once and repeat as marked leaves. If depth or node caps
 skip anything, the response reports what it skipped.
 
-A root that nothing blocks is a successful empty result. It means the program
-needs modeling: add `blocks` edges from the work that gates it.
+A root with no inbound `blocks` or `member-of-program` edges is a successful
+empty result. It means the program needs modeling: add `blocks` and/or
+`member-of-program` edges from the work that belongs to it.
 
 For example, the tidefall team hangs the billing retry-flow rollout under
 `task-tidefall-retry-rollout`. Member tasks such as
-`task-tidefall-retry-emails` carry `blocks` edges to that umbrella task. The
-program view of `task-tidefall-retry-rollout` shows how far the rollout has
-moved.
+`task-tidefall-retry-emails` carry `blocks` edges to that umbrella task,
+gating its completion — a non-gating member of the same rollout would carry
+only a `member-of-program` edge instead. The program view of
+`task-tidefall-retry-rollout` shows how far the rollout has moved.
+`member-of-program` ships as a graph-resident schema pending activation —
+`spor schema member-of-program` reports whether it's live in a given graph
+yet.
 
 See [the queue](/use-spor/queue/) for the status rules the view reuses, and
 [Lenses, program view, and workflows](/reference/graph-model/lenses-and-workflows/)

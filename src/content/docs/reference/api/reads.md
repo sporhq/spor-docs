@@ -270,24 +270,30 @@ reduce to counts. No journal lines, node bodies, or capture prose ever exit.
 ## GET /v1/program/{id}
 
 The program/progress view — where a large workstream stands, derived on
-demand from `blocks` topology with no lens authoring:
+demand from program topology with no lens authoring:
 
 ```
 GET /v1/program/{id}?format=json|text&depth=&max_nodes=
 ```
 
 Given a root node (an umbrella task, a milestone — anything other work
-`blocks`), the server walks everything that blocks it transitively and
-returns the gating tree with resolution-derived progress: `{progress:
-{total, done, active, blocked, open, pct, statuses}}` on the view root.
-"Done" means terminal status, supersession, or a live `resolves`/`answers`
-edge — the same truth the queue uses, even while a status field lags. Shared
+`blocks`, or that other work declares
+[`member-of-program`](/reference/graph-model/edges/) to), the server walks
+its members and returns the gating tree with resolution-derived
+progress: `{progress: {total, done, active, blocked, open, pct, statuses}}`
+on the view root. At each node the walk prefers inbound `member-of-program`
+edges, falling back to inbound `blocks` where a node declares no membership
+edges, so an unmigrated or partially migrated program still renders. "Done"
+means terminal status, supersession, or a live `resolves`/`answers` edge —
+the same truth the queue uses, even while a status field lags. Shared
 blockers render once and repeat as marked leaves, counted once.
 
 JSON view tree by default; `?format=text` for the terminal rendering.
 `depth`/`max_nodes` bound expansion and count skipped branches into
-`truncated`, never silently. A root that nothing blocks is a successful empty
-result; an unknown id is `404`.
+`truncated`, never silently. A root with no inbound `blocks` or
+`member-of-program` edges is a successful empty result; an unknown id is
+`404`. `member-of-program` ships as a graph-resident schema pending
+activation — `spor schema member-of-program` reports whether it's live yet.
 
 This is the REST twin of `render_program`; the MCP tool
 [`explore_graph`](/reference/mcp/tools/#explore_graph) — free-form

@@ -156,12 +156,13 @@ this renders the interactive graph navigator (lineage bands, expand/re-root,
 node inspector); elsewhere it returns the same slice as text.
 
 Call with no arguments for the birds-eye **programs overview** — every
-umbrella root (any node other work `blocks`) with resolution-driven
-completion percentage, most complete first — the answer to "show me the
-graph" with no node in mind. Pass `root_id` to walk outward from one node
-(depth 1–2, deterministic, no LLM call); pass `query` instead to seed the
-roots by relevance. Re-call with a neighbor's id as `root_id` to expand the
-frontier.
+umbrella root (any node other work `blocks`, or that other work declares
+[`member-of-program`](/reference/graph-model/edges/) to) with
+resolution-driven completion percentage, most complete first — the answer to
+"show me the graph" with no node in mind. Pass `root_id` to walk outward from
+one node (depth 1–2, deterministic, no LLM call); pass `query` instead to
+seed the roots by relevance. Re-call with a neighbor's id as `root_id` to
+expand the frontier.
 
 Prefer [`query_graph`](#query_graph) for compiled context and digests; reach
 for this when the user wants to see how nodes connect, or a host needs raw
@@ -198,19 +199,25 @@ exists and what it depends on.
 ### `render_program`
 
 The birds-eye "where do we stand" for a large workstream, derived on demand
-from `blocks` topology — no lens authoring needed. Input
-`{id, max_depth?, max_nodes?}` where `id` is a root node other work blocks
-(an umbrella task, a milestone). The server walks everything that
-transitively blocks it and buckets each node from the same truth the queue
-uses: **done** (terminal status, superseded, or retired by a live
+from program topology — no lens authoring needed. Input
+`{id, max_depth?, max_nodes?}` where `id` is a root node other work `blocks`,
+or that other work declares [`member-of-program`](/reference/graph-model/edges/)
+to (an umbrella task, a milestone). At each node the walk **prefers inbound
+`member-of-program` edges**, falling back to inbound `blocks` only where a
+node declares no membership edges, so an unmigrated or partially migrated
+program still renders. The server buckets each member from the same truth
+the queue uses: **done** (terminal status, superseded, or retired by a live
 `resolves`/`answers` edge — even while the status field lags), **blocked**
 (gated by its own live blockers), and live unblocked work split **active**
 vs **open**. Returns a progress summary (totals and percent) plus the gating
 tree; shared blockers render once and repeat as marked leaves, and depth or
 node caps report what they skipped — never silently.
 
-A root that nothing blocks is a successful empty result telling you how to
-model the program (add `blocks` edges from the gating tasks).
+A root with no inbound `blocks` or `member-of-program` edges is a successful
+empty result telling you how to model the program (add `blocks` and/or
+`member-of-program` edges from the member work). `member-of-program` ships
+as a graph-resident schema pending activation — `spor schema
+member-of-program` reports whether it's live in a given graph yet.
 
 ### `hello_mcp_app`
 

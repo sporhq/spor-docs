@@ -35,9 +35,32 @@ Prefer one precise high-weight edge over three `relates-to`.
 | `decided-in` | 0.9 | The choice in this node was made in the target. |
 | `resolves` | 0.9 | This node fixes or closes the target — the edge the [resolver gate](/reference/graph-model/nodes/) requires. |
 | `blocks` | 0.7 | The target cannot proceed until this node does. |
+| `member-of-program` | 0.7 | This node is a member of the target program umbrella — pure topology, independent of gating. |
 | `answers` | 0.7 | This node answers the target question, pulling the answer through the asker's next briefing. |
 | `relates-to` | 0.5 | Weak association. |
 | `mentions` | 0.5 | Weakest association. |
+
+`member-of-program` is written from the member's perspective, same direction
+as `blocks`: `member -> umbrella`. It is **additive with `blocks`, never a
+replacement** — `blocks` keeps meaning only gating (this node must resolve
+before the umbrella can), while `member-of-program` records pure topology
+(this node belongs to the program). A member usually carries both; a
+non-gating member carries only `member-of-program`, and a prerequisite that
+gates the umbrella without belonging to its program carries only `blocks` — a
+distinction `blocks`-topology alone can't draw. The [program
+view](/reference/graph-model/lenses-and-workflows/#the-program-view-progress-from-blocks-topology)
+prefers these edges **per node**: a node with any inbound
+`member-of-program` edges takes those as its members; a node with none still
+falls back to inbound `blocks`, so an unmigrated or partially migrated
+program keeps rendering. The fallback is all-or-nothing at a node — declare
+every member of an umbrella in one pass, or the undeclared rest read as
+gating-but-outside-the-program rather than silently dropping.
+`member-of-program` ships as a graph-resident schema, not the seed pack, so a
+graph needs it activated (a *different* identity than whoever proposed it)
+before writes of this edge type validate — check `spor schema
+member-of-program` for its live status rather than assuming. It is also
+`capturable: false`: the distiller and capture nudge never emit it; only an
+explicit edge write groups work into a program.
 
 ## People and routing edges
 
@@ -87,7 +110,8 @@ normalized forms:
   `{type: blocks, to: task-tidefall-retry-rollout}`. Registered inverses:
   `blocked-by` → `blocks`, `answered-by` → `answers`,
   `superseded-by` → `supersedes`, `groups` → `grouped-under`,
-  `owns` → `owned-by`, `has-org-member` → `member-of-org`.
+  `owns` → `owned-by`, `has-org-member` → `member-of-org`,
+  `has-program-member` → `member-of-program`.
 - **Aliases** — same-direction synonyms renamed in place: `related-to` →
   `relates-to`, `derives-from` → `derived-from`, `supercedes` →
   `supersedes`, `approved-by` → `reviewed-by`.

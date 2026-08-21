@@ -77,8 +77,9 @@ dashboard is itself a node.
 
 For "where does the workstream stand?", no lens authoring is needed. Given
 any root node — an umbrella task, a milestone, anything other work
-`blocks` — the program view walks every node that blocks it, transitively,
-and derives each node's bucket from the same truth the queue uses:
+`blocks` or [`member-of-program`](/reference/graph-model/edges/) — the
+program view walks that root's members and derives each one's bucket from
+the same truth the queue uses:
 
 - **done** — terminal status, superseded, or retired by a live
   `resolves`/`answers` edge (counted even while the status field lags);
@@ -88,9 +89,21 @@ and derives each node's bucket from the same truth the queue uses:
 
 The result is a progress bar plus a gating tree. Shared blockers render once
 and repeat as marked leaves, counted once; depth and size caps report what
-they skipped rather than truncating silently. A root that nothing blocks is
-a successful empty result telling you how to model the program: add `blocks`
-edges from the gating work.
+they skipped rather than truncating silently. A root with no members at all
+is a successful empty result telling you how to model the program: add
+`blocks` and/or `member-of-program` edges from the member work.
+
+Membership and gating are independent facts about a member. `blocks` keeps
+meaning only gating; a dedicated `member-of-program` edge (member ->
+umbrella) records pure topology instead, so a member that doesn't gate the
+umbrella, or a gating prerequisite that isn't really part of the program,
+can be told apart — see [Edge types](/reference/graph-model/edges/) for the
+full semantics. The view prefers `member-of-program` **per node**: a root
+with any inbound `member-of-program` edges takes those as its members; a
+root with none still falls back to inbound `blocks`, so an unmigrated
+program renders exactly as before. `member-of-program` ships as a
+graph-resident schema pending activation in a given graph — `spor schema
+member-of-program` shows whether it's live yet.
 
 ## Workflows: automation as reviewable nodes
 
