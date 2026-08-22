@@ -63,6 +63,60 @@ Which profile a dispatch uses follows an explicit-wins cascade: a
 `assigned` edge (the durable per-assignment override), which beats the
 agent's default `uses-profile` edge.
 
+## Choosing a harness
+
+By default, `spor dispatch` launches a Claude Code agent (`claude --bg`). To
+dispatch under a different coding-agent CLI — Codex is also supported —
+resolve a profile whose `harness:` field names it:
+
+```sh
+spor dispatch issue-86 --profile profile-codex-sol
+```
+
+```markdown
+---
+id: profile-codex-sol
+type: profile
+title: Codex / gpt-5.6-sol
+summary: Codex harness running gpt-5.6-sol — general-purpose dispatch profile.
+status: active
+harness: codex
+model: gpt-5.6-sol
+mcp: [spor]
+---
+```
+
+Codex-specific flags (`--sandbox`, `--approval-policy`) and Claude-specific
+ones (`--permission-mode`, `--agent`) are mutually exclusive — passing the
+wrong one for the resolved harness is a hard error, so a dispatch can't
+launch half-configured for the wrong CLI.
+
+The two harnesses also launch differently. Claude Code dispatch detaches
+into Claude Code's own background-agent daemon — the launcher exits
+immediately, and `spor dispatch` can only reconcile what happened to it
+afterwards from the harness's own session transcript. Codex dispatch instead
+runs under a small supervisor Spor itself owns: it launches `codex exec` in
+the background, streams its progress into a private log, and captures the
+run's final message to a report file. At launch it prints where everything
+lives:
+
+```text
+run:     3f9a2c1e-... (Codex supervisor running)
+log:     ~/.spor/journal/dispatch/3f9a2c1e-....log
+report:  ~/.spor/journal/dispatch/3f9a2c1e-....report.md
+session: 019f7a51-...
+```
+
+`log` is the full JSONL progress stream; `report` is Codex's final message —
+the thing to read for "what did it conclude". Both paths, plus the run's
+outcome, are recorded durably and can be looked up later with
+[`spor runs`](/reference/cli/dispatch/#runs):
+
+```sh
+spor runs --node issue-86            # human-readable: state, why, log path
+spor runs --node issue-86 --json     # add .runs[0].report_path for the final message
+```
+
 ## Capabilities: what this machine can actually run
 
 Each machine keeps a local, never-committed capability map — which harnesses

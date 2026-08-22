@@ -148,6 +148,16 @@ run. Writes before the bind carry no session rather than a phantom one. A
 long-lived **standing** variant (`{standing: true}`) mints a durable
 agent-scoped `spor_pat_` for headless environments.
 
+The late-bind sequence differs by harness because the session id isn't known
+the same way: a Claude Code run's session comes from `claude agents --json`,
+while a **Codex**-harness dispatch reads its session id off the
+`thread.started` event in the run's own supervised JSONL log, then binds it
+through the same `POST /v1/agents/session` call. Token transport differs too
+— Claude Code gets the token via a strict `--mcp-config` file, Codex gets it
+through an env var its own config references
+(`--config mcp_servers.spor.bearer_token_env_var=SPOR_DISPATCH_MCP_TOKEN`) —
+but both harnesses land at the same self-serve mint/bind pair above.
+
 ## Render tickets
 
 `POST /v1/lens/{id}/ticket` mints a signed, expiring, **read-only** ticket

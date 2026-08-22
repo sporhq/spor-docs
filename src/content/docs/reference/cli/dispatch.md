@@ -92,6 +92,7 @@ passthrough that picks the harness agent definition the session runs.
 | `--as <agent-id>` | Spor identity to run as (remote-only) |
 | `--model <M>`, `--permission-mode <P>`, `--agent <A>`, `--name <N>` | passthroughs to `claude` |
 | `--profile <profile-id>` | profile to run under, checked against this machine's capabilities |
+| `--sandbox <S>`, `--approval-policy <P>` | Codex-only passthroughs; mutually exclusive with the Claude-only flags above — the wrong one for the resolved harness is a hard error |
 | `--template <F>` | prompt template file with `{{brief}}`/`{{task}}`/`{{node}}`/`{{title}}`/`{{slug}}`/`{{dir}}`/`{{default}}` placeholders |
 | `--full`, `--no-brief` | full briefing instead of the digest; raw prompt with no briefing block |
 | `--no-claim`, `--force` | skip the auto-claim; dispatch despite an in-flight agent or resolved node |
@@ -117,13 +118,17 @@ how each run ended, and where to look. Don't confuse this with [`run
 status`](/reference/cli/writing-to-the-graph/#run), which inspects a
 server-side workflow-engine run; `runs` is the local dispatch launch record.
 
-A native dispatch detaches into the harness daemon, so the launcher never
-sees the child exit — without this record a finished run and a dead one are
-indistinguishable afterwards. **Reading reconciles first**: every run the
-harness no longer reports live is resolved against its own evidence — a
-native dispatch's transcript, a supervised one's own log — and stamped with a
-terminal state, a classification, a reason, and a diagnostic pointer — so a
-run's state can advance simply from running `spor runs`.
+A native dispatch (Claude Code) detaches into the harness daemon, so the
+launcher never sees the child exit — without this record a finished run and
+a dead one are indistinguishable afterwards. A Codex dispatch instead runs
+under a supervisor Spor itself owns, streaming progress into a private log
+and capturing the run's final message to a report file; see [Choosing a
+harness](/reference/dispatch/#choosing-a-harness) for what it prints at
+launch. **Reading reconciles first**: every run the harness no longer
+reports live is resolved against its own evidence — a native dispatch's
+transcript, a supervised one's own log — and stamped with a terminal state,
+a classification, a reason, and a diagnostic pointer — so a run's state can
+advance simply from running `spor runs`.
 
 A run starts at `launching`; the harness never starting closes it straight to
 `failed_launch`, otherwise it advances to `running` and from there to one of
@@ -160,7 +165,8 @@ one-line-plus-detail text format. Terminal records age out after
 ```sh
 spor runs
 spor runs --node issue-x
-spor runs --json
+spor runs --json     # {reconciled, count, runs} — a Codex run's final message
+                      # is at .runs[0].report_path
 ```
 
 ### repos
