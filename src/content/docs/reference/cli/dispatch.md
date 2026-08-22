@@ -92,7 +92,7 @@ passthrough that picks the harness agent definition the session runs.
 | `--as <agent-id>` | Spor identity to run as (remote-only) |
 | `--model <M>`, `--permission-mode <P>`, `--agent <A>`, `--name <N>` | passthroughs to `claude`; `--model`/`--name` are harness-neutral, `--permission-mode`/`--agent` are Claude Code-only |
 | `--profile <profile-id>` | profile to run under, checked against this machine's capabilities |
-| `--sandbox <S>`, `--approval-policy <P>` | Codex-only passthroughs; mutually exclusive with `--permission-mode`/`--agent` — the wrong one for the resolved harness is a hard error |
+| `--sandbox <S>`, `--approval-policy <P>` | Codex-only passthroughs; mutually exclusive with `--permission-mode`/`--agent` — the wrong one for the resolved harness is a hard error, except `--permission-mode bypassPermissions` against Codex, which translates to `--sandbox danger-full-access --approval-policy never` with a warning instead of erroring |
 | `--template <F>` | prompt template file with `{{brief}}`/`{{task}}`/`{{node}}`/`{{title}}`/`{{slug}}`/`{{dir}}`/`{{default}}` placeholders |
 | `--full`, `--no-brief` | full briefing instead of the digest; raw prompt with no briefing block |
 | `--no-claim`, `--force` | skip the auto-claim; dispatch despite an in-flight agent or resolved node |
