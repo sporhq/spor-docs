@@ -91,7 +91,7 @@ A healthy local graph looks like:
 
 ```text
 mode:     local  (not enabled here — run /spor:onboard to set up, or 'spor enable' to opt in; hooks are a no-op)
-project:  billing
+repo:     billing
 graph:    /home/ines/.spor/nodes (1 nodes)
 node:     20.11.0 (>= 20 required, OK)
 ```

@@ -118,7 +118,7 @@ A healthy hosted login looks like:
 
 ```text
 mode:     remote  (not enabled here — run /spor:onboard to set up, or 'spor enable' to opt in; hooks are a no-op)
-project:  billing
+repo:     billing
 server:   https://api.sporhq.io
 health:   OK (214 nodes)
 token:    present
