@@ -17,12 +17,15 @@ npm run build      # static build into dist/
 
 ## Checks
 
-CI runs three repo-specific checks besides the build; all run locally too:
+CI runs six repo-specific checks besides the build; all run locally too:
 
 ```sh
-scripts/check-boundary.sh       # no private internals or real graph data
-scripts/check-style.sh          # no banned phrases, exclamation marks, or emoji in docs prose
-scripts/check-token-parity.sh   # vendored design tokens match canonical
+scripts/check-boundary.sh             # no private internals or real graph data
+scripts/check-style.sh                # no banned phrases, exclamation marks, or emoji in docs prose
+scripts/check-token-parity.sh         # vendored design tokens match canonical
+scripts/check-view-tools-parity.sh    # widget.md's view-carrying tools match tools.md
+scripts/check-llms-txt-parity.sh      # llms.txt lists every page, with no orphaned URLs
+scripts/check-redirects.sh            # redirect table has no stale sources, duplicates, or broken chains
 ```
 
 `src/styles/tokens.css` is a verbatim vendored copy of the canonical Spor

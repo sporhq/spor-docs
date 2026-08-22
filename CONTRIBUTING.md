@@ -207,9 +207,9 @@ No tutorial or quickstart ships until someone who did not build the feature
 follows it successfully. This is the strongest check a learning page gets, and
 no lint substitutes for it.
 
-## The three CI checks
+## The six CI checks
 
-Besides the build, CI runs three repo-specific checks on every PR. They run
+Besides the build, CI runs six repo-specific checks on every PR. They run
 locally, and running them before you push saves a round trip.
 
 ### Boundary lint
@@ -263,6 +263,46 @@ from upstream maintainers, who re-sync the copy with `scripts/sync-tokens.sh`.
 If this check fails on your branch, the almost certain cause is a stray edit
 to `tokens.css`; revert it. Site-specific styling belongs in
 `src/styles/theme.css`, which maps the tokens onto Starlight's variables.
+
+### View-tools parity
+
+```sh
+scripts/check-view-tools-parity.sh
+```
+
+`tools.md` is the single source of truth for which MCP tools are
+view-carrying: each one is marked with a `<!-- view-carrying-tool -->`
+comment above its heading. `widget.md`'s opening paragraph names the same
+set for a reader who lands there first, inside a bounded
+`<!-- view-carrying-tools:start/end -->` block. Add a new view-carrying tool
+by marking it in `tools.md` and linking it in that block in `widget.md`; the
+check fails if you forget either side.
+
+### llms.txt parity
+
+```sh
+scripts/check-llms-txt-parity.sh
+```
+
+`public/llms.txt` is a hand-maintained index of every docs page, and nothing
+else keeps it in sync with the content collection. This check fails if a
+page under `src/content/docs/` has no corresponding line in `llms.txt`, or
+if `llms.txt` links a URL that no longer resolves to a page. The site root
+is exempt — per the llms.txt convention, the file's own opening blurb stands
+in for the homepage.
+
+### Redirect table lint
+
+```sh
+scripts/check-redirects.sh
+```
+
+Checks the `redirects` map in `astro.config.mjs` — the same map that
+generates the production `_redirects` file — for stale sources (a redirect
+shadowing a page that now exists again), duplicate sources, broken targets,
+and redirect chains. `starlight-links-validator` only checks links that
+already appear in markdown content, so a redirect nobody links to is
+otherwise invisible until it 404s in production.
 
 ## Style
 
