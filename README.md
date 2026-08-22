@@ -25,7 +25,7 @@ scripts/check-style.sh                # no banned phrases, exclamation marks, or
 scripts/check-token-parity.sh         # vendored design tokens match canonical
 scripts/check-view-tools-parity.sh    # widget.md's view-carrying tools match tools.md
 scripts/check-llms-txt-parity.sh      # llms.txt lists every page, with no orphaned URLs
-scripts/check-redirects.sh            # redirect table has no stale sources, duplicates, or broken chains
+scripts/check-redirects.sh            # redirect table has no stale sources, duplicates, broken targets, or chains
 ```
 
 `src/styles/tokens.css` is a verbatim vendored copy of the canonical Spor
