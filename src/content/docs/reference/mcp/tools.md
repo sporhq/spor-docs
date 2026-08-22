@@ -388,14 +388,17 @@ heartbeat to one run — omit it and any of your sessions may renew.
 ### `renew`
 
 The heartbeat that keeps a claim from lapsing: `{id, session?}` bumps your
-live lease's expiry with no commit. A lapsed or stolen lease is a `conflict`
-naming the current holder.
+live lease's expiry with no commit — unless the lease had lapsed, in which
+case `renew` auto-reclaims it first (a real claim, durable `assigned` edge
+included) instead of refusing, reporting `reclaimed: true`. A **live** lease
+held by someone else is still a `conflict` naming the current holder.
 
 ### `extend`
 
 Manually stretch your live lease for a known long idle gap: `{id, ms}`,
-extending it by `ms` milliseconds. Bounded by the org's maximum lease policy
-(a request past the ceiling caps to it); it never shortens a lease.
+extending it by `ms` milliseconds, auto-reclaiming first if the lease had
+lapsed (same discipline as `renew`). Bounded by the org's maximum lease
+policy (a request past the ceiling caps to it); it never shortens a lease.
 
 ### `reserve`
 
@@ -405,9 +408,12 @@ session?}`. The heartbeat lease is not held overnight; instead the task stays
 at the top of your queue and out of teammates' actionable lists for a grace
 window (~2 days, tenant policy), then escalates back to the team's pool if
 no further activity lands. The durable `assigned` edge is kept, so a steward
-view still shows it reserved by you. Fails with `lease_lost` if you don't
-hold a live claim; returning and claiming (or renewing) it re-establishes a
-fresh heartbeat lease.
+view still shows it reserved by you. No longer requires a live claim to get
+it back: like `renew`/`extend`, it auto-reclaims an unheld node (never
+claimed, or your own claim/reservation merely lapsed under it) under the
+same call, reporting `reclaimed: true`, instead of making you `claim` first
+and `reserve` second. The one refusal that survives is a **live** lease held
+by someone else — that still fails with `lease_lost`, naming the holder.
 
 Reach for it instead of `release` when you intend to pick the task back up
 yourself; reach for `release` when you're handing it back to the pool for

@@ -267,8 +267,10 @@ spor renew <node-id>
 
 Heartbeat your live claim, bumping the lease expiry so it does not lapse
 during a long stretch of work. No commit; the `assigned` edge is untouched.
-A lapsed or stolen lease is refused, naming the current holder — renew never
-re-creates a lapsed lease; that is a fresh `spor claim`.
+If the lease had lapsed — never claimed, or your own claim merely lapsed —
+`renew` auto-reclaims it first under the same lock, rather than refusing,
+and reports it as reclaimed. A live lease held by someone else is still
+refused, naming the current holder.
 
 ```sh
 spor renew task-tidefall-retry-emails
@@ -284,9 +286,11 @@ spor extend <node-id> <duration>
 
 Extend your live claim by a duration, for a known long idle gap (a meeting,
 overnight) where the default heartbeat window would lapse. The duration is
-`2h`, `45m`, `30s`, `1d`, or a bare integer of milliseconds. The new expiry
-is bounded by the org's maximum claim TTL: it never shortens a lease, and a
-request past the ceiling is capped to it (reported on the result).
+`2h`, `45m`, `30s`, `1d`, or a bare integer of milliseconds. If the lease had
+lapsed, `extend` auto-reclaims it first (same discipline as `renew`). The
+new expiry is bounded by the org's maximum claim TTL: it never shortens a
+lease, and a request past the ceiling is capped to it (reported on the
+result).
 
 ```sh
 spor extend task-tidefall-retry-emails 2h
