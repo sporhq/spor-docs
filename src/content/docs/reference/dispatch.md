@@ -66,8 +66,9 @@ agent's default `uses-profile` edge.
 ## Choosing a harness
 
 By default, `spor dispatch` launches a Claude Code agent (`claude --bg`). To
-dispatch under a different coding-agent CLI — Codex is also supported —
-resolve a profile whose `harness:` field names it:
+dispatch under a different coding-agent CLI — Codex, OpenCode, and GitHub
+Copilot CLI are also supported — resolve a profile whose `harness:` field
+names it:
 
 ```sh
 spor dispatch issue-86 --profile profile-codex-sol
@@ -99,14 +100,40 @@ orchestrator or script that passes the same bypass flag to every dispatch
 regardless of harness keeps working. Every other permission-mode value still
 hard-errors against Codex.
 
-The two harnesses also launch differently. Claude Code dispatch detaches
-into Claude Code's own background-agent daemon — the launcher exits
-immediately, and `spor dispatch` can only reconcile what happened to it
-afterwards from the harness's own session transcript. Codex dispatch instead
-runs under a small supervisor Spor itself owns: it launches `codex exec` in
-the background, streams its progress into a private log, and captures the
-run's final message to a report file. At launch it prints where everything
-lives:
+The harnesses do not all confine a run the same way. Codex dispatch defaults
+to `--sandbox workspace-write`, so its filesystem reach is bounded. OpenCode
+(`--auto`) and GitHub Copilot CLI (`--allow-all --no-ask-user`) have no
+equivalent — a dispatch under either runs with unrestricted tool access,
+because an unattended run has no human to answer a permission prompt.
+Dispatch those into a worktree or a checkout you are willing to have an
+agent change.
+
+**Naming a launcher explicitly.** A dispatched run does not inherit your
+interactive shell, so a CLI installed under a prefix that only an
+interactive shell sees (a common Homebrew setup) resolves when you check it
+by hand and resolves to nothing when Spor launches it. Point Spor at the
+binary directly rather than relying on `PATH`, in `~/.spor/config.json` —
+machine-specific, like `dispatch.repos`, so it never belongs in a
+committable `.spor.json`:
+
+```json
+{ "dispatch": { "bin": { "opencode": "/home/linuxbrew/.linuxbrew/bin/opencode" } } }
+```
+
+`SPOR_CLAUDE_CMD` / `SPOR_CODEX_CMD` / `SPOR_OPENCODE_CMD` /
+`SPOR_COPILOT_CMD` override the same thing per harness and win over the
+config file. An explicit launcher is used verbatim and is never quietly
+swapped for something on `PATH`; with none set, the bare name resolves on
+`PATH` as before.
+
+The harnesses also launch differently. Claude Code dispatch detaches into
+Claude Code's own background-agent daemon — the launcher exits immediately,
+and `spor dispatch` can only reconcile what happened to it afterwards from
+the harness's own session transcript. Every other harness instead runs
+under a small supervisor Spor itself owns: it launches the CLI's headless
+mode in the background, streams its progress into a private log, and
+captures the run's final message to a report file. At launch it prints
+where everything lives:
 
 ```text
 run:     3f9a2c1e-... (Codex supervisor running)
@@ -115,7 +142,7 @@ report:  ~/.spor/journal/dispatch/3f9a2c1e-....report.md
 session: 019f7a51-...
 ```
 
-`log` is the full JSONL progress stream; `report` is Codex's final message —
+`log` is the full JSONL progress stream; `report` is the run's final message —
 the thing to read for "what did it conclude". Both paths, plus the run's
 outcome, are recorded durably and can be looked up later with
 [`spor runs`](/reference/cli/dispatch/#runs):

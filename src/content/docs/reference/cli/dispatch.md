@@ -120,9 +120,10 @@ server-side workflow-engine run; `runs` is the local dispatch launch record.
 
 A native dispatch (Claude Code) detaches into the harness daemon, so the
 launcher never sees the child exit — without this record a finished run and
-a dead one are indistinguishable afterwards. A Codex dispatch instead runs
-under a supervisor Spor itself owns, streaming progress into a private log
-and capturing the run's final message to a report file; see [Choosing a
+a dead one are indistinguishable afterwards. Every other harness (Codex,
+OpenCode, GitHub Copilot CLI) instead runs under a supervisor Spor itself
+owns, streaming progress into a private log and capturing the run's final
+message to a report file; see [Choosing a
 harness](/reference/dispatch/#choosing-a-harness) for what it prints at
 launch. **Reading reconciles first**: every run the harness no longer
 reports live is resolved against its own evidence — a native dispatch's
@@ -165,8 +166,8 @@ one-line-plus-detail text format. Terminal records age out after
 ```sh
 spor runs
 spor runs --node issue-x
-spor runs --json     # {reconciled, count, runs} — a Codex run's final message
-                      # is at .runs[0].report_path
+spor runs --json     # {reconciled, count, runs} — a supervised run's final
+                      # message is at .runs[0].report_path
 ```
 
 ### repos

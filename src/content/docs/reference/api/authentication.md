@@ -150,13 +150,21 @@ agent-scoped `spor_pat_` for headless environments.
 
 The late-bind sequence differs by harness because the session id isn't known
 the same way: a Claude Code run's session comes from `claude agents --json`,
-while a **Codex**-harness dispatch reads its session id off the
-`thread.started` event in the run's own supervised JSONL log, then binds it
-through the same `POST /v1/agents/session` call. Token transport differs too
-— Claude Code gets the token via a strict `--mcp-config` file, Codex gets it
-through an env var its own config references
-(`--config mcp_servers.spor.bearer_token_env_var=SPOR_DISPATCH_MCP_TOKEN`) —
-but both harnesses land at the same self-serve mint/bind pair above.
+while a **supervised**-harness dispatch (Codex, OpenCode, GitHub Copilot CLI)
+reads the session id out of the run's own supervised JSONL log instead —
+Codex off its `thread.started` event, OpenCode off the `sessionID` every
+event carries, Copilot off the `sessionId` on its terminal `result` event (so
+a Copilot run binds only at exit, still before its record goes terminal) —
+then binds it through the same `POST /v1/agents/session` call. Token
+transport also differs per harness: Claude Code gets the token via a strict
+`--mcp-config` file, Codex gets it through an env var its own config
+references (`--config
+mcp_servers.spor.bearer_token_env_var=SPOR_DISPATCH_MCP_TOKEN`), and OpenCode
+and Copilot — neither of which can be handed an MCP server on the command
+line without publishing the bearer to argv — get the agent-scoped token as
+`SPOR_TOKEN` in the run's environment, so the `spor` CLI inside the run is
+agent-attributed with no injected MCP. All of them land at the same
+self-serve mint/bind pair above.
 
 ## Render tickets
 
