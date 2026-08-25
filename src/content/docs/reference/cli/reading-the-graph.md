@@ -213,6 +213,8 @@ spor analytics --project billing --type task,issue --weeks 8
 
 ```
 spor schema [<type>] [--edges] [--nodes-only] [--source <s>] [--code] [--json]
+spor schema candidates [--json]
+spor schema adopt <schema-id> [--activate] [--force]
 ```
 
 **Mode:** dual
@@ -226,8 +228,29 @@ files, which miss resident overrides. With a `<type>`, print that type's
 detail including each hook's source. `--source` filters by provenance;
 `--code` includes hook source in `--json` output.
 
+Two reserved subcommands manage the **candidate pack** — rollout-stage
+schemas that ship with the npm package but stay inert until a graph adopts
+them as graph-resident schema nodes (see
+[Schemas → The candidate pack](/reference/graph-model/schemas/)):
+
+- `spor schema candidates` lists each packaged candidate with its adoption
+  state against the active graph (`not adopted`, `current`, upgradable,
+  locally modified, or promoted to the seed pack). The plain `spor schema`
+  overview also appends a one-line footer whenever unadopted candidates
+  exist.
+- `spor schema adopt <schema-id>` writes a candidate into the active graph
+  through the validated node surface (never a raw file drop). A fresh adopt
+  lands `status: proposed`; `--activate` writes `active` — the trusted-admin
+  form for solo/local graphs (team graphs activate through the normal
+  review flow). Re-running after a package upgrade is idempotent and
+  CalVer-aware: a pristine older copy upgrades in place with its status
+  preserved, while a locally modified (or hand-copied, unstamped) resident
+  refuses without `--force`.
+
 ```sh
 spor schema task
+spor schema candidates
+spor schema adopt schema-edge-member-of-program --activate
 ```
 
 ### lens

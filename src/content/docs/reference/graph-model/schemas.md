@@ -141,7 +141,31 @@ solo-mode setting can waive it — loudly, with a warning on every waived
 approval — until a second identity exists. Trusted admins editing the graph
 repository directly bypass the flow by design.
 
-## Beyond node and edge schemas
+## The candidate pack: shipping graph-resident schemas
+
+Some product schemas roll out graph-resident on purpose — the activation
+flow above is their opt-in gate — but a graph-resident node has no
+distribution channel of its own: an npm upgrade only refreshes the seed
+pack. The **candidate pack** closes that gap. The package ships
+rollout-stage schema nodes under `lib/seed/candidates/`; they never enter
+the registry until adopted.
+
+- `spor schema candidates` lists each candidate's adoption state against
+  your graph; the `spor schema` overview footers unadopted candidates.
+- `spor schema adopt <schema-id>` copies the candidate into the graph
+  through the validated node surface as an ordinary resident schema node
+  (`status: proposed`, or `active` with `--activate` — the trusted-admin
+  form for solo/local graphs), stamping `adopted_from` (package version) and
+  `adopted_sha` (a canonical hash of the candidate's `schema_version` +
+  body) for upgrade provenance.
+- Re-running adopt after a package upgrade is idempotent and CalVer-aware: a
+  resident at or past the packaged version is a no-op; a pristine older copy
+  (its recomputed canonical hash still matches its stamp) upgrades in place
+  with its status preserved; a locally modified or unstamped resident
+  refuses without `--force`.
+- When a candidate stabilizes it is promoted into the seed pack at a
+  release. The resident copy then shadows the seed (the stale-override
+  warning above) and should be retired (`status: retired`).
 
 The `kind:` field admits a few more registry citizens:
 
