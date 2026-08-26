@@ -147,6 +147,7 @@ export default defineConfig({
 							items: [{ autogenerate: { directory: 'reference/graph-model' } }],
 						},
 						'reference/dispatch',
+						'reference/worker-protocol',
 						'reference/configuration',
 						'reference/costs-and-controls',
 						'reference/diagnostics',

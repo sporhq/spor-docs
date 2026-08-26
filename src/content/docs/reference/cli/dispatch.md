@@ -129,7 +129,10 @@ launch. **Reading reconciles first**: every run the harness no longer
 reports live is resolved against its own evidence — a native dispatch's
 transcript, a supervised one's own log — and stamped with a terminal state,
 a classification, a reason, and a diagnostic pointer — so a run's state can
-advance simply from running `spor runs`.
+advance simply from running `spor runs`. `--json`'s top-level `reconciled`
+field reports whether that pass fully succeeded for this call: `false`
+means a native-harness live-agent listing failed, so any shown
+native-background record that isn't yet terminal may be stale.
 
 A run starts at `launching`; the harness never starting closes it straight to
 `failed_launch`, otherwise it advances to `running` and from there to one of
@@ -150,6 +153,28 @@ matched by the session the run bound, never by the directory it ran in, since
 several dispatches can share one checkout. A run still inside its first
 minute, or one whose harness couldn't be queried at all, is left alone rather
 than declared dead.
+
+**Process and outcome are two different dimensions of the same record.**
+Everything above — `state`, `termination_class`, and friends — is the
+*process* dimension: how the harness's own process ended. Once the
+[worker protocol](/reference/worker-protocol/)'s terminal-states algorithm
+has run against a finished record, it also carries an *outcome* dimension:
+what the run actually did to the **graph**, which a process ending cleanly
+does not by itself guarantee.
+
+| Field | Meaning |
+| --- | --- |
+| `terminal_state` | `"resolved"` \| `"reported"` \| `"failed"` — see [Terminal states](/reference/worker-protocol/#terminal-states-the-outcome-contract) |
+| `terminal_enforced` | whether this was a *verified* verdict (re-read against a reachable graph) or a best-effort classification — gate on this before trusting `terminal_state` as ground truth |
+| `resolved_by` | present only when `terminal_state === "resolved"` — the resolver node's id |
+| `resolved_edge` | present only when resolved — `"resolves"` or `"answers"` |
+| `report_node_id` | present only when a report was actually filed — its presence always implies `terminal_state === "reported"`, but an unenforced `reported` record may have none |
+| `lease_released` | optional — whether a release attempt succeeded; omitted (not `false`) when no lease was this run's to release at all |
+| `terminal_note` | a human-readable explanation of the outcome, always present once this dimension exists |
+
+A record with `terminal_state` unset (or `state` still non-terminal) has not
+finished; poll or watch the record file rather than assuming absence means
+failure.
 
 `<run-id>` filters to one run by full id or short prefix; `--node <id>`
 filters to every run dispatched for a node; `--limit <N>` bounds how many are

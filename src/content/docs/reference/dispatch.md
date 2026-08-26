@@ -9,7 +9,9 @@ launches with and which machines can take the work.
 
 **You do not need this if** you work queue items yourself in an interactive
 session; the everyday loop covers that without dispatch, starting with [The
-decision queue](/use-spor/queue/).
+decision queue](/use-spor/queue/). If you are implementing your own launcher
+or harness adapter instead of using `spor dispatch`, the exact wire contract
+it follows is on [Worker protocol](/reference/worker-protocol/).
 
 **After reading this, you should be able to** choose the profile a dispatch
 will use, read a capability refusal, and decide whether `requires:` belongs
