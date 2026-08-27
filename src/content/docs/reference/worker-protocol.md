@@ -54,6 +54,22 @@ hold — never a person's own account-scoped token or connector session,
 which would attribute the work to the human instead of the agent that did
 it.
 
+**No agent identity resolves, or minting one fails?** On a real remote
+dispatch, this hard-fails, naming the fix (`spor agent use <agent-id>`) —
+never a silent fall back to a person-scoped token, which is exactly the
+human step agent attribution exists to keep out of the loop. Unlike the
+readiness-gap split in [The pool and the claim](#the-pool-and-the-claim),
+this one isn't locked to a surface: both `spor dispatch` and the autonomous
+`spor work` loop refuse by default, and both accept the same explicit
+escape hatch — `--allow-person-token` (the standing `dispatch.allowPersonToken`
+config key, or the `SPOR_ALLOW_PERSON_TOKEN` env var) — with a loud warning
+on every fallback launch it permits. The escape hatch exists for solo/local
+use where nobody has bothered to mint a machine identity and that's a
+deliberate choice, not an accident; leaving it unset is what keeps an
+unattended worker from ever silently misattributing agent work to the
+person that happens to own its token. Local mode is unaffected — there is
+no CA to mint an agent token against.
+
 Minting and managing this identity — the two token shapes (per-session and
 standing), and late session binding when the harness's real session id
 isn't known at mint time — is the full subject of [Tokens and

@@ -85,6 +85,19 @@ Spor agent identity the dispatch runs as (attribution; remote-only; defaults
 to `dispatch.agent`), while `--agent <A>` is the unrelated `claude --agent`
 passthrough that picks the harness agent definition the session runs.
 
+A real (non-`--print`) remote dispatch **hard-fails** when no agent identity
+resolves — no `dispatch.agent` configured and no `--as` given — or when
+minting an agent-scoped session token fails, naming `spor agent use
+<agent-id>` as the fix. This applies equally to `spor work`'s autonomous
+loop, which shares the same code path. It replaces the old behavior of
+silently falling back to a person-scoped token, which misattributed a
+dispatched agent's writes to the human operator. `--allow-person-token`
+(the standing `dispatch.allowPersonToken` config key, or the
+`SPOR_ALLOW_PERSON_TOKEN` env var) restores that fail-soft fallback, with a
+loud warning on every launch it permits — the escape hatch for solo/local
+use where minting a machine identity isn't worth the setup. Local mode is
+unaffected (there is no CA to mint an agent token against).
+
 | Flag | Effect |
 | --- | --- |
 | `--dir <path>` | launch directory, overriding the slug map |
@@ -96,6 +109,7 @@ passthrough that picks the harness agent definition the session runs.
 | `--template <F>` | prompt template file with `{{brief}}`/`{{task}}`/`{{node}}`/`{{title}}`/`{{slug}}`/`{{dir}}`/`{{default}}` placeholders |
 | `--full`, `--no-brief` | full briefing instead of the digest; raw prompt with no briefing block |
 | `--no-claim`, `--force` | skip the auto-claim; dispatch despite an in-flight agent or resolved node |
+| `--allow-person-token` | fall back to a person-scoped token when no agent is configured or minting fails (default: hard-fail; also `dispatch.allowPersonToken` / `SPOR_ALLOW_PERSON_TOKEN`) |
 | `--from-queue`, `--backfill` | top-ranked queue item; unattended repo backfill |
 | `--worktree`, `--no-worktree` | per-run worktree isolation override |
 | `--print` (alias `--dry-run`) | print the prompt, launch nothing |

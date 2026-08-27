@@ -32,7 +32,15 @@ instead of cold. Dispatch also refuses obvious duplicates: if the node is
 already being worked locally, or already [claimed](/reference/graph-model/claims/) in
 remote mode, the second dispatch is refused unless forced. Each dispatched
 session runs under an [agent identity](/use-spor/identity/) its owner
-created, so everything it writes reads "agent on behalf of person".
+created, so everything it writes reads "agent on behalf of person". A real
+remote dispatch hard-fails rather than launching if no agent identity
+resolves or minting its session token fails — naming `spor agent use
+<agent-id>` as the fix — instead of silently attributing its writes to the
+person; `--allow-person-token` (also `dispatch.allowPersonToken` /
+`SPOR_ALLOW_PERSON_TOKEN`) is the explicit, loudly-warned escape hatch for
+solo/local use. See [Worker protocol → Agent identity and
+attribution](/reference/worker-protocol/#agent-identity-and-attribution)
+for the full contract.
 
 ## Profiles: the how, factored out
 
