@@ -32,7 +32,7 @@ or install, reused across dispatches.
 | --- | --- |
 | `agent create <label>` | create the agent and its `owned-by` edge. Without `--owner` the agent is owned by you (self-serve); `--owner <person-id>` creates it for another person (admin). In local mode the owner defaults to the sole person node. `--pubkey` records a public-key fingerprint (forward-compat, unenforced). |
 | `agent list` | list agents and their owners |
-| `agent use <agent-id>` | make it this machine's default dispatch identity — a local config write (`dispatch.agent`), not a graph write. `--clear` returns to person-scoped dispatch. |
+| `agent use <agent-id>` | make it this machine's default dispatch identity — a local config write (`dispatch.agent`), not a graph write. `--clear` unsets it — a real remote dispatch then hard-fails unless `--allow-person-token` is set (below). |
 | `agent token <agent-id>` | mint a long-lived standing PAT for the agent — the `SPOR_TOKEN` a headless agent runs under; shown once. `--expires` shortens the lifetime (default and max 1 year), `--label` tags it. `list` and `revoke <prefix>` manage them. Remote-only, owner-gated. |
 
 ```sh
