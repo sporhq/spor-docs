@@ -95,6 +95,7 @@ never leak into a team graph by accident.
 | `SPOR_ENABLED` | `1`/`0` — force repo activation on or off, above marker presence |
 | `SPOR_CAPABILITIES_PUBLISH` | `0` disables the session-start capability auto-publish |
 | `SPOR_ALLOW_PERSON_TOKEN` | restores the pre-hard-fail person-scoped token fallback for [`spor dispatch`/`spor work`](/reference/cli/dispatch/#dispatch) when no agent identity resolves or minting fails (the `dispatch.allowPersonToken` config key) |
+| `SPOR_WORK_ACCEPT` | `spor work`'s acceptance policy (the `work.accept` config key): `ready` (default) dispatches only items explicitly stamped agent-ready; `open` takes anything except `readiness: human`. An unknown value refuses to start the worker |
 
 Legacy `SUBSTRATE_*`-prefixed spellings of these variables are still read as
 a back-compat window, and older `sub_pat_` tokens stay valid — no re-mint

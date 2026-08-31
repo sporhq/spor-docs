@@ -90,6 +90,17 @@ it is legal but the item cannot resolve until its blocker does. See
 [Agent-readiness](/reference/graph-model/node-types/#agent-readiness) and
 [The decision queue](/use-spor/queue/) for what drives both fields.
 
+On top of that floor, `spor work`'s pickup is configurable via the
+acceptance policy (`--accept`, the `work.accept` config key, or
+`SPOR_WORK_ACCEPT`). `ready` — the default — is explicit consent: only
+items whose derived readiness is `agent` (a person's `spor ready <id>`
+stamp, or an `assigned -> agent` routing) are dispatched; an `untriaged`
+item is skipped with a visible reason on the worker's stdout and in
+`spor work --status`. `open` opts back into the looser pickup: everything
+except `readiness: human` — that floor is not part of the knob. An unknown
+value refuses to start the worker, and `spor work --print` shows the
+effective policy.
+
 Before starting work, take the heartbeat-renewed lease:
 
 ```
