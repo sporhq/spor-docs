@@ -341,8 +341,9 @@ the claim stands permanently un-judged, which a factory exists to prevent.
 
 Each pipeline stamps **`gate_state`** on its run record — `running`,
 `interrupted` on a stop, or a settled verdict (`passed` / `failed` /
-`blocked` / `superseded` / `scoped`) once it reports; a settled verdict is
-final for that run. A gate-armed worker joins that with its own status file
+`blocked` / `superseded` / `scoped` / `parked`, the last from a
+`propose`-mode integration landing — see below) once it reports; a settled
+verdict is final for that run. A gate-armed worker joins that with its own status file
 at each pass, before taking new work: a slot held by a worker that is no
 longer live, whose run record is terminal, carries a claim worth gating, and
 has no settled `gate_state`, is adopted and re-gated.
