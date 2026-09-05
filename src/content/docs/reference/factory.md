@@ -169,20 +169,32 @@ or `integration` for the merge-queue candidate suite), `SPOR_GATE_NODE`,
 ## Agent-review gates — a verdict that is read, not asserted
 
 The runner composes the review dispatch itself: a launch under the gate's
-declared `profile` (cross-model by convention), **read-only** — Codex's
-`--sandbox read-only`, Claude Code's plan permission mode, OpenCode's plan
-agent plus a denied shell, Copilot's denied write and shell tools — with a
-prompt carrying the work item's text, the bounded diff, the gate's
+declared `profile` (cross-model by convention), **read-only** — enforced
+with [`spor dispatch --read-only`](/reference/cli/dispatch/#dispatch):
+Codex's `--sandbox read-only`, Claude Code's plan permission mode,
+OpenCode's plan agent plus a denied shell, Copilot's denied write and shell
+tools. A harness with no declared read-only posture is refused before
+launch rather than run write-capable behind a warning — the reviewer reads
+the implementer's live checkout, so it must not be able to write to it —
+with a prompt carrying the work item's text, the bounded diff, the gate's
 `instructions`, and, on a fix cycle, the prior findings and the fix
 dispatched at them. It ends with a fixed verdict shape:
 
 ```json
 {
   "verdict": "pass" | "changes_requested",
-  "prior": [{ "id": "F1", "status": "resolved" | "open", "note": "..." }],
+  "prior": [
+    {
+      "id": "F1",
+      "status": "resolved" | "open",
+      "note": "...",
+      "category": "correctness" | "unmet-condition" | "unrequested-mechanism"
+    }
+  ],
   "findings": [
     {
       "severity": "blocking" | "major" | "minor",
+      "category": "correctness" | "unmet-condition" | "unrequested-mechanism",
       "file": "...",
       "summary": "...",
       "evidence": "the command/test run and what it showed",
@@ -191,6 +203,14 @@ dispatched at them. It ends with a fixed verdict shape:
   ]
 }
 ```
+
+A finding raised fresh under `findings` carries no `id` — the runner's
+finding ledger mints one when the verdict is folded in. The only findings
+named by id are a `prior` answer (naming that entry's own id) and an
+upgrade of an earlier undemonstrated finding, re-raised under `findings`
+with its id. `category` on a `prior` entry is optional and only ever
+*reclassifies* that carried finding; leaving it out keeps the ledger's
+existing category.
 
 The runner parses this block **in code**. Fail-closed throughout: a review
 that could not be dispatched, never finished, left no readable report, or
@@ -282,6 +302,23 @@ verdict — the enforcement is not the bookkeeping, and the runner says so
 rather than claiming a fact it could not write. `spor work --status` reads
 the same story back per worker: what is gating now, the pass/fail/blocked
 tally, and why a gated item was cooled off.
+
+**An agent-review gate's fact also carries the finding ledger** — a
+`Finding ledger:` block, one line per entry (`F1, F2, …`, minted once per
+gate, never reused): its severity, its `category` tag, whether it is
+`OPEN since cycle N`, `resolved at cycle N`, or `advisory (cycle N)`, the
+file and summary, and a closing note once it has been answered. This is the
+same ledger a fix cycle's review reads back as `prior` (and, for a finding
+carried across fix cycles, the mechanism `rows` its confirmations have
+enumerated — tracked on the ledger entry, not in this rendered line),
+rendered onto the fact so a person, the [rescue
+lane](#the-rescue-lane-a-strong-model-step-before-any-human-escalation), or
+`/spor:factory`'s own telemetry can read how a gate converged (or didn't)
+without re-reading every cycle's report. Because the ledger is durable on
+the run record too (see [An interrupted pipeline is
+resumed](#an-interrupted-pipeline-is-resumed-not-lost) below), the fact's
+copy is a point-in-time rendering of it at that gate outcome, not a second
+source of truth.
 
 A long-running `spor work` keeps executing the code it loaded at startup
 however far the checkout moves afterwards, so it logs a one-line notice the
