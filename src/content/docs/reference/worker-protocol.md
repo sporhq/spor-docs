@@ -410,9 +410,10 @@ can legitimately take days. Parking instead reuses only the graph-state
 half of a failed gate's demotion: a tracking item is filed carrying a
 `blocks` edge onto the work item, and the work item's own completion status
 is rolled back if it claimed one — never an in-process poll, and nothing is
-marked for a person at this point. The pipeline returns a third settled
-state, `parked` (alongside `passed`/`failed`/`blocked`), and the work-loop
-slot frees on that return exactly like any other settled verdict.
+marked for a person at this point. The pipeline returns an additional
+settled gate state, `parked` (alongside `passed`/`failed`/`blocked`), and
+the work-loop slot frees on that return exactly like any other settled
+verdict.
 
 A `human` gate and `propose` mode never double-file an approval: a `human`
 gate is a gate — it runs and is judged *before* integration ever starts (an
@@ -429,12 +430,17 @@ settled, it is never re-entered to ask "did the PR land yet" — instead
 view`:
 
 - **Still open** — a no-op; nothing is written until the next pass.
-- **Merged** — writes a second `art-merge-…` fact for the same run (a
-  distinct id segment keeps it from colliding with the first), carrying a
-  `resolves` edge onto the tracking item — the one point in this pipeline
-  where an integration fact retires something rather than merely recording
-  it — then restores the work item's own completion status and closes the
-  tracking item.
+- **Merged onto the expected `target_ref`** — writes a second
+  `art-merge-…` fact for the same run (a distinct id segment keeps it from
+  colliding with the first), carrying a `resolves` edge onto the tracking
+  item — the one point in this pipeline where an integration fact retires
+  something rather than merely recording it — then restores the work
+  item's own completion status and closes the tracking item.
+- **Merged onto a different base than expected** — a `base-mismatch`
+  verdict: records a fact (the PR number, the actual base, and the
+  expected `target_ref`) but resolves and restores nothing, leaving the
+  tracking item parked for a person to reconcile — the PR technically
+  landed, but not where the pipeline verified it against.
 - **Closed without merging** — writes a fact recording it, but restores
   nothing and leaves the tracking item open: the PR was rejected on
   GitHub's own review surface, and — same as a `human` gate's own rejected
