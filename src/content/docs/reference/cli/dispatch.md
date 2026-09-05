@@ -81,6 +81,16 @@ running with the worktree as cwd and `SPOR_WORKTREE`, `SPOR_MAIN_CHECKOUT`,
 and `SPOR_DISPATCH_SLUG`/`SPOR_DISPATCH_NODE` in the environment.
 `--no-worktree` opts a single run out.
 
+When this box can't satisfy the resolved profile, `--auto-route`
+(`dispatch.autoRoute`, `SPOR_AUTO_ROUTE`; default off) hands a **node**
+dispatch to the freshest of the caller's own fleet hosts that does satisfy
+it, writing `assigned -> <host agent>` with the same profile pinned — never
+a substitution, and still escalating to the owner when no host satisfies the
+profile. `dispatch.autoRouteMaxAge` (`SPOR_AUTO_ROUTE_MAX_AGE`, default
+`24h`) bounds a target's staleness; `--no-auto-route` opts a single run out.
+See [Dispatch, capabilities, and profiles → Auto-route](/reference/dispatch/#auto-route-closing-the-loop-without-a-human)
+for the full behavior.
+
 Two different agent axes — do not confuse them: `--as <agent-id>` picks the
 Spor agent identity the dispatch runs as (attribution; remote-only; defaults
 to `dispatch.agent`), while `--agent <A>` is the unrelated `claude --agent`
@@ -110,6 +120,7 @@ unaffected (there is no CA to mint an agent token against).
 | `--template <F>` | prompt template file with `{{brief}}`/`{{task}}`/`{{node}}`/`{{title}}`/`{{slug}}`/`{{dir}}`/`{{default}}` placeholders |
 | `--full`, `--no-brief` | full briefing instead of the digest; raw prompt with no briefing block |
 | `--no-claim`, `--force` | skip the auto-claim; dispatch despite an in-flight agent or resolved node |
+| `--auto-route`, `--no-auto-route` | hand an unsatisfiable node dispatch to a satisfying fleet host (`assigned -> host agent`, same profile pinned); force-disable a standing `dispatch.autoRoute` default for this run |
 | `--bg` | Claude Code only — launch the native background session (`claude --bg`) instead of the default supervised launch; trades an enforced [terminal-state](/reference/worker-protocol/#terminal-states-the-outcome-contract) outcome for the attachable, interactive form (`claude attach`). Also settable as `dispatch.claudeLaunchMode: native-background`. `spor work` never uses it |
 | `--allow-person-token` | fall back to a person-scoped token when no agent is configured or minting fails (default: hard-fail; also `dispatch.allowPersonToken` / `SPOR_ALLOW_PERSON_TOKEN`) |
 | `--from-queue`, `--backfill` | top-ranked queue item; unattended repo backfill |

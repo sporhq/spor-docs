@@ -260,3 +260,18 @@ owner; `owner=me` is the explicit form) — asking for a colleague's is `403`.
 `max_age` (`30m`, `12h`, `7d`, or milliseconds) demotes hosts whose
 `last_seen` is older to unsatisfiable. An unknown or non-profile id is `404`;
 a bad `max_age` or `owner` is `422`.
+
+**The client consumer.** `spor capabilities hosts <profile>` renders this
+directly, and `spor dispatch` calls it automatically when this machine can't
+satisfy the resolved profile — naming the hosts that could take over, or
+escalating to the owner when none can. Its autonomous tier (`spor dispatch
+--auto-route`, the `dispatch.autoRoute` config key) closes that loop with no
+human step: for a node dispatch, it hands the item to the freshest
+satisfying host by writing `assigned -> <host agent>` with the same profile
+pinned as the edge's `profile:` attribute ([`POST
+/v1/nodes/{id}/edges`](/reference/api/writes/#post-v1nodesidedges)) — so that
+box's own `spor work` picks it up. Routing is explicit
+assignment; no cross-machine exec channel is involved. It asks `owner=me` so
+only the caller's own agents are ever routed to, bounds staleness with
+`dispatch.autoRouteMaxAge` (default `24h`), never routes to the refusing box
+itself, and still escalates to the owner when nothing satisfies the profile.

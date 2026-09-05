@@ -200,6 +200,42 @@ of running anyway. When a fleet is available, the refusal instead lists the
 machines that *do* satisfy the profile, so the work re-routes rather than
 degrades.
 
+## Auto-route: closing the loop without a human
+
+The refusal above still leaves a person to read the fleet-host list and
+re-route the item by hand. `--auto-route` (the `dispatch.autoRoute` config
+key, `SPOR_AUTO_ROUTE`; default **off**) closes that loop: on the same
+unsatisfiable-here refusal, a **node** dispatch asks the fleet scheduler for
+the caller's own hosts and hands the item to the freshest one that satisfies
+the profile, by writing `assigned -> <host agent>` with the **same** profile
+pinned on the edge — so that box's own `spor work` picks the item up on its
+next poll, with nobody re-routing it by hand.
+
+This is a re-route, not a remote launch: routing is explicit assignment (an
+`assigned` edge on the graph), so there is no cross-machine exec channel and
+auto-route does not build one. The invariants from [No silent
+substitution](#no-silent-substitution) still hold:
+
+- the profile id on the edge is the one that was refused here — auto-route
+  never substitutes a different profile;
+- only the caller's **own** agents are ever considered (`owner=me`), so an
+  admin's dispatch never hands work to a colleague's machine;
+- the refusing box is never its own re-route target;
+- when no host satisfies the profile, the refusal still **escalates to the
+  owner**, exactly as it would without `--auto-route` — it never downgrades
+  to a different profile, and never runs anyway.
+
+The dispatching box still refuses (exit 1) and its worker cools the item off
+as usual, because nothing ran *here*. `dispatch.autoRouteMaxAge`
+(`SPOR_AUTO_ROUTE_MAX_AGE`; default `24h`, `0` disables the bound) caps how
+stale a target's last contact may be — generous, because a box idling in
+`spor work` goes quiet between heartbeats without going away.
+`--no-auto-route` opts a single run out of a standing `dispatch.autoRoute:
+true` default. With auto-route off, not one extra network call runs and the
+refusal is byte-identical to before. A free-text dispatch (no node to
+assign) has nothing to re-route, so it always falls back to the human-tier
+report above.
+
 ## The `requires:` risk register
 
 Distinct from machine satisfiability, a work node can declare what the work

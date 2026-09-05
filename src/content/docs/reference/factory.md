@@ -547,6 +547,8 @@ carrying no `commits:` at all — the overwhelming case — is unaffected.
   rescue lane uses.
 - [Dispatch, capabilities, and profiles](/reference/dispatch/) — profiles,
   machine capabilities, and the `requires:` risk register a review or human
-  gate's `risk` classes build on.
+  gate's `risk` classes build on, including the [fleet
+  auto-route](/reference/dispatch/#auto-route-closing-the-loop-without-a-human)
+  handoff a protected-path lane's own profile-routing (above) sits beside.
 - [Dispatch → work](/reference/cli/dispatch/#work) — the `--factory`,
   `--status`, and `--regate` flags.
