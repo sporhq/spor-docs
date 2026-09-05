@@ -326,17 +326,19 @@ algorithm above directly against REST once your worker process ends:
 ```
 1. GET  /v1/nodes/{targetId}
 2. if resolution.by present               → terminal_state = resolved; done, no release
-3. elif targetId's type is decision/finding (an unjudgeable type)
+3. elif final report's first line is `DECLINED: <reason>`
+                                           → POST /v1/nodes (file a `finding`, if_exists: skip)
+                                             POST /v1/nodes/{targetId}/readiness {readiness: "clear"}
+                                             if the finding write lands: POST /v1/nodes/{leaseNode}/release
+                                                                  → terminal_state = declined
+                                             if the finding write is refused: leave the lease held
+                                                                  → terminal_state = declined (held)
+4. elif targetId's type is decision/finding (an unjudgeable type)
                                            → if final report text exists: POST /v1/nodes (file it, if_exists: skip)
                                                 → terminal_state = reported, terminal_enforced = false
                                              else
                                                 → terminal_state = failed, terminal_enforced = false
                                              NEVER release the lease either way — it lapses at its own TTL
-4. elif final report's first line is `DECLINED: <reason>`
-                                           → POST /v1/nodes (file a `finding`, if_exists: skip)
-                                             POST /v1/nodes/{targetId}/readiness {readiness: "clear"}
-                                             POST /v1/nodes/{leaseNode}/release
-                                                                  → terminal_state = declined
 5. elif final report text exists          → POST /v1/nodes  (file the report, if_exists: skip)
                                              if the write lands: POST /v1/nodes/{leaseNode}/release
                                                                   → terminal_state = reported
@@ -345,6 +347,11 @@ algorithm above directly against REST once your worker process ends:
 6. else                                   → POST /v1/nodes/{leaseNode}/release
                                              → terminal_state = failed
 ```
+
+A decline is checked before any type-based branching, so it takes priority
+over step 4 for every target type — a `DECLINED:` report is never
+misclassified as a filed report just because the target happens to be a
+`decision` or `finding`.
 
 `leaseNode` is whichever node your claim actually established the lease
 on — normally the same as `targetId`, but not necessarily (a forced
@@ -553,14 +560,21 @@ exhaustion rather than being configured per gate:
 
 **When it runs.** Only when a pipeline would otherwise escalate to a person —
 a gate that has spent its fix cycles, or refused for a reason nothing has
-already filed a person's item for. A protected-path hit, a rejected or
-pending approval, and a [`declined`](#terminal-states-the-outcome-contract)
-run — never gated at all, since it carries no claim of completion to test —
-go on exactly as before; none of those are rescuable.
+already filed a person's item for. Not every refusal qualifies: a protected
+path a command gate caught, and a human gate's rejected or still-pending
+approval, have each already run their own gate and filed their own
+person-facing item, so there is no fresh escalation for a rescue to get
+ahead of. A [`declined`](#terminal-states-the-outcome-contract) run is
+excluded for a different reason — it is never gated at all, since it
+carries no claim of completion to test. All three go on exactly as before;
+none of them are rescuable.
 
-**What it does.** Dispatched into the run's own checkout with the work item,
-the diff, every commit on the branch, the refused gate's evidence, the fix
-cycle history, and any earlier rescue's diagnosis, the rescue is asked to:
+**What it does.** Dispatched into the run's own checkout — always
+supervised, whatever this box's own `dispatch.claudeLaunchMode` default is,
+so the runner can read its final report the way it reads any gate
+dispatch — with the work item, the diff, every commit on the branch, the
+refused gate's evidence, the fix cycle history, and any earlier rescue's
+diagnosis, the rescue is asked to:
 
 1. **diagnose** the refusal into one of four categories — `reviewer-drift`,
    `real-defect`, `stale-premise`, or `environment`;
