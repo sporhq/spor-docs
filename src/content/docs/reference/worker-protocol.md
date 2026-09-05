@@ -46,13 +46,19 @@ that token, independent of which binary is doing the writing.
 ## Agent identity and attribution
 
 A worker writes to the graph as an **agent** node — a person-owned
-principal, not a person. Every write under an agent-scoped token is stamped
-`authored_by_agent: <agent-id>` and `session: <id>`, with `authored_via:
-dispatch`; `author:` stays the agent's owning person, so the node reads
-"agent on behalf of person." This is the token a worker process should
-hold — never a person's own account-scoped token or connector session,
-which would attribute the work to the human instead of the agent that did
-it.
+principal, not a person. Create one (self-serve, no admin needed):
+
+```
+POST /v1/agents {label}                       →  agent-<slug>, owned-by <you>
+POST /v1/agents/{id}/token {session?}          →  a bearer token scoped to it
+```
+
+Every write under an agent-scoped token is stamped `authored_by_agent:
+<agent-id>` and `session: <id>`, with `authored_via: dispatch`; `author:`
+stays the agent's owning person, so the node reads "agent on behalf of
+person." This is the token a worker process should hold — never a person's
+own account-scoped token or connector session, which would attribute the
+work to the human instead of the agent that did it.
 
 **No agent identity resolves, or minting one fails?** On a real remote
 dispatch, this hard-fails, naming the fix (`spor agent use <agent-id>`) —
@@ -100,6 +106,18 @@ item is skipped with a visible reason on the worker's stdout and in
 except `readiness: human` — that floor is not part of the knob. An unknown
 value refuses to start the worker, and `spor work --print` shows the
 effective policy.
+
+**The page widens rather than starving.** Selection reads a fixed-size
+ranked page, and the policy above filters what comes back — so a page
+filled entirely by items this worker may not take would hide an eligible
+one ranked below it on every poll, forever. When nothing on the page is
+dispatchable by this worker — un-consented, out of scope, already in
+flight here, or cooling off after a refusal — the read widens (doubling,
+up to a server-enforced ceiling) until something is dispatchable or the
+queue is exhausted. A pass that finds a candidate on the first page pays
+nothing extra, and the width a pass needed carries over to the next poll,
+so a worker starved behind a page of items it may not take still pays only
+one queue read per poll rather than re-walking the ladder every time.
 
 Before starting work, take the heartbeat-renewed lease:
 
@@ -504,15 +522,46 @@ Every dispatched run gets one persistent local record, readable with `spor
 runs --json` — `{reconciled, count, runs: [<record>]}`. `reconciled: false`
 means a native-harness live-agent listing failed for this particular call,
 so any shown native-background record that isn't yet terminal may be stale.
-Each record spans two dimensions: **process** (how the run's process ended)
-and **outcome** (what this protocol's terminal-states algorithm found, once
-it has run against this record). The process dimension — `run_id`,
-`harness`, `launch_mode`, the `state`/`termination_class` progression, log
-and transcript paths, and so on — is documented alongside `spor runs` on
-[Dispatch → runs](/reference/cli/dispatch/#runs), which also carries the
-outcome dimension's full field table (`terminal_state`,
-`terminal_enforced`, `resolved_by`, `resolved_edge`, `report_node_id`,
-`lease_released`, `terminal_note`) — those fields map directly onto
+Each record spans two independent dimensions: **process** (how the run's
+process ended — always present) and **outcome** (what this protocol's
+terminal-states algorithm found, once it has run against this record).
+Consumers should treat unlisted or absent fields as `null`/absent, not as a
+schema violation — new fields may be added additively.
+
+**Process dimension** (every record):
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `run_id` | string (uuid) | this run's unique id |
+| `node_id` | string \| null | the target node, or `null` for a free-text dispatch |
+| `name` | string \| null | the launch name (defaults to the node id, or the first few words of free text) |
+| `harness` | string | adapter id: `claude-code`, `codex`, `opencode`, `copilot`, … |
+| `launch_mode` | string | `"native-background"` (detaches into the harness's own daemon) or `"supervised-jsonl"` (runs under a supervisor Spor owns) |
+| `state` | string | `"launching"` → `"running"` → one of the terminal process states: `"done"`, `"failed"`, `"failed_launch"`, `"vanished"` |
+| `cwd` | string | the run's working directory |
+| `model` | string \| null | native-background records only — the model override this launch resolved, `null` when none did. A supervised record carries no `model` key at all, since its model is fixed into the harness argv at launch |
+| `created_at` / `finished_at` | ISO 8601 | when the record was opened / went terminal |
+| `started_at` | ISO 8601 | supervised runs only — when the child process actually started |
+| `launched_at` | ISO 8601 | native runs only — when the launcher observed the harness hand off to its background daemon |
+| `exit_code` / `signal` | int \| null / string \| null | supervised runs only |
+| `termination_class` | string | a broad bucket: `"completed"`, `"environment"` (credit/rate/auth exhaustion — re-dispatchable, not a real failure), `"launch"`, `"failed"`, `"idle"` (a run that stopped writing anything and was stopped for it), or `"unknown"` — an open vocabulary; do not exhaustively switch on it |
+| `termination_reason` | string | a human-readable one-line explanation |
+| `session_id` | string \| null | the harness's own session/thread id, possibly bound after launch (see [Agent identity and attribution](#agent-identity-and-attribution)) |
+| `transcript_path` | string | native runs only, when a transcript was found |
+| `log_path` / `report_path` | string | supervised runs only — the raw log, and where the harness's own final-message text landed, if any |
+
+**The two launch modes carry different fields, and that asymmetry is part
+of the schema, not an omission to read around.** A `native-background`
+record carries `launched_at` (never `started_at`), plus `model`; a
+`supervised-jsonl` record carries `started_at`, `exit_code`, `signal`,
+`log_path`, and `report_path` — and no `model` key at all.
+
+**Outcome dimension** (present once the terminal-states algorithm above has
+run against this record — absent while `state` is still non-terminal):
+`terminal_state`, `terminal_enforced`, `resolved_by`, `resolved_edge`,
+`report_node_id`, `lease_released`, and `terminal_note` — the full field
+table is documented alongside `spor runs` on [Dispatch →
+runs](/reference/cli/dispatch/#runs), and those fields map directly onto
 [Terminal states](#terminal-states-the-outcome-contract) above. A record
 with `terminal_state` unset (or `state` still non-terminal) has not
 finished; poll or watch the record file rather than assuming absence means
