@@ -173,12 +173,12 @@ declared `profile` (cross-model by convention), **read-only** — enforced
 with [`spor dispatch --read-only`](/reference/cli/dispatch/#dispatch):
 Codex's `--sandbox read-only`, Claude Code's plan permission mode,
 OpenCode's plan agent plus a denied shell, Copilot's denied write and shell
-tools. A harness with no declared read-only posture is refused before
-launch rather than run write-capable behind a warning — the reviewer reads
-the implementer's live checkout, so it must not be able to write to it —
-with a prompt carrying the work item's text, the bounded diff, the gate's
-`instructions`, and, on a fix cycle, the prior findings and the fix
-dispatched at them. It ends with a fixed verdict shape:
+tools — with a prompt carrying the work item's text, the bounded diff, the
+gate's `instructions`, and, on a fix cycle, the prior findings and the fix
+dispatched at them. A harness with no declared read-only posture is refused
+before launch rather than run write-capable behind a warning: the reviewer
+reads the implementer's live checkout, so it must not be able to write to
+it. It ends with a fixed verdict shape:
 
 ```json
 {
@@ -208,8 +208,8 @@ A finding raised fresh under `findings` carries no `id` — the runner's
 finding ledger mints one when the verdict is folded in. The only findings
 named by id are a `prior` answer (naming that entry's own id) and an
 upgrade of an earlier undemonstrated finding, re-raised under `findings`
-with its id. `category` on a `prior` entry is optional and only ever
-*reclassifies* that carried finding; leaving it out keeps the ledger's
+with its id. The finding `category` on a `prior` entry is optional and only
+ever *reclassifies* that carried finding; leaving it out keeps the ledger's
 existing category.
 
 The runner parses this block **in code**. Fail-closed throughout: a review
@@ -246,7 +246,8 @@ a new blocking finding every cycle instead of converging:
   cycles the list is required, and a confirmation naming fewer rows is
   flagged `row-by-row` on the ledger and the fact.
 
-**Every finding carries a `category`**, folded onto the ledger:
+**Every finding carries a finding category**, recorded as `category` and
+folded onto the ledger:
 
 - `correctness` (the default) — the change is wrong; a fixer fixes it.
 - `unmet-condition` — the change is not wrong, but the work item's own
@@ -305,7 +306,7 @@ tally, and why a gated item was cooled off.
 
 **An agent-review gate's fact also carries the finding ledger** — a
 `Finding ledger:` block, one line per entry (`F1, F2, …`, minted once per
-gate, never reused): its severity, its `category` tag, whether it is
+gate, never reused): its severity, its finding `category` tag, whether it is
 `OPEN since cycle N`, `resolved at cycle N`, or `advisory (cycle N)`, the
 file and summary, and a closing note once it has been answered. This is the
 same ledger a fix cycle's review reads back as `prior` (and, for a finding
@@ -501,8 +502,8 @@ supervised, with the work item, the diff, every commit on the branch, the
 refused gate's evidence, the fix-cycle history, and any earlier rescue's
 diagnosis. It is asked to:
 
-1. **diagnose** the refusal into one of four categories — `reviewer-drift`,
-   `real-defect`, `stale-premise`, or `environment`;
+1. **diagnose** the refusal into one of four rescue diagnosis categories —
+   `reviewer-drift`, `real-defect`, `stale-premise`, or `environment`;
 2. **fix** it in that checkout and commit, naming the findings it addressed,
    or change nothing it cannot justify; and
 3. **file** at least one Spor task proposing the factory, gate, prompt, or
@@ -510,10 +511,10 @@ diagnosis. It is asked to:
 
 It is told, and it is true, that it never marks a gate passed itself.
 Reading its diagnosis is deliberately fail-soft — a rescue that fixed the
-tree but forgot to state a category still gets its fix judged. A rescue
-that could not be dispatched, or never reached a terminal state inside
-`await_ms`, is recorded as unrun, and the refusal it was handed escalates
-exactly as it would have with no rescue lane.
+tree but forgot to state a diagnosis category still gets its fix judged.
+A rescue that could not be dispatched, or never reached a terminal state
+inside `await_ms`, is recorded as unrun, and the refusal it was handed
+escalates exactly as it would have with no rescue lane.
 
 **After the rescue,** the runner re-runs the whole gate list — every gate,
 from the first, on the tree the rescue left — as a fresh pass keyed to the
