@@ -328,10 +328,10 @@ algorithm above directly against REST once your worker process ends:
 2. if resolution.by present               → terminal_state = resolved; done, no release
 3. elif final report's first line is `DECLINED: <reason>`
                                            → POST /v1/nodes (file a `finding`, if_exists: skip)
-                                             POST /v1/nodes/{targetId}/readiness {readiness: "clear"}
-                                             if the finding write lands: POST /v1/nodes/{leaseNode}/release
+                                             if the write lands: POST /v1/nodes/{targetId}/readiness {readiness: "clear"}
+                                                                 POST /v1/nodes/{leaseNode}/release
                                                                   → terminal_state = declined
-                                             if the finding write is refused: leave the lease held
+                                             if the write is refused: leave the lease held
                                                                   → terminal_state = declined (held)
 4. elif targetId's type is decision/finding (an unjudgeable type)
                                            → if final report text exists: POST /v1/nodes (file it, if_exists: skip)
