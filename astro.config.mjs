@@ -148,6 +148,7 @@ export default defineConfig({
 						},
 						'reference/dispatch',
 						'reference/worker-protocol',
+						'reference/factory',
 						'reference/configuration',
 						'reference/costs-and-controls',
 						'reference/diagnostics',
