@@ -37,7 +37,7 @@ These are the types sessions read and write every day.
 | `norm` | `norm-` | A standing convention or constraint. Norms ride along in every project-relevant briefing without needing to match the query, and can declare [coupling anchors](#coupling-norms) — file globs that pair artifacts that must change together. |
 | `question` | `question-` | A routed ask the graph could not answer. Statuses: `open`, `answered`. Routed to the steward of the closest relevant node. |
 | `capture-pending` | `cap-` | Raw captured text that fit no schema, preserved for later triage. Closed only as `merged` (content moved into proper nodes) or `rejected` (no durable fact). |
-| `finding` | `find-` | A gardener observation about another node, filed as a queue item — see [the gardener](/reference/graph-model/repos-and-projects/). |
+| `finding` | `find-` | A gardener observation about another node, or a dispatched worker's stated reason for [declining](/reference/worker-protocol/#terminal-states-the-outcome-contract) an item, filed as a queue item — see [the gardener](/reference/graph-model/repos-and-projects/). |
 
 ## System and provenance types
 

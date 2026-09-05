@@ -5,10 +5,11 @@ sidebar:
   order: 8
 ---
 
-Dispatch turns a queue item into a running Claude Code background agent:
-`dispatch` compiles a briefing and launches the session, `agent` manages the
-identity it runs as, `repos` maps repo slugs to directories on this
-machine, and `capabilities` declares what this machine can run.
+Dispatch turns a queue item into a running background agent: `dispatch`
+compiles a briefing and launches one session, `work` loops `dispatch` over
+the queue continuously, `agent` manages the identity a session runs as,
+`repos` maps repo slugs to directories on this machine, and `capabilities`
+declares what this machine can run.
 
 ### agent
 
@@ -109,6 +110,7 @@ unaffected (there is no CA to mint an agent token against).
 | `--template <F>` | prompt template file with `{{brief}}`/`{{task}}`/`{{node}}`/`{{title}}`/`{{slug}}`/`{{dir}}`/`{{default}}` placeholders |
 | `--full`, `--no-brief` | full briefing instead of the digest; raw prompt with no briefing block |
 | `--no-claim`, `--force` | skip the auto-claim; dispatch despite an in-flight agent or resolved node |
+| `--bg` | Claude Code only — launch the native background session (`claude --bg`) instead of the default supervised launch; trades an enforced [terminal-state](/reference/worker-protocol/#terminal-states-the-outcome-contract) outcome for the attachable, interactive form (`claude attach`). Also settable as `dispatch.claudeLaunchMode: native-background`. `spor work` never uses it |
 | `--allow-person-token` | fall back to a person-scoped token when no agent is configured or minting fails (default: hard-fail; also `dispatch.allowPersonToken` / `SPOR_ALLOW_PERSON_TOKEN`) |
 | `--from-queue`, `--backfill` | top-ranked queue item; unattended repo backfill |
 | `--worktree`, `--no-worktree` | per-run worktree isolation override |
@@ -118,6 +120,59 @@ unaffected (there is no CA to mint an agent token against).
 spor dispatch task-tidefall-retry-emails --worktree
 spor dispatch --from-queue --print
 ```
+
+### work
+
+```
+spor work [options]
+```
+
+**Mode:** dual — each dispatch it makes follows local/remote exactly like
+`spor dispatch`; `--status` and `--regate` read only the local run journal.
+
+Works the queue continuously instead of one item at a time: it polls,
+dispatches the items this machine may take under their routed profile, waits
+for each run's [terminal state](/reference/worker-protocol/#terminal-states-the-outcome-contract),
+and goes around again. It is pull, not push — nothing schedules a worker,
+it takes work, and a dead worker simply drops its lease at expiry with no
+sweep needed. Every launch goes through the same code path as `spor dispatch
+--node <id>` — the same duplicate guard, auto-claim, worktree isolation, and
+[agent-readiness check](/reference/dispatch/#agent-readiness-before-launch) —
+minus anything `readiness: human` or already in flight here. A run that is
+refused, or ends without resolving its target, is remembered with the reason
+and retried after `--retry-after` rather than reattempted on the next poll.
+
+| Flag | Effect |
+| --- | --- |
+| `--project <slug>` | scope the queue to one project (`work.project`) |
+| `--concurrency <N>` | runs in flight at once (`work.concurrency`, default 1) |
+| `--accept <ready\|open>` | acceptance policy — see [Worker protocol → The pool and the claim](/reference/worker-protocol/#the-pool-and-the-claim) (`work.accept` / `SPOR_WORK_ACCEPT`, default `ready`) |
+| `--once` | poll and dispatch once, then exit |
+| `--max <N>` | stop after dispatching N runs |
+| `--retry-after <dur>` | cooldown before re-offering a refused or unresolved item (`work.retryAfterMs`) |
+| `--run-idle <dur>` | stop a run whose log and transcript have both gone silent for this long, freeing its slot (default 45 minutes; `0` disables the ceiling) |
+| `--run-max <dur>` | hard backstop that frees a slot regardless of activity (default 24 hours) |
+| `--factory <id>` | enforce a factory's gate pipeline between claim and resolve (`work.factory`) |
+| `--print` | show scope, pacing, and candidates; launch nothing |
+| `--status` | every worker on this box: slots, outcomes, what is being skipped and why |
+| `--regate <run-id> --factory <id>` | re-judge one refused run's gates after fixing what refused it, without re-dispatching the work |
+
+```sh
+spor work --project tidefall --concurrency 2
+spor work --once --print
+spor work --status --json
+```
+
+`--run-idle` measures silence, not a wedged agent specifically: a single
+tool call that legitimately runs longer than the ceiling — a full test
+matrix, a slow build — looks identical to a stuck run and is stopped
+mid-work all the same, so raise it (or set it to `0`) for a lane whose steps
+genuinely take that long. A run with no observable channel at all (a
+native-background launch whose session was never bound) is never judged
+idle; it falls through to `--run-max` instead, which frees the slot without
+making any claim about the run. Being stopped for idleness is a process
+fact, not an outcome — an agent that had already written its resolver
+before going quiet still reads `resolved`.
 
 ### runs
 
@@ -132,12 +187,13 @@ how each run ended, and where to look. Don't confuse this with [`run
 status`](/reference/cli/writing-to-the-graph/#run), which inspects a
 server-side workflow-engine run; `runs` is the local dispatch launch record.
 
-A native dispatch (Claude Code) detaches into the harness daemon, so the
-launcher never sees the child exit — without this record a finished run and
-a dead one are indistinguishable afterwards. Every other harness (Codex,
-OpenCode, GitHub Copilot CLI) instead runs under a supervisor Spor itself
-owns, streaming progress into a private log and capturing the run's final
-message to a report file; see [Choosing a
+A native-background dispatch (Claude Code launched with `--bg`) detaches
+into the harness daemon, so the launcher never sees the child exit — without
+this record a finished run and a dead one are indistinguishable afterwards.
+Every supervised harness — Claude Code by default, Codex, OpenCode, GitHub
+Copilot CLI — instead runs under a supervisor Spor itself owns, streaming
+progress into a private log and capturing the run's final message to a
+report file; see [Choosing a
 harness](/reference/dispatch/#choosing-a-harness) for what it prints at
 launch. **Reading reconciles first**: every run the harness no longer
 reports live is resolved against its own evidence — a native dispatch's
@@ -162,11 +218,12 @@ the other three terminal states:
 Each terminal run also carries a classification that keeps causes from being
 conflated: `environment` (provider credit exhaustion, usage limits, rate
 limits, rejected auth — re-dispatch once that clears), `launch`, `failed`,
-`completed`, or `unknown`. Evidence is always the run's own — a transcript is
-matched by the session the run bound, never by the directory it ran in, since
-several dispatches can share one checkout. A run still inside its first
-minute, or one whose harness couldn't be queried at all, is left alone rather
-than declared dead.
+`completed`, `idle` (a `spor work` run whose log and transcript both stopped
+moving and was stopped for it — see [`work`](#work)), or `unknown`. Evidence
+is always the run's own — a transcript is matched by the session the run
+bound, never by the directory it ran in, since several dispatches can share
+one checkout. A run still inside its first minute, or one whose harness
+couldn't be queried at all, is left alone rather than declared dead.
 
 **Process and outcome are two different dimensions of the same record.**
 Everything above — `state`, `termination_class`, and friends — is the
@@ -178,11 +235,14 @@ does not by itself guarantee.
 
 | Field | Meaning |
 | --- | --- |
-| `terminal_state` | `"resolved"` \| `"reported"` \| `"failed"` — see [Terminal states](/reference/worker-protocol/#terminal-states-the-outcome-contract) |
+| `terminal_state` | `"resolved"` \| `"reported"` \| `"declined"` \| `"failed"` — see [Terminal states](/reference/worker-protocol/#terminal-states-the-outcome-contract) |
 | `terminal_enforced` | whether this was a *verified* verdict (re-read against a reachable graph) or a best-effort classification — gate on this before trusting `terminal_state` as ground truth |
 | `resolved_by` | present only when `terminal_state === "resolved"` — the resolver node's id |
 | `resolved_edge` | present only when resolved — `"resolves"` or `"answers"` |
 | `report_node_id` | present only when a report was actually filed — its presence always implies `terminal_state === "reported"`, but an unenforced `reported` record may have none |
+| `declined_reason` | present only when `terminal_state === "declined"` — the reason off the report's `DECLINED:` line |
+| `finding_node_id` | present only when a decline's finding was actually filed — its presence always implies `terminal_state === "declined"` |
+| `readiness_cleared` | declined only — whether the target's `readiness: agent` stamp was cleared |
 | `lease_released` | optional — whether a release attempt succeeded; omitted (not `false`) when no lease was this run's to release at all |
 | `terminal_note` | a human-readable explanation of the outcome, always present once this dimension exists |
 

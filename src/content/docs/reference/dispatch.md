@@ -75,8 +75,21 @@ agent's default `uses-profile` edge.
 
 ## Choosing a harness
 
-By default, `spor dispatch` launches a Claude Code agent (`claude --bg`). To
-dispatch under a different coding-agent CLI — Codex, OpenCode, and GitHub
+By default, `spor dispatch` launches a Claude Code agent under the same
+supervisor every other harness runs under: headless print mode
+(`claude -p --output-format stream-json`), with the prompt on stdin and the
+run's session id and final report read off its event stream. That
+supervision is what makes the [terminal-state
+contract](/reference/worker-protocol/#terminal-states-the-outcome-contract)
+enforceable — the runner can tell what the run actually did. Pass `--bg`
+(or set `dispatch.claudeLaunchMode: native-background` in your user config)
+to launch the native background session instead (`claude --bg`, the
+attachable, interactive form reached with `claude attach`) at the cost of an
+unenforced outcome — see below. `--bg` is `spor dispatch`'s alone: `spor
+work` always launches supervised, since its runs must be followed, judged,
+and gated.
+
+To dispatch under a different coding-agent CLI — Codex, OpenCode, and GitHub
 Copilot CLI are also supported — resolve a profile whose `harness:` field
 names it:
 
@@ -136,14 +149,15 @@ config file. An explicit launcher is used verbatim and is never quietly
 swapped for something on `PATH`; with none set, the bare name resolves on
 `PATH` as before.
 
-The harnesses also launch differently. Claude Code dispatch detaches into
-Claude Code's own background-agent daemon — the launcher exits immediately,
-and `spor dispatch` can only reconcile what happened to it afterwards from
-the harness's own session transcript. Every other harness instead runs
-under a small supervisor Spor itself owns: it launches the CLI's headless
-mode in the background, streams its progress into a private log, and
-captures the run's final message to a report file. At launch it prints
-where everything lives:
+Only a `--bg` Claude Code dispatch launches differently from the rest.
+Detaching into Claude Code's own background-agent daemon means the launcher
+exits immediately, and `spor dispatch` can only reconcile what happened to
+it afterwards from the harness's own session transcript. Every supervised
+harness — Claude Code by default, Codex, OpenCode, GitHub Copilot CLI —
+instead runs under a small supervisor Spor itself owns: it launches the
+CLI's headless mode in the background, streams its progress into a private
+log, and captures the run's final message to a report file. At launch it
+prints where everything lives:
 
 ```text
 run:     3f9a2c1e-... (Codex supervisor running)

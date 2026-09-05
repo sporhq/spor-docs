@@ -226,6 +226,7 @@ one that crashed after writing its resolver still finished the job.
 | --- | --- | --- |
 | `resolved` | the target is genuinely done | re-reading the graph shows a **live inbound `resolves`/`answers` edge** onto the target node |
 | `reported` | not done, but the work reached the graph | no resolving edge, but the worker's final report was filed as an artifact `relates-to` the target |
+| `declined` | the worker declared the ITEM wrong, not the work unfinished | the final report's first line is exactly `DECLINED: <reason>` |
 | `failed` | nothing usable reached the graph | no resolving edge and no usable report |
 
 **`resolved` is a graph read, never an exit code, never the worker's own
@@ -244,6 +245,28 @@ process-level fact, never conflated with the outcome. The invariant a
 consumer keys on: whenever a report artifact id is present, `terminal_state`
 is `reported` — always, whether the verdict was fully verified or not (see
 unverifiable targets below).
+
+**A decline is a fixed form, not prose.** A worker that finds the item
+itself wrong — its premise no longer holds, it is already done, the change
+belongs in another repo — declines it: commits nothing, writes no resolver,
+and makes the first non-blank line of its final message exactly `DECLINED:
+<one-line reason>` (the rest of the message explains; a heading or bold
+wrapper around the line is tolerated). Only that exact line is read — "I
+declined" in a later paragraph is a report, not a declaration. A declined
+run:
+
+- carries no claim of completion, so a factory's gate pipeline never gates
+  it — gates test a claim of completion, and a decline makes none;
+- has its reason filed as a **`finding`** node, `relates-to` the target, with
+  the full report in the body, so the item re-briefs with the decline
+  attached the next time it is compiled;
+- has its `readiness: agent` stamp cleared, so a worker running the `ready`
+  acceptance policy (see [The pool and the claim](#the-pool-and-the-claim))
+  does not re-dispatch the item as written;
+- releases the lease, in the same file-then-release order as a report.
+
+The graph still wins over the words: a target that already reads resolved is
+`resolved` whatever the final line says.
 
 **Unverifiable targets.** Only node types whose completion is a *resolving
 edge* rather than a status flip — `task`, `issue`, `question`, `incident` —
@@ -309,12 +332,17 @@ algorithm above directly against REST once your worker process ends:
                                              else
                                                 → terminal_state = failed, terminal_enforced = false
                                              NEVER release the lease either way — it lapses at its own TTL
-4. elif final report text exists          → POST /v1/nodes  (file the report, if_exists: skip)
+4. elif final report's first line is `DECLINED: <reason>`
+                                           → POST /v1/nodes (file a `finding`, if_exists: skip)
+                                             POST /v1/nodes/{targetId}/readiness {readiness: "clear"}
+                                             POST /v1/nodes/{leaseNode}/release
+                                                                  → terminal_state = declined
+5. elif final report text exists          → POST /v1/nodes  (file the report, if_exists: skip)
                                              if the write lands: POST /v1/nodes/{leaseNode}/release
                                                                   → terminal_state = reported
                                              if the write is refused: leave the lease held
                                                                   → terminal_state = failed (held)
-5. else                                   → POST /v1/nodes/{leaseNode}/release
+6. else                                   → POST /v1/nodes/{leaseNode}/release
                                              → terminal_state = failed
 ```
 
@@ -489,6 +517,85 @@ view`:
   GitHub's own review surface, and — same as a `human` gate's own rejected
   approval — a person decides what happens next, not the worker.
 
+## The rescue lane: a strong-model pass before human escalation
+
+A failing gate does not escalate on the first refusal — `spor work --factory
+<id>` loops implementer fix cycles against the gate's own declared cap first.
+Only once that budget is spent (or the refusal is not one a fix cycle could
+address at all) does the gate **escalate**: file a person-facing item that
+`blocks` the work item and roll back the item's own completion status if it
+claimed one — the same demotion [the integration step](#the-integration-step-a-code-enforced-merge-queue-after-gates)
+above applies to its own failures, so the refusal is a graph fact rather than
+a machine-local cooldown.
+
+The **rescue lane** is an optional, factory-level step that runs in between:
+one strong-model pass, dispatched before that escalation ever fires. It is
+declared once, beside `gates` and `integration`, and covers every gate's
+exhaustion rather than being configured per gate:
+
+```json
+{
+  "rescue": {
+    "profile": "profile-claude-fable",
+    "attempts": 1,
+    "await_ms": 3600000,
+    "instructions": "…"
+  }
+}
+```
+
+| Field | Means |
+| --- | --- |
+| `profile` | required — the [profile](/reference/dispatch/#profiles-the-how-factored-out) the rescue dispatches under. A strong model by intent, and profile-routed like an agent-review gate: the graph names the lane, the machine's own capabilities decide what actually runs |
+| `attempts` | default `1`, at most `3` — rescue attempts per pipeline. A second attempt is handed the first's diagnosis and asked why it did not land |
+| `await_ms` | default one hour — how long the runner follows the rescue run before treating it as unrun |
+| `instructions` | optional factory-specific guidance added to the rescue's prompt |
+
+**When it runs.** Only when a pipeline would otherwise escalate to a person —
+a gate that has spent its fix cycles, or refused for a reason nothing has
+already filed a person's item for. A protected-path hit, a rejected or
+pending approval, and a [`declined`](#terminal-states-the-outcome-contract)
+run — never gated at all, since it carries no claim of completion to test —
+go on exactly as before; none of those are rescuable.
+
+**What it does.** Dispatched into the run's own checkout with the work item,
+the diff, every commit on the branch, the refused gate's evidence, the fix
+cycle history, and any earlier rescue's diagnosis, the rescue is asked to:
+
+1. **diagnose** the refusal into one of four categories — `reviewer-drift`,
+   `real-defect`, `stale-premise`, or `environment`;
+2. **fix** it in that checkout and commit, naming the findings it addressed,
+   or change nothing it cannot justify; and
+3. **file** at least one Spor task proposing the factory, gate, prompt, or
+   item change that would have prevented the pattern.
+
+It is told, and it is true, that it never marks a gate passed itself. Reading
+its diagnosis is deliberately fail-soft — a rescue that fixed the tree but
+forgot to state a category still gets its fix judged. A rescue that could
+not be dispatched, or never reached a terminal state inside `await_ms`, is
+recorded as unrun, and the refusal it was handed escalates exactly as it
+would have with no rescue lane at all.
+
+**After the rescue.** The runner re-runs the whole gate list — every gate,
+from the first, on the tree the rescue left — as a fresh pass keyed to the
+rescue attempt, so its facts never collide with the original pass's. Each
+gate gets a fresh fix-cycle budget, but the finding ledger from before the
+rescue carries forward: a review after a rescue is a review under the same
+stateful fix-cycle protocol as any other, required to clear or confirm each
+prior finding by id rather than starting over.
+
+- **The rescue pass passes** — the item stands: nothing escalates, nothing
+  is demoted, and the integration step follows as usual.
+- **It refuses and attempts remain** — the next rescue attempt is handed
+  everything above, plus the earlier diagnoses.
+- **It refuses and attempts are exhausted** — the escalation fires, and its
+  body opens with the rescue's diagnosis: the category, the one-line
+  conclusion, whether it committed a fix, and what it filed. The person
+  reads what a strong model already concluded before deciding.
+
+A factory that declares no `rescue:` block behaves exactly as it did before
+the lane existed.
+
 ## The report artifact
 
 The filed report is an ordinary `artifact` node, deliberately **not** a
@@ -581,11 +688,29 @@ record carries `launched_at` (never `started_at`), plus `transcript_path`
 and `model`; a `supervised-jsonl` record carries `started_at`, `exit_code`,
 `signal`, `log_path`, and `report_path` — and no `model` key at all.
 
+**The `idle` bucket measures silence, not a wedged agent specifically.** A
+run whose observable output — the supervisor's log, or a native launch's
+session transcript — stops moving for `spor work --run-idle` (the
+`work.runIdleMs` config key, default 45 minutes) is stopped and recorded
+`failed` with `termination_class: "idle"`, so a wedged agent does not hold
+its worker's slot, lease, and worktree until the much longer `--run-max`
+watchdog (default 24 hours). A single tool call that legitimately runs
+longer than the ceiling — a full test matrix, a slow build — looks
+identical to a stuck run and is stopped mid-work just the same; raise
+`--run-idle` (or set it to `0`) for a lane whose steps genuinely take that
+long. A run with no observable channel at all (a native-background launch
+whose session was never bound) is never judged idle — it falls through to
+`--run-max` instead, which frees the slot without making any claim about
+the run. Being stopped for idleness is a *process* fact, not an outcome: an
+agent that had already written its resolver before going quiet still reads
+`resolved` once the terminal-states algorithm re-reads the graph.
+
 **Outcome dimension** (present once the terminal-states algorithm above has
 run against this record — absent while `state` is still non-terminal):
 `terminal_state`, `terminal_enforced`, `resolved_by`, `resolved_edge`,
-`report_node_id`, `lease_released`, and `terminal_note` — the full field
-table is documented alongside `spor runs` on [Dispatch →
+`report_node_id`, `lease_released`, and `terminal_note`, plus — declined
+runs only — `declined_reason`, `finding_node_id`, and `readiness_cleared`.
+The full field table is documented alongside `spor runs` on [Dispatch →
 runs](/reference/cli/dispatch/#runs), and those fields map directly onto
 [Terminal states](#terminal-states-the-outcome-contract) above. A record
 with `terminal_state` unset (or `state` still non-terminal) has not
@@ -612,9 +737,12 @@ A worker (and its launcher, if separate) is a conforming Spor worker when it:
   declaring victory itself
 - if no resolving edge exists, **files its final report as an artifact**
   `relates-to` the target — never silently drops the work
-- **releases the lease only after the report write is confirmed** — a
-  refused write leaves the lease held, never released with nothing to show
-  for it
+- if the item itself is wrong rather than the work unfinished, **declines**
+  with a first line of exactly `DECLINED: <reason>` instead of leaving a
+  vague report or forcing a change through
+- **releases the lease only after the report (or decline) write is
+  confirmed** — a refused write leaves the lease held, never released with
+  nothing to show for it
 - never claims a `readiness: human` item, and never routes a mention-less
   question without stamping the session's project
 

@@ -60,7 +60,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [Reading the graph](/reference/cli/reading-the-graph/) | next, get, query, blame, history, changes, analytics, schema, lens, share, export |
 | [Writing to the graph](/reference/cli/writing-to-the-graph/) | add, ask, drain, put-node, edge, set-status, priority, ready, correct, claim, renew, extend, release, run |
 | [Repo scoping](/reference/cli/repo-scoping/) | enable, disable, link, agents-md, compile, brief, validate |
-| [Dispatch](/reference/cli/dispatch/) | agent, dispatch, runs, repos, capabilities |
+| [Dispatch](/reference/cli/dispatch/) | agent, dispatch, work, runs, repos, capabilities |
 | [Utilities](/reference/cli/utilities/) | cost, version, help |
 
 ## All verbs, A to Z
@@ -120,3 +120,4 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [validate](/reference/cli/repo-scoping/#validate) | local | | lint the local graph |
 | [version](/reference/cli/utilities/#version) | local | | print the package version |
 | [whoami](/reference/cli/setup-and-identity/#whoami) | remote | | who the team graph thinks you are |
+| [work](/reference/cli/dispatch/#work) | dual | | loop dispatch over the queue continuously, gated and enforced |
