@@ -552,9 +552,9 @@ schema violation — new fields may be added additively.
 
 **The two launch modes carry different fields, and that asymmetry is part
 of the schema, not an omission to read around.** A `native-background`
-record carries `launched_at` (never `started_at`), plus `model`; a
-`supervised-jsonl` record carries `started_at`, `exit_code`, `signal`,
-`log_path`, and `report_path` — and no `model` key at all.
+record carries `launched_at` (never `started_at`), plus `transcript_path`
+and `model`; a `supervised-jsonl` record carries `started_at`, `exit_code`,
+`signal`, `log_path`, and `report_path` — and no `model` key at all.
 
 **Outcome dimension** (present once the terminal-states algorithm above has
 run against this record — absent while `state` is still non-terminal):
