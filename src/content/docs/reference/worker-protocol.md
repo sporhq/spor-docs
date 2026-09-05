@@ -674,6 +674,13 @@ terminal-states algorithm found, once it has run against this record).
 Consumers should treat unlisted or absent fields as `null`/absent, not as a
 schema violation — new fields may be added additively.
 
+A run the harness no longer reports live is finalized against its own
+evidence, and the evidence it's finalized against depends on the launch
+mode: a `native-background` run is resolved against its session transcript,
+while a `supervised-jsonl` run is finalized by its own supervisor process
+straight off its log when the child exits — never a transcript, since a
+supervised harness has none of its own.
+
 **Process dimension** (every record):
 
 | Field | Type | Meaning |
@@ -683,7 +690,7 @@ schema violation — new fields may be added additively.
 | `name` | string \| null | the launch name (defaults to the node id, or the first few words of free text) |
 | `harness` | string | adapter id: `claude-code`, `codex`, `opencode`, `copilot`, … |
 | `launch_mode` | string | `"native-background"` (detaches into the harness's own daemon) or `"supervised-jsonl"` (runs under a supervisor Spor owns) |
-| `state` | string | `"launching"` → `"running"` → one of the terminal process states: `"done"`, `"failed"`, `"failed_launch"`, `"vanished"` |
+| `state` | string | one of `"launching"`, `"running"`, or a terminal process state: `"done"`, `"failed"`, `"failed_launch"`, `"vanished"` — see the lifecycle note below |
 | `cwd` | string | the run's working directory |
 | `model` | string \| null | native-background records only — the model override this launch resolved, `null` when none did. A supervised record carries no `model` key at all, since its model is fixed into the harness argv at launch |
 | `created_at` / `finished_at` | ISO 8601 | when the record was opened / went terminal |
@@ -695,6 +702,11 @@ schema violation — new fields may be added additively.
 | `session_id` | string \| null | the harness's own session/thread id, possibly bound after launch (see [Agent identity and attribution](#agent-identity-and-attribution)) |
 | `transcript_path` | string | native runs only, when a transcript was found |
 | `log_path` / `report_path` | string | supervised runs only — the raw log, and where the harness's own final-message text landed, if any |
+
+**A run only sometimes visits `running`.** It starts at `launching`; the
+harness never starting closes it straight to `failed_launch` without ever
+reaching `running`, otherwise it advances to `running` and from there to one
+of the other three terminal states (`done`, `failed`, `vanished`).
 
 **The two launch modes carry different fields, and that asymmetry is part
 of the schema, not an omission to read around.** A `native-background`
