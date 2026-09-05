@@ -292,6 +292,154 @@ on — normally the same as `targetId`, but not necessarily (a forced
 re-dispatch that renewed someone else's lease releases nothing, since that
 lease isn't yours to hand back).
 
+## The integration step: a code-enforced merge queue after gates
+
+`spor work --factory <id>` can declare an **`integration:`** block on the
+factory definition — the pipeline's LAST stage, run only after every
+declared gate has passed. It is opt-in, exactly like the gate list itself: a
+factory that declares no `integration:` block resolves work exactly as
+described above, with no adoption cliff. Where it applies, a `resolved`
+verdict in the [terminal states](#terminal-states-the-outcome-contract)
+sense above is only reachable once this stage lands the change (or, under
+`propose` mode, is deferred to a later pass — see below).
+
+```json
+{
+  "integration": {
+    "target_ref": "main",
+    "mode": "local",
+    "command": "npm test",
+    "strategy": "merge",
+    "serialize": "repo"
+  }
+}
+```
+
+| Field | Means |
+| --- | --- |
+| `target_ref` | what "landed" means; defaults to the factory's own `trusted_ref` |
+| `mode` | `local` CAS's a local ref with `git update-ref`; `push` pushes to a remote, whose own non-fast-forward rejection *is* the compare-and-swap; `propose` opens a pull request instead of mutating `target_ref` at all — see [Propose mode](#propose-mode-pr-landing-for-review-policies) below |
+| `command` | the FULL suite, run on the merged candidate tree — never a fast tier deferred to a service after landing |
+| `strategy` | `merge` \| `squash` \| `rebase` — how the candidate tree is built |
+| `serialize` | the lease's scope; `repo` is the only value today |
+| `reruns` | default `0`, at most `3` — the same bounded same-tree rerun a command gate has: the candidate suite reruns on the one candidate worktree (never rebuilt) before a failure becomes a fix cycle |
+
+**The candidate build.** A throwaway worktree at `merge(target_ref,
+branch)` per the declared strategy — `merge` lands the branch onto the
+target, `rebase` replays the branch's own commits onto it, `squash` folds
+the branch into one commit on top of it. A merge conflict is a **fix-cycle
+event, not a terminal error** — fed back to the same implementer through
+the same cycle-cap-then-escalate machinery a failing gate uses.
+
+**Protected paths are forced, again**, under the same guarantee and matcher
+a command gate's candidate tree gets: every declared `protected_paths` glob
+is restored to the trusted ref's own copy before the suite runs. That
+restore only rewrites the candidate worktree's working directory (it
+creates no commit), so when the restore changes anything the stage
+re-commits the restored tree and lands *that* sha instead of the
+pre-restoration one — otherwise a tampered protected-path edit could ship
+behind a suite that only ever ran against the restored tree.
+
+**The candidate suite runs full, on the merged tree, every landing** — a
+failure feeds into the same fix-cycle machinery a conflict does.
+
+**Landing is compare-and-swap**, and losing the race is nobody's mistake.
+Local mode's `git update-ref target_ref new_sha old_sha` refuses if the ref
+moved since the candidate was built (and brings a checkout with
+`target_ref` already checked out up to date for the landed paths, where its
+index and working copy were otherwise untouched); push mode's rejection of
+a non-fast-forward push is the same guarantee over a remote ref, and push
+mode fetches the target before every candidate build so a rebuild after a
+lost race is always against the live tip. Either way, a **lost race
+rebuilds the candidate against the ref's new tip and reruns** —
+automatically, bounded by a small retry ceiling, and *never* charged
+against the fix-cycle cap: the implementer did nothing wrong, another
+landing simply won first. The `serialize: repo` lease (a server-held claim
+in remote mode, a machine-local lockfile with no server) makes this race
+*rare*; the CAS is what makes it *harmless* regardless — every failure
+acquiring the lease is fail-open, logging a note and proceeding without
+one.
+
+**Every landing or failure is a graph fact**, `art-merge-…` — the
+integration stage's twin of a gate's `art-gate-…` fact: the same idempotent
+id scheme, the same `relates-to` (never `resolves`) edge onto the work
+item. A failure that exhausts its fix cycles **demotes the item exactly as
+a failed gate does**: an escalation is filed that `blocks` the work item,
+and the item's completion status is rolled back if it claimed one — the
+run's resolver already declared every gate passed, so the only thing an
+integration failure disputes is whether the change ever reached the target
+ref. The same `gate_escalation_failed` marker and `spor work --regate
+<run-id>` door back apply here exactly as they do to a gate refusal.
+
+**Cleanup** runs on a landing or a proposal. The candidate worktree is
+always removed, win or lose (it is throwaway by construction); the
+implementer's own dispatch worktree and branch are removed once the work
+has either landed or been proposed — a `propose`-mode PR is already durable
+on the remote once opened, so there is nothing left for the dispatch
+worktree to hold. Only an outright failure (a conflict or a suite that
+never resolves, a PR that never opens) leaves the dispatch worktree
+standing.
+
+### Propose mode: PR-landing for review policies
+
+`mode: propose` runs the identical candidate build, protected-path
+restore, and full suite every other mode runs — the point of running it
+pre-PR is that the PR is known-green the moment it opens. Only the landing
+step differs: instead of a CAS mutating `target_ref`, it pushes the
+implementer's **own branch** (`tree.head`, unmerged — never the throwaway
+candidate commit, which only ever proved merging would be green) and opens
+a PR against `target_ref` through the `gh` CLI, the v1 backend. `gh` is a
+declared capability, checked through the same [machine-profile
+satisfiability](/reference/dispatch/#capabilities-what-this-machine-can-actually-run)
+layer a profile's harness/MCP/skills/plugins already go through: loading a
+factory that declares `propose` warns loudly, once, at
+the same load-time check an unreadable factory already gets, but does not
+kill the whole worker — a box that can never land a proposal idles,
+visibly (in `spor work --status`), skipping every candidate rather than
+crash-looping, leaving the item for a capable box. No lease is ever
+established on a box that can't finish the job. A re-run (a fix cycle, or a
+resumed pipeline) reuses whatever PR is already open for the branch rather
+than erroring on a duplicate.
+
+**Opening the PR parks the item — it does not resolve it, and it frees the
+work-loop slot immediately.** This is deliberately not the shape of a
+`human` gate, which polls a graph approval in-process for up to a day
+(`approval_timeout_ms`), holding a concurrency slot the whole time — fine
+for an approval a person answers within a shift, wrong for a PR review that
+can legitimately take days. Parking instead reuses only the graph-state
+half of a failed gate's demotion: a tracking item is filed carrying a
+`blocks` edge onto the work item, and the work item's own completion status
+is rolled back if it claimed one — never an in-process poll, and nothing is
+marked for a person at this point. The pipeline returns a third settled
+state, `parked` (alongside `passed`/`failed`/`blocked`), and the work-loop
+slot frees on that return exactly like any other settled verdict.
+
+A `human` gate and `propose` mode never double-file an approval: a `human`
+gate is a gate — it runs and is judged *before* integration ever starts (an
+internal "should we even try to land this" call), through a wholly
+different door than propose mode's own tracking item. A factory can
+declare both — the `human` gate judges the change itself pre-integration,
+and `propose` mode's PR is the org's independent, external review-and-merge
+gate on the same change afterward. Neither one knows the other exists.
+
+**Resolving a parked item is a separate later pass, never a resume of the
+run that parked it.** Because a parked run's own pipeline is already
+settled, it is never re-entered to ask "did the PR land yet" — instead
+`spor work`'s loop periodically checks every parked run's PR via `gh pr
+view`:
+
+- **Still open** — a no-op; nothing is written until the next pass.
+- **Merged** — writes a second `art-merge-…` fact for the same run (a
+  distinct id segment keeps it from colliding with the first), carrying a
+  `resolves` edge onto the tracking item — the one point in this pipeline
+  where an integration fact retires something rather than merely recording
+  it — then restores the work item's own completion status and closes the
+  tracking item.
+- **Closed without merging** — writes a fact recording it, but restores
+  nothing and leaves the tracking item open: the PR was rejected on
+  GitHub's own review surface, and — same as a `human` gate's own rejected
+  approval — a person decides what happens next, not the worker.
+
 ## The report artifact
 
 The filed report is an ordinary `artifact` node, deliberately **not** a
@@ -394,5 +542,8 @@ Companion specs: [Reads](/reference/api/reads/) and
 [Writes](/reference/api/writes/) (the REST contract this protocol is built
 from), [Nodes](/reference/graph-model/nodes/) and
 [Edges](/reference/graph-model/edges/) (the format `resolves`/`answers`
-edges and report artifacts follow), and [Leases](/reference/api/leases/)
-(the full claim/renew/extend/release/reserve family).
+edges and report artifacts follow), [Leases](/reference/api/leases/)
+(the full claim/renew/extend/release/reserve family), and
+[Dispatch → capabilities](/reference/dispatch/#capabilities-what-this-machine-can-actually-run)
+(the satisfiability check `propose` mode's `gh` requirement is checked
+through).
