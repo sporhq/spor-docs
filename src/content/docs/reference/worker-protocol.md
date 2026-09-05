@@ -181,6 +181,19 @@ standing context. <any additional free-text task instructions>
    for a bare-bones launch, but every worker benefits from including it.
 3. **Task.** What to do — the target node's id and title plus any additional
    instruction text, or free-text task instructions with no node at all.
+4. **Worker contract** (`spor work` only). An unattended `spor work` run
+   appends a standing contract to the task's instruction text: work only in
+   the launched checkout and branch, never merge to or push the target ref,
+   don't touch the factory's protected paths, verify deterministically,
+   commit everything and leave the tree clean **before** resolving, resolve
+   the item **last** with a resolver
+   node carrying a `resolves` edge, and if the item won't converge, leave it
+   unresolved with the blocker named in the report. The factory-specific
+   lines (the integration target, the acceptance command, the protected paths
+   and their lane, the cross-model review) appear only when the factory
+   declares them; a bare worker's contract is the plain commit-then-resolve
+   discipline. A person's one-off `spor dispatch` adds nothing — they write
+   their own task text.
 
 There is no wire-level requirement that a worker consume this exact string;
 what matters is that a conforming worker (a) is capable of reading a
@@ -321,6 +334,13 @@ verdict in the [terminal states](#terminal-states-the-outcome-contract)
 sense above is only reachable once this stage lands the change (or, under
 `propose` mode, is deferred to a later pass — see below).
 
+A declared gate earns its own pass the same way this protocol earns
+`resolved` above: never on its own dispatcher's say-so. An agent-review gate
+dispatched at a branch that carries **no committed change against the
+trusted ref** — the implementer landed nothing, or resolved with an empty
+diff behind it — fails closed and unretried rather than reading back a
+vacuous pass; no reviewer is sent to review nothing.
+
 ```json
 {
   "integration": {
@@ -350,8 +370,13 @@ event, not a terminal error** — fed back to the same implementer through
 the same cycle-cap-then-escalate machinery a failing gate uses.
 
 **Protected paths are forced, again**, under the same guarantee and matcher
-a command gate's candidate tree gets: every declared `protected_paths` glob
-is restored to the trusted ref's own copy before the suite runs. That
+a command gate's candidate tree gets — a tree that is itself staged with the
+repo's own `dispatch.worktreeSetup` hook exactly as a dispatch worktree is
+(a `node_modules` symlink, a pinned sibling checkout, whatever the suite
+needs that isn't tracked in git, with the hook's `.claude/settings.local.json`
+`env` reaching the suite too; a hook that fails refuses the tree, so the
+suite is never run on a half-staged one): every declared `protected_paths`
+glob is restored to the trusted ref's own copy before the suite runs. That
 restore only rewrites the candidate worktree's working directory (it
 creates no commit), so when the restore changes anything the stage
 re-commits the restored tree and lands *that* sha instead of the
