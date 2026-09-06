@@ -358,6 +358,24 @@ on — normally the same as `targetId`, but not necessarily (a forced
 re-dispatch that renewed someone else's lease releases nothing, since that
 lease isn't yours to hand back).
 
+### Candidate submission under controller completion
+
+A factory may declare `completion.by: controller` (see [Factory → Declaring
+the stage](/reference/factory/#declaring-the-stage-the-implementation-and-completion-blocks)),
+which replaces this contract's ordinary resolve step with a candidate
+**submission**: commit on the launched branch, leave the tree clean, write
+the resolver node carrying a `relates-to` edge — never `resolves` — and open
+the final report with the fixed line `CANDIDATE: <resolver node id> — <why>`
+instead of resolving the item directly. `terminal_state` still reads by the
+algorithm above exactly as for any other run: with no resolving edge yet on
+the graph, an enforced submission reads `reported`, never `resolved`. The
+factory's own gate pipeline is what later writes the `resolves` edge, at the
+declared completion boundary, once it accepts the candidate this run pinned
+— see [Factory → Controller
+completion](/reference/factory/#controller-completion-the-resolving-edge-written-at-a-declared-boundary)
+for the pin, the publication, and the execution hold that keeps a stray
+write inert until then.
+
 ## The integration step: a code-enforced merge queue after gates
 
 `spor work --factory <id>` can declare an **`integration:`** block on the
@@ -742,6 +760,17 @@ runs](/reference/cli/dispatch/#runs), and those fields map directly onto
 with `terminal_state` unset (or `state` still non-terminal) has not
 finished; poll or watch the record file rather than assuming absence means
 failure.
+
+A run dispatched under a factory's `implementation:`/`completion:` blocks
+carries a further, additive dimension on top of the two above: `impl_state`,
+the tip `impl_candidate` (and the full `impl_candidates` chain), the pinned
+`impl_claim`, `gates_state`/`integration_state`, and the `completion_*`
+family. Absent on every legacy record and on any record whose factory
+declares neither block; see [Factory → The
+candidate](/reference/factory/#the-candidate-what-a-pipeline-is-judging-pinned)
+and [→ Controller
+completion](/reference/factory/#controller-completion-the-resolving-edge-written-at-a-declared-boundary)
+for the field-by-field reference and example output.
 
 Terminal records age out after `dispatch.runRetentionMs` (default 14 days,
 config-cascade only, no env override) — read a record's outcome before that

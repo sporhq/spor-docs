@@ -78,6 +78,14 @@ an update sends (see [`put-node`](/reference/cli/writing-to-the-graph/#put-node)
 Inbound edges are gathered by scanning the whole graph, so `--json` is
 heavier than the plain read.
 
+The plain-text form (not `--json`) also prints a `note:` line on stderr,
+after the node's raw markdown, when the fetched node is currently [HELD by a
+controller-completion execution
+hold](/reference/factory/#controller-completion-the-resolving-edge-written-at-a-declared-boundary):
+which execution holds it, whether its worker reads live, **STALE**, or
+elsewhere, and the door out (`spor release <id> --execution <exec>`, or
+waiting for the controller's own completion write).
+
 ```sh
 spor get dec-tidefall-billing-retries --json
 ```

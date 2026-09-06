@@ -186,6 +186,22 @@ making any claim about the run. Being stopped for idleness is a process
 fact, not an outcome — an agent that had already written its resolver
 before going quiet still reads `resolved`.
 
+`--status`'s `gating:` slots also surface a controller-completion [execution
+hold](/reference/factory/#controller-completion-the-resolving-edge-written-at-a-declared-boundary)
+when one is active — the holding execution, the completion boundary it is
+pinned to, when it was claimed, and the same live/STALE worker reading
+`spor get`'s HELD note uses:
+
+```
+  gating:   task-tidefall-retry-emails  run a1b2c3d4  since 2026-09-06T03:10:00Z
+            execution: exec-4d5c6b7a9e1f2a3b (boundary 'integration'), held since 2026-09-06T03:10:12Z — run a1b2c3d4, its worker is live
+```
+
+Read off the gate run record's pinned `impl_claim`, never restamped on the
+worker's own status file; absent under `completion.by: agent` or on a
+legacy run. `--status --json` carries the identical data as a `hold` object
+on the gating entry.
+
 ### runs
 
 ```
@@ -261,6 +277,28 @@ does not by itself guarantee.
 A record with `terminal_state` unset (or `state` still non-terminal) has not
 finished; poll or watch the record file rather than assuming absence means
 failure.
+
+**A run dispatched under a factory's `implementation:`/`completion:` blocks**
+also prints its own stage lines — absent for a legacy run or a factory
+declaring neither block:
+
+```
+stage:      candidate
+candidate:  cand-9f8e7d6c5b4a3210  tree 1a2b3c4d5e6f  commit 7f6e5d4c3b2a on task-tidefall-retry-emails  bundle
+            re-pinned 2x — cand-aaaa1111bbbb2222 -> cand-cccc3333dddd4444 -> (tip)
+completion: by controller at 'integration' — owed (write); execution exec-4d5c6b7a9e1f2a3b
+            gates passed, integration running
+```
+
+`stage:` is `impl_state`, the settled-or-not verdict on the implementation
+stage itself; `candidate:` is the tip `impl_candidate` (with the re-pin
+count when the chain is longer than one); `completion:` is the pinned
+boundary, what the controller has written so far (`owed (<debt>)`,
+`written`, `withdrawn`, or `consumed`), and the holding execution id. See
+[Factory → The candidate](/reference/factory/#the-candidate-what-a-pipeline-is-judging-pinned)
+and [→ Controller
+completion](/reference/factory/#controller-completion-the-resolving-edge-written-at-a-declared-boundary)
+for the full field reference.
 
 `<run-id>` filters to one run by full id or short prefix; `--node <id>`
 filters to every run dispatched for a node; `--limit <N>` bounds how many are

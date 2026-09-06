@@ -88,7 +88,11 @@ Spor reads configuration from several layers; more specific wins:
 
 One deliberate exception: a committed `.spor` marker's `graph:` binding
 overrides `SPOR_HOME` in local mode, so a contributor with a personal global
-graph still inherits the shared graph inside a shared-graph repo.
+graph still inherits the shared graph inside a shared-graph repo. A
+factory's candidate bundle store does **not** follow this binding — it
+stays machine-local under this box's own config home even when a `graph:`
+binding is active; see [Configuration → The
+cascade](/reference/configuration/#the-cascade).
 
 Never commit a team token into `.spor.json`; keep secrets in the
 environment, user config, or global config.

@@ -577,6 +577,274 @@ so it settles `scoped` exactly as the declared route does, labeled
 `already-landed` rather than one of the three declared words. An item
 carrying no `commits:` at all — the overwhelming case — is unaffected.
 
+## Declaring the stage: the `implementation:` and `completion:` blocks
+
+Beside `gates` and `integration`, a factory may declare two more, independent
+blocks that cover the pipeline's edges: `implementation` (the stage that
+**produces** the candidate the gates judge — the one step of the pipeline a
+factory could not describe before) and `completion` (who writes the
+resolving edge that retires the work item, and when). A factory declaring
+neither is byte-identical to one written before the stage existed: nothing is
+pinned, no `impl_*` field is written on the run record, and today's
+`completion.by: agent` contract — the implementer resolves the item itself —
+runs exactly as it always has.
+
+```json
+{
+  "implementation": {
+    "profile": "profile-implementer",
+    "instructions": "Prefer the smallest change that makes the acceptance suite honest.",
+    "author_checks": ["typecheck"],
+    "budget": { "run_max_ms": 5400000, "run_idle_ms": 2700000, "attempts": 1 },
+    "retry": { "attempts": 1, "backoff_ms": 60000 },
+    "candidate": { "require_clean": true, "publish": "bundle" }
+  },
+  "completion": { "by": "controller", "after": "integration" }
+}
+```
+
+**The stage routes by PROFILE and by nothing else.** `command`, `args`,
+`argv`, `bin`, `exec`, `entrypoint`, `env`, `report`, `session`,
+`launch_mode`, and `identity_mode` (or their camelCase spellings) are fatal
+if declared — refused BY NAME rather than silently dropped, the same rule
+already enforced on gate profiles: a graph write must never define what a
+machine executes. A bespoke implementer is a `dispatch.harness.<id>`
+declaration on the machine, and the factory names only the profile id.
+
+| `implementation` field | Means |
+| --- | --- |
+| `profile` | the lane's default implementer (default `""`). LOWEST-precedence router: an explicit `--profile` wins, then the item's own `profile:` frontmatter, then its `assigned -> agent` edge, and only then this |
+| `instructions` | appended to the worker contract, never replacing it |
+| `author_checks` | command gate ids the implementer is asked to run itself (default none) — the gate re-runs the same suite from the trusted ref regardless, so naming one is only worth it for a cheap check (a typecheck, a lint); a name that is not a declared command gate id, or that names a review/human gate, is fatal |
+| `budget.run_max_ms` / `run_idle_ms` | default to inheriting the worker's own watchdogs; `run_idle_ms: 0` is the explicit disable for a lane whose steps genuinely run long |
+| `budget.attempts` | default 1, max 3 — the **code** pool (a second implementation attempt at the same item and prompt) |
+| `retry.attempts` / `retry.backoff_ms` | default 1 attempt / 60s backoff, max 3 attempts — the separate **infrastructure** pool an outage spends instead of the code's, shared by every dispatch one pipeline makes |
+| `candidate.require_clean` | default `true` — refuse the pin, with a reason distinct from an ordinary gate failure, on a checkout with uncommitted tracked changes. An explicit `false` relaxes only this check at the pin; the first command gate's own dirty-tree refusal stays unconditional regardless, so `false` does not (yet) let a dirty tree reach a gate |
+| `candidate.publish` | `bundle` (default) \| `branch` \| `both` — see [Candidate publication](#candidate-publication-bundle-branch-or-both) below |
+| `gates[].rejudge_on_repin` | command gates only, default `true`, read only under `completion.by: controller` — declared intent today (see "What runs today" below), not yet acted on |
+
+| `completion` field | Means |
+| --- | --- |
+| `by` | `agent` (the implementer writes the resolving edge and flips the status — today's shipped default for a factory with no `implementation` block) or `controller` (see [Controller completion](#controller-completion-the-resolving-edge-written-at-a-declared-boundary) below). Defaults to `controller` for a factory whose `implementation` block PARSES — the block is the opt-in, and controller-written completion is the semantics it asks for — and to `agent` otherwise; a block that fails to parse adopts nothing, so a typo in the stage never silently moves the boundary |
+| `after` | `gates` \| `integration` — the completion boundary, defaulting to the LAST stage the factory actually declares so it is reachable by construction. Naming `integration` with no `integration` block is fatal: a boundary that can never be reached leaves every item of the factory unresolved forever |
+
+The two blocks adopt **separately**. `"implementation": {}` is valid and
+takes every default above (and moves completion to the controller);
+`"completion": {"by": "controller"}` alone, with no `implementation` block,
+is valid too — and is deliberately not byte-identical even then: it still
+turns the worker contract's resolve step into a candidate submission and
+arms the controller's completion write, leaving routing, budget, and
+publication at their defaults.
+
+**What runs today.** The parse and its refusals, `author_checks` and
+`instructions` in the worker contract, everything `completion` governs (the
+execution hold, the `CANDIDATE:` submission, the candidate pin, and the
+controller's completion write), candidate publication, and
+`candidate.require_clean`'s own refusal at the pin are shipped. **Not yet
+executed:** no dispatch is routed by `implementation.profile`, no `budget`
+or `retry` pool is spent — the stage's own dispatch loop is designed, not
+shipped — and `gates[].rejudge_on_repin` is parsed onto the gate and read by
+nobody. Declaring those keys today is a declaration of intent the runner
+validates and will honor once they land; nothing about them changes what a
+worker does now.
+
+## The candidate: what a pipeline is judging, pinned
+
+Where an `implementation:` block is declared, the pipeline pins a
+**candidate** for the tree it is about to judge, rather than trusting an
+agent's own claim of resolution — a pinned commit plus the tree it resolves
+to, plus provenance, plus a portable reference something other than this
+process can follow.
+
+**Identity is the tree, not the commit.** `candidate_id` is `cand-` plus the
+first 16 hex of `sha256(repo, node_id, tree)` — nothing else goes into the
+key. An amend that changes only the commit message, a retry that
+re-commits the same files, and a rebase that happens to reproduce the same
+tree all yield the *same* candidate; a rebase onto a moved trusted ref
+changes the tree and is correctly a *new* one, since the merged-in base is
+content the gates have not judged.
+
+**A candidate is superseded, never mutated.** HEAD moves after submission —
+a fix cycle commits, a rescue amends — so the pipeline re-pins at exactly
+the point it already re-reads the tree: the same tree relabels the same
+candidate (the new commit joins `commits_seen`, nothing else changes); a
+different tree is a new candidate carrying `supersedes: <prior id>`. The run
+record carries the tip as `impl_candidate` and the full chain, oldest first,
+as `impl_candidates` — a tree that comes back after being superseded is
+appended again rather than folded onto its ancestor, so read the chain as an
+**ordered list** of pin events, never as a map keyed by id: the same
+`candidate_id` may appear more than once.
+
+`spor runs` prints the stage and the tip candidate, with the re-pin count
+when the chain is longer than one:
+
+```sh
+spor runs a1b2c3d4
+```
+
+```
+stage:      candidate
+candidate:  cand-9f8e7d6c5b4a3210  tree 1a2b3c4d5e6f  commit 7f6e5d4c3b2a on task-tidefall-retry-emails  bundle
+            re-pinned 2x — cand-aaaa1111bbbb2222 -> cand-cccc3333dddd4444 -> (tip)
+```
+
+`impl_state` (the `stage:` line) mirrors `gate_state`'s settled-or-not
+reading: `dispatched` / `running` / `interrupted` are unsettled — a stage
+nobody finished judging, not a verdict — while `candidate` (reached today
+once the implementer submits) is settled, alongside the vocabulary
+`declined` / `exhausted` / `escalated` / `unroutable` / `mismatch` reserved
+for the not-yet-shipped stage runner. A record carrying no `impl_state` at
+all is a legacy run, read as `completion.by: agent`.
+
+## Candidate publication: bundle, branch, or both
+
+Every candidate carries a portable reference — **there is no `publish:
+none`** — so that a controller which does not share a filesystem with the
+implementer can obtain the pinned commit and prove it resolves to the
+pinned tree.
+
+| `candidate.publish` | what is written | `reference` fields |
+| --- | --- | --- |
+| `bundle` (default) | `git bundle create` of `base.merge_base..commit`, under `refs/spor/candidates/<candidate_id>`, into `candidate.bundle_store` | `{kind, store, key, locator, commit, sha256, bytes, verified_at}` |
+| `branch` | `git push <resolved remote> <commit>:refs/spor/candidates/<candidate_id> --force-with-lease=<ref>:` — create-only, never `--force` | `{kind, locator, ref, commit, verified_at}` |
+| `both` | both, with the bundle as `reference` and `references[]` carrying both doors | as above |
+
+**`candidate.bundle_store` is machine-local by default, and a THIRD home
+distinct from a repo's shared graph home.** It defaults to
+`file://<userConfigHome>/candidates` — this machine's own personal config
+home (`$SPOR_HOME`, ignoring any repo `graph:` binding; see
+[Configuration → The cascade](/reference/configuration/#the-cascade)) —
+never a marker-bound shared graph home, because binary bundle artifacts have
+no business riding a shared repo's git flow by default. Its `.gitignore`
+line is maintained at whichever directory the store actually resolves to,
+only when that directory is itself a git working tree, rather than folded
+into the marker home's own generated `.gitignore` — so an operator who
+deliberately points `bundle_store` *inside* the shared graph home still gets
+the ignore line there, and everyone else's personal home gets it in its own
+tree instead.
+
+A locator is an absolute `file://` or `https://` URI — or, for a `branch`
+reference only, `ssh://` (admitted exactly where a `branch` publish already
+resolves a git remote; a `bundle` reference's locator is always the
+`file://`/`https://`-only `bundle_store`). An scp-style remote
+(`git@host:org/repo.git`) is normalized to its canonical `ssh://` form
+before it is ever stamped as a locator. A remote NAME, a bare sha, a
+relative path, or anything under the producing run's own working tree is
+refused — those resolve only on the machine that is about to disappear.
+
+Four properties the publisher is built around: the published object is
+**immutable and keyed by `candidate_id`** (a re-pin onto the same tree
+publishes nothing new; a store that already holds the id is fetched and
+checked, never overwritten); **the producer verifies its own publish by
+fetching it back** into a scratch repository — `reference.verified_at` is
+stamped only by that round trip, and a candidate is not submitted
+(`impl_state: candidate`) until it is; a **`file://` put is a hardlink** of
+a finished temp file into place, never an observable half-written copy; and
+**a worker refuses at startup** what a parse could not — an `https://`
+store in local mode (no candidate door without a server), a `file://` store
+it cannot write, or a `branch` publish whose remote cannot be resolved or
+fetched from — fatally, since a box that cannot publish can submit nothing
+at all.
+
+## Controller completion: the resolving edge written at a declared boundary
+
+Under the shipped `completion.by: agent` contract, the gate necessarily runs
+*after* the run wrote its own resolver, so every dependent of the item is
+released by a claim no gate has judged yet — and stays released if the
+gates then refuse (a refusal only demotes the item; see [A refusal is graph
+state](#a-refusal-is-graph-state-not-a-machine-local-cooldown)).
+`completion.by: controller` — or `completion: {"by": "controller"}` declared
+alone, with no `implementation` block — moves that write off the
+implementer and onto the runner instead, so a pending or refused pipeline
+releases none of the item's dependents.
+
+**The implementer submits a candidate; the controller completes.** Under a
+declared stage, the worker contract's usual resolve step becomes a
+SUBMISSION: commit on the launched branch, leave the tree clean, write a
+resolver node carrying a `relates-to` edge — **not** `resolves` — never flip
+the item's status, and open the final report with the fixed line
+`CANDIDATE: <resolver node id> — <why>` (a missing line is not a refusal,
+only an unlinked why). The run therefore ends as an ENFORCED `reported` —
+the graph answers "not resolved" — and the ordinary gate pipeline runs
+against it exactly as it would for any other candidate.
+
+**The execution hold** is what keeps a stray write inert in the meantime.
+Before any dispatch under `completion.by: controller`, the worker stamps the
+item with `execution: <execution-id>` by compare-and-swap: refused if the
+item already carries a live resolving edge or another execution's hold — two
+executions never hold one item, and only a same-factory resume or a
+person's `spor release <id> --execution <exec>` takes over a foreign one.
+From that stamp to the completion write, a held item counts as **never
+retired** for every liveness read — the queue ranking, `blocks` traversal,
+the program view, the briefing render — whatever its status or edges say:
+an implementer that writes its `resolves` edge anyway, or hand-flips the
+status, has broken the contract, but the write is **inert** from the
+instant it lands, and every such premature edge is retyped `resolves` →
+`relates-to` (recorded as evidence, never discarded) at submission and at
+every reconciliation pass. A give-up status (`abandoned`, `rejected`, …) is
+the person's door out of a held item regardless — it clears the hold in the
+same write.
+
+The plain-text form of `spor get` (not `--json`) prints a HELD note on
+stderr, after the node's raw markdown, when the node it fetched carries an
+active hold:
+
+```sh
+spor get task-tidefall-retry-emails
+```
+
+```
+note: task-tidefall-retry-emails is HELD by execution exec-4d5c6b7a9e1f2a3b (run a1b2c3d4, its worker is live) — no resolving edge or terminal status retires it until the controller completes it or a person runs 'spor release task-tidefall-retry-emails --execution exec-4d5c6b7a9e1f2a3b'
+```
+
+The `(...)` clause reads the box's own run journal for the holder: a live
+worker (`run <id>, its worker is live`), a **STALE** one (`STALE — run <id>
+on this box, its worker is gone; a same-factory 'spor work' resumes it`), or
+`no run on this box carries it` when the holding worker is elsewhere. `spor
+work --status` shows the same reading on a `gating:` slot that is currently
+held:
+
+```sh
+spor work --status
+```
+
+```
+  gating:   task-tidefall-retry-emails  run a1b2c3d4  since 2026-09-06T03:10:00Z
+            execution: exec-4d5c6b7a9e1f2a3b (boundary 'integration'), held since 2026-09-06T03:10:12Z — run a1b2c3d4, its worker is live
+```
+
+— read off the gate run record's pinned `impl_claim`, never restamped on the
+worker's own status file; absent under `completion.by: agent` or on a legacy
+run. `--status --json` carries the identical data as a `hold` object on the
+gating entry.
+
+**The completion write, in forced order:** the debt is stamped `write`
+first; the item is re-read and reconciled; premature edges are retyped;
+then (1) a content-addressed completion artifact,
+`art-completion-<stem>-<candidate>`, is created carrying the `resolves` edge
+onto the item plus `relates-to` every gate/merge fact and the implementer's
+own resolver, and (2) one compare-and-swap `put_node` of the item writes the
+terminal status **and** removes `execution:`/`execution_at:`. The moment (2)
+lands the hold is gone, the edge counts, and dependents are released — by
+this write and by nothing before it. `spor runs` prints the boundary, the
+state (`written`, `withdrawn`, `consumed`, or `owed (<debt>)`), and the
+pinned execution id, as in the example under [The
+candidate](#the-candidate-what-a-pipeline-is-judging-pinned) above;
+`completion_debt` is re-derived every pass from the pinned boundary against
+the gate/integration state rather than trusted as a durable flag, so a
+crash between (1) and (2) leaves it owed and the next pass performs only the
+idempotent (2).
+
+**Which boundary.** `after: gates` completes as soon as the gate list
+settles `passed`; with an `integration:` block also declared, integration
+then runs *after* the completion write, and a landing failure files a
+`relates-to` item without un-completing the work. `after: integration` (the
+default whenever `integration:` is declared) completes only once
+`integration_state: landed` (or, under `mode: propose`, once the parked
+proposal's own merge check sees it land). A refusal at any stage writes no
+edge and clears no hold: the item stays open, held, and blocked by the
+escalation the gate filed.
+
 ## See also
 
 - [Worker protocol](/reference/worker-protocol/) — the claim/brief/work/report/resolve
@@ -590,3 +858,9 @@ carrying no `commits:` at all — the overwhelming case — is unaffected.
   handoff a protected-path lane's own profile-routing (above) sits beside.
 - [Dispatch → work](/reference/cli/dispatch/#work) — the `--factory`,
   `--status`, and `--regate` flags.
+- [Dispatch → runs](/reference/cli/dispatch/#runs) — the `stage:`,
+  `candidate:`, and `completion:` lines `spor runs` prints for a run under a
+  declared implementation stage.
+- [Configuration → The cascade](/reference/configuration/#the-cascade) — how
+  a candidate bundle store's own machine-local home relates to a repo's
+  shared graph home.
