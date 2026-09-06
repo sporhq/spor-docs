@@ -38,8 +38,9 @@ shared-graph repo), while an explicit CLI `--home` still beats it.
 
 A factory's candidate bundle store is a separate, **third** home that does
 not follow that `graph:` binding at all: `implementation.candidate.bundle_store`
-defaults to `file://<SPOR_HOME>/candidates` — this machine's own personal
-config home — even while a `graph:` marker points the shared graph itself
+defaults to `file://<userConfigHome>/candidates` — this machine's own
+personal config home (`$SPOR_HOME`, ignoring any repo `graph:` binding) —
+even while a `graph:` marker points the shared graph itself
 elsewhere, since binary bundle artifacts have no business riding a shared
 repo's git flow by default. See [Factory → Candidate
 publication](/reference/factory/#candidate-publication-bundle-branch-or-both).

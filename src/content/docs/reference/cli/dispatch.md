@@ -287,7 +287,7 @@ stage:      candidate
 candidate:  cand-9f8e7d6c5b4a3210  tree 1a2b3c4d5e6f  commit 7f6e5d4c3b2a on task-tidefall-retry-emails  bundle
             re-pinned 2x — cand-aaaa1111bbbb2222 -> cand-cccc3333dddd4444 -> (tip)
 completion: by controller at 'integration' — owed (write); execution exec-4d5c6b7a9e1f2a3b
-            gates passed, integration running
+            gates passed, integration landed
 ```
 
 `stage:` is `impl_state`, the settled-or-not verdict on the implementation

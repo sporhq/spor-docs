@@ -686,7 +686,15 @@ spor runs a1b2c3d4
 stage:      candidate
 candidate:  cand-9f8e7d6c5b4a3210  tree 1a2b3c4d5e6f  commit 7f6e5d4c3b2a on task-tidefall-retry-emails  bundle
             re-pinned 2x — cand-aaaa1111bbbb2222 -> cand-cccc3333dddd4444 -> (tip)
+completion: by controller at 'integration' — owed (write); execution exec-4d5c6b7a9e1f2a3b
+            gates passed, integration landed
 ```
+
+The `completion:` line is [Controller
+completion](#controller-completion-the-resolving-edge-written-at-a-declared-boundary)'s
+own dimension — present only once a `completion:` block is declared, and
+shown here mid-write: the integration stage has landed the candidate and the
+completion write is owed, a beat before the runner's own CAS clears it.
 
 `impl_state` (the `stage:` line) mirrors `gate_state`'s settled-or-not
 reading: `dispatched` / `running` / `interrupted` are unsettled — a stage
