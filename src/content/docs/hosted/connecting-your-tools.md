@@ -12,10 +12,10 @@ of those two addresses.
 
 ## The CLI
 
-Getting a credential onto a machine — `spor join` with a pasted invite token,
-or an interactive `spor auth login` — and confirming it with `spor whoami` is
-covered step by step in
-[I was invited to hosted Spor](/start-here/invited-to-hosted-spor/#2-join-with-your-invite-token).
+Getting a credential onto a machine — `spor auth login`, or `spor join` with
+a pasted token — and confirming it with `spor whoami` is covered step by step
+in
+[I was invited to hosted Spor](/start-here/invited-to-hosted-spor/#2-sign-in).
 This section covers what carries across every machine and organization you
 connect, rather than that first walkthrough.
 
