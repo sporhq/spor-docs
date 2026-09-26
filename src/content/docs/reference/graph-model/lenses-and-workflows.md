@@ -1,6 +1,6 @@
 ---
 title: Lenses, program view, and workflows
-description: Saved views as nodes, the auto-derived progress tree over blocks topology, and proposal-gated workflow DAGs.
+description: Saved views as nodes, the auto-derived progress tree over program topology, and proposal-gated workflow DAGs.
 sidebar:
   order: 7
 ---
@@ -73,7 +73,7 @@ A `workspace-` node composes several lenses into one layout — a `## layout`
 block naming lens slots — and renders as a single view tree, so a team
 dashboard is itself a node.
 
-## The program view: progress from blocks topology
+## The program view: progress from program topology
 
 For "where does the workstream stand?", no lens authoring is needed. Given
 any root node — an umbrella task, a milestone, anything other work

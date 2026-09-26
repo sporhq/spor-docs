@@ -48,7 +48,7 @@ before the umbrella can), while `member-of-program` records pure topology
 non-gating member carries only `member-of-program`, and a prerequisite that
 gates the umbrella without belonging to its program carries only `blocks` — a
 distinction `blocks`-topology alone can't draw. The [program
-view](/reference/graph-model/lenses-and-workflows/#the-program-view-progress-from-blocks-topology)
+view](/reference/graph-model/lenses-and-workflows/#the-program-view-progress-from-program-topology)
 prefers these edges **per node**: a node with any inbound
 `member-of-program` edges takes those as its members; a node with none still
 falls back to inbound `blocks`, so an unmigrated or partially migrated
