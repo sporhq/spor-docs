@@ -41,6 +41,16 @@ spor ask "Did the dunning email copy get updated for the three-attempt retry win
 
 [`spor ask`](/reference/cli/writing-to-the-graph/#ask) files the question as work instead of letting it disappear from the session. In remote mode the server routes it to the steward of the closest related context; in local mode it writes an open question node that appears in `spor next`.
 
+## Search the graph
+
+Use this when you want a compact digest of what the graph already knows about a topic, name, or phrase — the natural first reach before you know which node to read.
+
+```sh
+spor search "billing retry flow"
+```
+
+[`spor search`](/reference/cli/repo-scoping/#search) is sugar for `compile --query "<text>" --digest`: free-text search rendered as a compact digest. For the full compiled neighborhood instead of the digest, run [`spor compile --query`](/reference/cli/repo-scoping/#compile) directly.
+
 ## Find your next item
 
 Use this when you want the next useful item for the `billing` project, then want context before starting. The queue step finds the item; the briefing step gathers the nearby graph context for it.

@@ -59,7 +59,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [Team administration](/reference/cli/team-admin/) | invite, admin |
 | [Reading the graph](/reference/cli/reading-the-graph/) | next, get, query, blame, history, changes, analytics, schema, lens, share, export |
 | [Writing to the graph](/reference/cli/writing-to-the-graph/) | add, ask, drain, put-node, edge, set-status, priority, ready, correct, claim, renew, extend, release, run |
-| [Repo scoping](/reference/cli/repo-scoping/) | enable, disable, link, agents-md, compile, brief, validate |
+| [Repo scoping](/reference/cli/repo-scoping/) | enable, disable, link, agents-md, compile, brief, search, validate |
 | [Dispatch](/reference/cli/dispatch/) | agent, dispatch, work, runs, repos, capabilities |
 | [Utilities](/reference/cli/utilities/) | cost, version, help |
 
@@ -112,6 +112,7 @@ the `.spor`/`.spor.json` repo markers, and the credential store are on the
 | [run](/reference/cli/writing-to-the-graph/#run) | remote | | start or inspect a workflow run |
 | [runs](/reference/cli/dispatch/#runs) | local | | what happened to the runs this machine dispatched |
 | [schema](/reference/cli/reading-the-graph/#schema) | dual | | introspect the live schema registry |
+| [search](/reference/cli/repo-scoping/#search) | dual | | free-text graph search (sugar for `compile --query`, digest-style) |
 | [set-status](/reference/cli/writing-to-the-graph/#set-status) | dual | `status-set` | set a node's status, claiming on active |
 | [share](/reference/cli/reading-the-graph/#share) | remote | | mint a shareable read-only view link |
 | [status](/reference/cli/setup-and-identity/#status) | dual | | resolved mode, graph, project, identity, health |

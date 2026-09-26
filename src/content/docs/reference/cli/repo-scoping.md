@@ -127,6 +127,24 @@ Compile a briefing for one node — sugar for `compile --root <id>`.
 spor brief task-tidefall-retry-emails
 ```
 
+### search
+
+```
+spor search "<text>"
+```
+
+**Mode:** dual
+
+Search the graph by free text — sugar for `compile --query "<text>"
+--digest`. This is the natural first reach for free-text search (the CLI
+twin of the MCP `query_graph` tool); it defaults to the compact digest
+rendering, since a search implies a result list. For the full neighborhood
+document, run `compile --query "<text>"` directly.
+
+```sh
+spor search "auth token rotation"
+```
+
 ### validate
 
 ```

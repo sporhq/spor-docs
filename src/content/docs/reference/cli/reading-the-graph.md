@@ -99,9 +99,10 @@ spor query [--type T] [--where k=v] [--id-prefix <p>] [--edges] [--edge-type T] 
 **Mode:** dual
 
 Deterministic, filterable enumeration over the graph — the structured list
-that `get` (one node), `next` (the ranked queue), and `compile --query`
-(semantic search) are not. Pure, no LLM. Remote mode runs the same
-enumeration over the team graph.
+that `get` (one node), `next` (the ranked queue), and
+[`search`](/reference/cli/repo-scoping/#search)/`compile --query` (semantic
+search) are not. Pure, no LLM. Remote mode runs the same enumeration over the
+team graph.
 
 Node selection ANDs across distinct flags: `--type` (repeatable, OR within
 type), `--where key=val` (repeatable, AND; a list field such as `tags`

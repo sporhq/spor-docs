@@ -143,14 +143,18 @@ You should see:
 `spor next` shows the ranked list of open work, ordered by graph signals such
 as what each item blocks. Your new issue appears here.
 
-## 6. Compile a briefing
+## 6. Search the graph
 
 ```sh
-spor compile --query "billing retry flow"
+spor search "billing retry flow"
 ```
 
-This compiles the neighborhood of entries relevant to a free-text query. It
-is the same operation that produces the automatic session-start briefing.
+`spor search` is the natural first reach for free-text search — sugar for
+`spor compile --query "<text>" --digest`. It compiles the neighborhood of
+entries relevant to your query and renders the compact digest, the same
+operation that produces the automatic session-start briefing. For the full
+neighborhood document instead of the digest, run `spor compile --query
+"<text>"` directly.
 
 ## Where the graph lives
 
@@ -165,7 +169,7 @@ branch survives even if the branch never merges.
 - Local mode is a plain git repository of markdown files on your machine.
 - `spor init` creates the graph home, and `SPOR_HOME` moves it.
 - `spor person create` records who you are for queues and briefings.
-- `spor add`, `spor next`, and `spor compile` are the basic local loop.
+- `spor add`, `spor next`, and `spor search` are the basic local loop.
 
 ## Where to go next
 
