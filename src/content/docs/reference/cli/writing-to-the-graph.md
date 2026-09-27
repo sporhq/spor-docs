@@ -38,7 +38,7 @@ spor add "Platform must expose a webhook-replay endpoint for retry testing" --pr
 ### ask
 
 ```
-spor ask "Did the dunning email copy get updated for the three-attempt retry window?" [--title ...] [--mention <id>] [--project S] [--id <id>]
+spor ask "Did the dunning email copy get updated for the three-attempt retry window?" [--title ...] [--to <person-id>] [--mention <id>] [--project S] [--id <id>]
 ```
 
 **Mode:** dual · **Alias:** `question`
@@ -56,8 +56,23 @@ overrides the derived project — pass it for a mention-less question whose
 neighborhood is empty. Answer a question by writing a node with an `answers`
 edge to it, then `spor set-status <id> answered`.
 
+`--to <person-id>` names who you want this routed to. Against a server that
+advertises explicit `to` routing it wins over every other signal
+(`routed_by: explicit`); against an older server it falls back to sending
+the person as a leading mention — a nudge, not a guaranteed override, since
+the route then still follows the ordinary neighborhood walk. Naming
+yourself with `--to` never forces a dead-end: it warns and falls through to
+ordinary routing instead.
+
+The routing line printed on success shows who the question reached and, when
+the server reports it, `routed_by` — one of `explicit`, `steward`, `claim`,
+`assigned`, `author`, or `owner`. Any routing warnings (the owner fallback
+firing, the question ending up unrouted, or a `--to` that named yourself)
+print to stderr.
+
 ```sh
 spor ask "Did the dunning email copy get updated for the three-attempt retry window?" --mention dec-tidefall-billing-retries
+spor ask "Is the Friday migration still on?" --to person-ada
 ```
 
 ### drain

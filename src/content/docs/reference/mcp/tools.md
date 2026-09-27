@@ -331,10 +331,20 @@ stale — the correction persists where a chat instruction would not.
 ### `ask_question`
 
 File a question the graph could not answer: `{text, title?, mentions?,
-project?}`. The question becomes a durable node, deterministically routed to
-the steward of the closest relevant node (routing considers `mentions`
-first), and joins the decision queue until answered. Answer it by writing a
-node with an `answers` edge to the question.
+project?, to?}`. The question becomes a durable node and joins the decision
+queue until answered. Answer it by writing a node with an `answers` edge to
+the question.
+
+Routing is deterministic: `to`, an optional person node id, routes the
+question there directly, ahead of every inferred signal — it must name an
+existing person node, and naming the asker themselves falls through to
+ordinary routing with a warning rather than a dead end. Absent `to`, routing
+walks the mentioned nodes' `stewards` edge, live claim holder, `assigned`
+edge, or author (mentions weighed first), falling back to the tenant owner
+when nothing matches. The result reports which signal won as `routed_by`
+(`explicit`, `steward`, `claim`, `assigned`, `author`, or `owner`), plus any
+routing warnings (the owner fallback firing, the question ending up
+unrouted, or a `to` that named the asker).
 
 The question's project is derived from its neighborhood by default; pass
 `project` explicitly for a mention-less question whose neighborhood would

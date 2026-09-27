@@ -251,14 +251,33 @@ File a question the graph could not answer:
   "mentions": ["dec-tidefall-billing-retries"] }
 ```
 
-Returns 201 `{status, id, project, routed_to, via, asker, revision,
-warnings}`. The question becomes a durable node, deterministically routed to
-the steward of the closest relevance-neighborhood node (unrouted if none
-matches), and joins the decision queue until answered — answering means
-writing a node with an `answers` edge to it. The project is derived from the
-relevance neighborhood, then the asker's home project, unless an explicit
-`project` slug overrides it (pass one for a mention-less question); a
-malformed slug is `400`.
+Returns 201 `{status, id, project, routed_to, via, routed_by, asker,
+revision, warnings}`. The question becomes a durable node and joins the
+decision queue until answered — answering means writing a node with an
+`answers` edge to it. `routed_by` names which signal routed it —
+`explicit`, `steward`, `claim`, `assigned`, `author`, or `owner`, `null` if
+unrouted. The project is derived from the relevance neighborhood, then the
+asker's home project, unless an explicit `project` slug overrides it (pass
+one for a mention-less question); a malformed slug is `400`.
+
+Pass an optional `to`, a person node id, to route the question there
+directly, ahead of every inferred signal (`routed_by: "explicit"`, `via:
+null`, no warning):
+
+```json
+{ "text": "Is the Friday migration still on?", "to": "person-ada" }
+```
+
+`to` must name an existing person node — an unknown or non-person id is
+`400`. Naming the asker themselves does not force a route: it falls through
+to ordinary routing with a warning instead.
+
+Absent `to`, routing is deterministic over the mentioned nodes' `stewards`
+edge, live claim holder, `assigned` edge, or author (explicit mentions
+weighed first), falling back to the tenant owner when nothing matches —
+always skipping a person-direct asker. `warnings` carries a line when the
+owner fallback fires, the question ends up genuinely unrouted, or an
+explicit `to` named the asker.
 
 ## POST /v1/gardener
 

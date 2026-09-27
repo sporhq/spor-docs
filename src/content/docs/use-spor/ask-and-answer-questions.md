@@ -29,6 +29,19 @@ local mode each mention becomes a `mentions` edge. If the question has no
 mentions and no useful neighborhood, pass `--project billing` so the question
 lands in the right project.
 
+Use `--to <person-id>` when you already know who should answer:
+
+```sh
+spor ask "Is the Friday migration still on?" --to person-ada
+```
+
+On a server that advertises explicit `to` routing, `--to` routes there
+directly, ahead of every inferred signal. Against an older server it falls
+back to sending the person as a leading mention instead — a nudge, not a
+guarantee, since the route then still follows the ordinary neighborhood walk
+below. Either way, naming yourself with `--to` never produces a dead-end
+question only you can see: it warns and falls through to ordinary routing.
+
 In an agent session, use `/spor:ask`. From an MCP host such as claude.ai, use
 the [`ask_question` tool](/reference/mcp/tools/#ask_question), which takes
 `{text, title?, mentions?, project?}`. The full CLI entry is in
@@ -36,14 +49,35 @@ the [`ask_question` tool](/reference/mcp/tools/#ask_question), which takes
 
 ## How routing finds the steward
 
-In remote mode, question routing is deterministic. The server walks
-`stewards` edges from the question's relevance neighborhood, with explicit
-mentions weighed first, to find the closest steward. It then writes a
-`routed-to` edge to that person.
+In remote mode, question routing is deterministic. An explicit `--to` wins
+outright. Otherwise the server walks the question's relevance neighborhood —
+explicit mentions weighed first — for a `stewards` edge, a live claim
+holder, an `assigned` edge, or an author, then falls back to the tenant
+owner if nothing matched. It then writes a `routed-to` edge to that person.
 
 That person's queue shows the question; everyone else's queue does not. If no
-steward matches, the question surfaces to everyone. It is still answerable,
-just not directed.
+steward matches and there's no owner to fall back to, the question surfaces
+to everyone. It is still answerable, just not directed. A question never
+routes back to the person who asked it — the owner fallback and every
+inferred signal skip a person-direct asker, and a self-targeting `--to` warns
+and falls through instead of forcing a dead-end.
+
+The response (and `spor ask`'s routing line) names which signal won as
+`routed_by`:
+
+| `routed_by` | means |
+| --- | --- |
+| `explicit` | `--to` named the person directly |
+| `steward` | a `stewards` edge on the closest relevant node |
+| `claim` | the live claim holder of a mentioned node |
+| `assigned` | the `assigned` edge on a mentioned node |
+| `author` | the author of a mentioned node |
+| `owner` | nothing else matched; fell back to the tenant owner |
+
+Two situations come back as warnings instead of a hard failure: the owner
+fallback firing (nothing in the neighborhood matched, so it landed on the
+tenant owner instead), and the question ending up genuinely unrouted (no
+match, no owner to fall back to). `spor ask` prints these to stderr.
 
 Routing depends on the graph's stewardship edges. A person node carrying a
 `stewards` edge to a spec or area is what makes questions about that area land
