@@ -80,11 +80,13 @@ sees today's behavior unchanged:
   digest renders exactly as it always has (fail-open).
 - **`intent`** — present only for an org with this enabled, and only on a
   `query` request (never on a `root` walk): `{warranted: bool,
-  needs_history: 0–1, digest_helps: 0–1, source: "jev"}`, a verdict on
-  whether this digest was worth compiling. It is **absent** whenever it
-  wasn't computed — feature disabled, timed out, failed, or an older server —
-  and an absent field should be treated the same as no opinion, not as
-  `warranted: false`.
+  needs_history: 0–1, digest_helps: 0–1, source: <string>}`, a verdict on
+  whether this digest was worth compiling. `source` names the internal
+  judgment mechanism that produced the verdict; treat it as opaque — check
+  only whether `intent` is present, never branch on `source`'s value. `intent`
+  is **absent** whenever it wasn't computed — feature disabled, timed out,
+  failed, or an older server — and an absent field should be treated the same
+  as no opinion, not as `warranted: false`.
 
 ## POST /v1/nodes
 
