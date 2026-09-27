@@ -86,6 +86,14 @@ nodes most relevant to what you just asked and attaches it. This is a
 per-prompt narrowing of context, sized to be cheap: a handful of related
 nodes, not a second briefing.
 
+On a team graph with this judgment enabled, the server also returns a verdict
+on whether the digest was worth attaching at all. If you've also turned on
+digest suppression client-side, the hook skips attaching the digest for that
+prompt when the verdict is explicitly negative. This is fail-open on both
+sides: without the server-side judgment (feature off, unavailable, or an
+older server) or without the client-side opt-in, every prompt gets a digest
+exactly as before.
+
 ## After edits: commit linking
 
 After file edits and shell commands, a hook watches for resulting commits and

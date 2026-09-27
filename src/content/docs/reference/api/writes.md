@@ -59,14 +59,32 @@ A read that shares the compile pipeline: digest-mode context for a prompt.
   "min_sim": 0.08 }
 ```
 
-Returns `{found, text}`; `found: false` is a successful empty result, not an
-error. `root` (e.g. `"root": "task-tidefall-retry-emails"`) is the structural-walk
-twin of `query` — pass one or the other; the two are mutually exclusive,
-`root` wins if both are sent, and an unknown root id is `422`. Optional `project`
-scopes the compile to the session's project (same-project relevance boost,
-grouping union, always-on norms), resolving the slug through project aliases;
-a bad slug is `422`. Omitting `project` runs the digest project-blind, so
-older clients sending only `{query}` are unaffected.
+Returns `{found, text, rerank?, intent?}`; `found: false` is a successful
+empty result, not an error. `root` (e.g. `"root": "task-tidefall-retry-emails"`)
+is the structural-walk twin of `query` — pass one or the other; the two are
+mutually exclusive, `root` wins if both are sent, and an unknown root id is
+`422`. Optional `project` scopes the compile to the session's project
+(same-project relevance boost, grouping union, always-on norms), resolving
+the slug through project aliases; a bad slug is `422`. Omitting `project`
+runs the digest project-blind, so older clients sending only `{query}` are
+unaffected.
+
+Two response fields are optional and additive — a client that ignores them
+sees today's behavior unchanged:
+
+- **`rerank`** — present only for an org that has opted in to relevance
+  reranking (off by default). When present, `{applied: true, candidates: <n>}`
+  summarizes that the candidate pool was reordered before the digest was
+  built; the field is **absent** whenever reranking didn't run — org not
+  opted in, local mode, or any failure scoring the pool — in which case the
+  digest renders exactly as it always has (fail-open).
+- **`intent`** — present only for an org with this enabled, and only on a
+  `query` request (never on a `root` walk): `{warranted: bool,
+  needs_history: 0–1, digest_helps: 0–1, source: "jev"}`, a verdict on
+  whether this digest was worth compiling. It is **absent** whenever it
+  wasn't computed — feature disabled, timed out, failed, or an older server —
+  and an absent field should be treated the same as no opinion, not as
+  `warranted: false`.
 
 ## POST /v1/nodes
 
